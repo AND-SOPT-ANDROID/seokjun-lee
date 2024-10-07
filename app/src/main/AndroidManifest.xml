@@ -23,12 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
+        <activity
+            android:name=".presentation.login.LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ANDANDROID"/>
         <activity
             android:name=".presentation.signup.SignUpActivity"
             android:exported="false"
-            android:label="@string/app_name"
             android:theme="@style/Theme.ANDANDROID"/>
     </application>
 
