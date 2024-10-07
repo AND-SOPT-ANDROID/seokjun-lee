@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.sopt.and.presentation.signup.state.SignUpUiState
 
-class SignUpViewModel() : ViewModel() {
+class SignUpViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(SignUpUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -68,7 +68,6 @@ class SignUpViewModel() : ViewModel() {
         if (password.contains(digitRegex)) count++
         if (password.contains(specialCharRegex)) count++
 
-        // 최소 8자 이상이고, 3가지 이상의 조건을 만족하면 true 반환
         return password.length in 8..20 && count >= 3
     }
 

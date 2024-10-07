@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +33,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
 import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
 import org.sopt.and.core.extension.noRippleClickable
@@ -90,7 +92,7 @@ private fun SignUpScreen(
 
         Text(
             text = buildAnnotatedString {
-                append("이메일과 비밀번호만으로\nWavve를 즐길 수 있어요!")
+                append(stringResource(R.string.signup_intro))
                 addStyle(
                     style = SpanStyle(color = Color.White),
                     start = 0,
@@ -119,7 +121,7 @@ private fun SignUpScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         WavveBasicTextField(
-            hint = "wavve@example.com",
+            hint = stringResource(R.string.signup_text_field_id_hint),
             onValueChange = onIdChange,
             value = uiState.id,
             cursorBrush = SolidColor(Color.Blue),
@@ -127,7 +129,7 @@ private fun SignUpScreen(
         )
 
         Text(
-            text = "로그인, 비밀번호 찾기, 알림에 사용되니 정확한 이메일을 입력해주세요",
+            text = stringResource(R.string.signup_text_field_id_guide),
             color = Color.Gray,
             fontSize = 12.sp,
             modifier = commonModifier
@@ -136,13 +138,13 @@ private fun SignUpScreen(
         Spacer(modifier = Modifier.height(10.dp))
 
         ShowActionTextField(
-            hint = "Wavve 비밀번호 설정",
+            hint = stringResource(R.string.signup_text_field_pw_hint),
             value = uiState.password,
             onValueChange = onPasswordChange,
             modifier = commonModifier
         )
         Text(
-            text = "비밀번호는 8~20자 이내로 영문 대소문자, 숫자, 특수문자 중 3가지 이상 혼용하여 입력해주세요.",
+            text = stringResource(R.string.signup_text_field_pw_guide),
             color = Color.Gray,
             fontSize = 12.sp,
             modifier = commonModifier
@@ -162,7 +164,7 @@ private fun SignUpScreen(
             )
 
             Text(
-                text = "또는 다른 서비스 계정으로 가입",
+                text = stringResource(R.string.signup_divider),
                 color = Color.Gray,
                 fontSize = 12.sp,
                 modifier = Modifier.padding(horizontal = 8.dp)
@@ -202,9 +204,7 @@ private fun SignUpScreen(
             text = buildAnnotatedString {
                 append(bullet)
                 append(
-                    "\tSNS계정을 간편하게 가입하여 서비스를 이용하실 수 있습니다. 기" +
-                            "\n\t존 POOQ 계정 또는 Wavve 계정과는 연동되지 않으니 이용에 참고" +
-                            "\n\t하세요."
+                    stringResource(R.string.signup_text_sns_guide)
                 )
             },
             color = Color.Gray,
@@ -222,12 +222,12 @@ private fun SignUpScreen(
                 .background(
                     color = if (uiState.isButtonEnabled) Color.Blue else Color.DarkGray
                 )
-                .noRippleClickable (onSignUpButtonPress)
+                .noRippleClickable(onSignUpButtonPress)
                 .padding(vertical = 20.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Wavve 회원가입",
+                text = stringResource(R.string.signup_button_signup),
                 color = Color.White
             )
         }
