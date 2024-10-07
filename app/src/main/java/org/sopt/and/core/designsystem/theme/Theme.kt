@@ -1,4 +1,4 @@
-package org.sopt.and.ui.theme
+package org.sopt.and.core.designsystem.theme
 
 import android.app.Activity
 import android.os.Build
