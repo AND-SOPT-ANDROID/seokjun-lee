@@ -26,7 +26,7 @@ class SignUpActivity : ComponentActivity() {
                         )
                     }
                 ) { innerPadding ->
-                    SignUpScreen(
+                    SignUpRoute(
                         modifier = Modifier
                             .background(color = Color.Black)
                             .padding(innerPadding)

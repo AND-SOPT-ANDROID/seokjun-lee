@@ -15,32 +15,71 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
 import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
+import org.sopt.and.core.extension.noRippleClickable
+import org.sopt.and.core.extension.toast
 import org.sopt.and.core.type.AccountType
+import org.sopt.and.presentation.signup.state.SignUpUiState
 import kotlin.text.Typography.bullet
 
 @Composable
-fun SignUpScreen(
+fun SignUpRoute(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {}
+    viewModel: SignUpViewModel = viewModel()
 ) {
-    var emailText by remember { mutableStateOf("") }
-    var passwordText by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is SignUpSideEffect.Toast -> {
+                        context.toast(sideEffect.message)
+                    }
+                }
+            }
+    }
+
+    SignUpScreen(
+        modifier = modifier,
+        uiState = uiState,
+        onIdChange = viewModel::updateId,
+        onPasswordChange = viewModel::updatePassword,
+        onSignUpButtonPress = {
+            if (uiState.isButtonEnabled) viewModel.checkTextFields()
+        }
+
+    )
+}
+
+@Composable
+private fun SignUpScreen(
+    uiState: SignUpUiState,
+    onIdChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onSignUpButtonPress: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val commonModifier = Modifier.padding(horizontal = 5.dp)
 
     Column(
@@ -81,8 +120,8 @@ fun SignUpScreen(
 
         WavveBasicTextField(
             hint = "wavve@example.com",
-            onValueChange = { emailText = it },
-            value = emailText,
+            onValueChange = onIdChange,
+            value = uiState.id,
             cursorBrush = SolidColor(Color.Blue),
             modifier = commonModifier
         )
@@ -98,8 +137,8 @@ fun SignUpScreen(
 
         ShowActionTextField(
             hint = "Wavve 비밀번호 설정",
-            value = passwordText,
-            onValueChange = { passwordText = it },
+            value = uiState.password,
+            onValueChange = onPasswordChange,
             modifier = commonModifier
         )
         Text(
@@ -162,9 +201,11 @@ fun SignUpScreen(
         Text(
             text = buildAnnotatedString {
                 append(bullet)
-                append("\tSNS계정을 간편하게 가입하여 서비스를 이용하실 수 있습니다. 기" +
-                        "\n\t존 POOQ 계정 또는 Wavve 계정과는 연동되지 않으니 이용에 참고" +
-                        "\n\t하세요.")
+                append(
+                    "\tSNS계정을 간편하게 가입하여 서비스를 이용하실 수 있습니다. 기" +
+                            "\n\t존 POOQ 계정 또는 Wavve 계정과는 연동되지 않으니 이용에 참고" +
+                            "\n\t하세요."
+                )
             },
             color = Color.Gray,
             fontSize = 12.sp,
@@ -178,11 +219,17 @@ fun SignUpScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = Color.DarkGray)
+                .background(
+                    color = if (uiState.isButtonEnabled) Color.Blue else Color.DarkGray
+                )
+                .noRippleClickable (onSignUpButtonPress)
                 .padding(vertical = 20.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = "Wavve 회원가입", color = Color.White)
+            Text(
+                text = "Wavve 회원가입",
+                color = Color.White
+            )
         }
     }
 }
@@ -190,5 +237,10 @@ fun SignUpScreen(
 @Preview
 @Composable
 fun SignUpScreenPreview() {
-    SignUpScreen()
+    SignUpScreen(
+        uiState = SignUpUiState(),
+        onIdChange = {},
+        onPasswordChange = {},
+        onSignUpButtonPress = {}
+    )
 }
