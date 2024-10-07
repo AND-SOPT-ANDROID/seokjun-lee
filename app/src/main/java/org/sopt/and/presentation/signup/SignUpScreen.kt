@@ -30,6 +30,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.row.AccountItemRow
+import org.sopt.and.core.designsystem.component.row.TextWithHorizontalLine
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
 import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
 import org.sopt.and.core.extension.noRippleClickable
@@ -145,33 +146,12 @@ private fun SignUpScreen(
             modifier = commonModifier
         )
 
-        Row(
+        TextWithHorizontalLine(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 40.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Spacer(
-                modifier = Modifier
-                    .height(0.5.dp)
-                    .weight(1f)
-                    .background(color = Color.Gray)
-            )
-
-            Text(
-                text = stringResource(R.string.signup_divider),
-                color = Color.Gray,
-                fontSize = 12.sp,
-                modifier = Modifier.padding(horizontal = 8.dp)
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .height(0.5.dp)
-                    .weight(1f)
-                    .background(color = Color.Gray)
-            )
-        }
+            text = stringResource(R.string.signup_divider)
+        )
 
         AccountItemRow(modifier = commonModifier)
 
