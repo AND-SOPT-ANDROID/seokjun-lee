@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
 import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
-import org.sopt.and.core.designsystem.component.topbar.CancelTopBar
 import org.sopt.and.core.type.AccountType
 import kotlin.text.Typography.bullet
 

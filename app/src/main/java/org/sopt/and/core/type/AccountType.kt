@@ -2,7 +2,6 @@ package org.sopt.and.core.type
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
-import org.sopt.and.R
 
 
 //TODO: iconRes 추가
