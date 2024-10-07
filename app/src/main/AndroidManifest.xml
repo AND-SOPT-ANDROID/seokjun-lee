@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.login.LoginActivity"
+            android:name=".presentation.signin.SignInActivity"
             android:exported="false"
             android:theme="@style/Theme.ANDANDROID"/>
         <activity

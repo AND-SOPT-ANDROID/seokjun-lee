@@ -7,8 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import org.sopt.and.core.designsystem.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.login.LoginActivity
-import org.sopt.and.presentation.signup.SignUpActivity
+import org.sopt.and.presentation.signin.SignInActivity
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 class MainActivity : ComponentActivity() {
@@ -17,7 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ANDANDROIDTheme {
-                val intent = Intent(this, LoginActivity::class.java)
+                val intent = Intent(this, SignInActivity::class.java)
                 startActivity(intent)
             }
         }
