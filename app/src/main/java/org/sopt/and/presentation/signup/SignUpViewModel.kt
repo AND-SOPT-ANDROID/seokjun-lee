@@ -50,26 +50,30 @@ class SignUpViewModel: ViewModel() {
 
     }
 
-    private fun isValidEmail(email: String): Boolean {
-        val regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$".toRegex()
-        return email.matches(regex)
-    }
+    private fun isValidEmail(email: String): Boolean = email.matches(EMAIL_REGEX.toRegex())
+
 
     private fun isValidPassword(password: String): Boolean {
-        val upperCaseRegex = Regex("[A-Z]")         // 대문자
-        val lowerCaseRegex = Regex("[a-z]")         // 소문자
-        val digitRegex = Regex("[0-9]")             // 숫자
-        val specialCharRegex = Regex("[!@#\$%^&*(),.?\":{}|<>]") // 특수문자
-
         var count = 0
 
-        if (password.contains(upperCaseRegex)) count++
-        if (password.contains(lowerCaseRegex)) count++
-        if (password.contains(digitRegex)) count++
-        if (password.contains(specialCharRegex)) count++
+        if (password.contains(UPPER_CASE_REGEX.toRegex())) count++
+        if (password.contains(LOWER_CASE_REGEX.toRegex())) count++
+        if (password.contains(DIGIT_REGEX.toRegex())) count++
+        if (password.contains(SPECIAL_CHAR_REGEX.toRegex())) count++
 
-        return password.length in 8..20 && count >= 3
+        return password.length in PWD_LENGTH_MIN..PWD_LENGTH_MAX && count >= PWD_TYPE_MIX
     }
 
+    companion object {
+        private const val PWD_LENGTH_MIN = 8
+        private const val PWD_LENGTH_MAX = 20
+        private const val PWD_TYPE_MIX = 3
 
+        const val EMAIL_REGEX ="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$"
+        const val UPPER_CASE_REGEX = "[A-Z]"
+        const val LOWER_CASE_REGEX = "[a-z]"
+        const val DIGIT_REGEX = "[0-9]"
+        const val SPECIAL_CHAR_REGEX = "[!@#\$%^&*(),.?\":{}|<>]"
+
+    }
 }
