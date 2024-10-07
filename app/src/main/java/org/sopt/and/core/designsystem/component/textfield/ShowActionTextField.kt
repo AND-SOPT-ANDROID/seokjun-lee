@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import org.sopt.and.core.extension.noRippleClickable
+import kotlin.text.Typography.ellipsis
 
 @Composable
 fun ShowActionTextField(
@@ -28,7 +29,7 @@ fun ShowActionTextField(
     var isPasswordShown by remember { mutableStateOf(false) }
     val visualTransformation = VisualTransformation {
         TransformedText(
-            AnnotatedString("*".repeat(it.text.length)), OffsetMapping.Identity
+            AnnotatedString(ellipsis.toString().repeat(it.text.length)), OffsetMapping.Identity
         )
     }
 

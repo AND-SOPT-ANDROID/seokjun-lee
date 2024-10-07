@@ -41,8 +41,12 @@ class SignUpViewModel: ViewModel() {
         val isValidEmail = isValidEmail(_uiState.value.id)
         val isValidPassword = isValidPassword(_uiState.value.password)
 
-        if(isValidEmail && isValidPassword)
-            _sideEffect.emit(SignUpSideEffect.Toast("회원가입 성공"))
+        if(isValidEmail && isValidPassword) {
+            with(_sideEffect) {
+                emit(SignUpSideEffect.Toast("회원가입 성공"))
+                emit(SignUpSideEffect.NavigateUp)
+            }
+        }
         else if(!isValidEmail)
             _sideEffect.emit(SignUpSideEffect.Toast("이메일 형식이 올바르지 않습니다."))
         else

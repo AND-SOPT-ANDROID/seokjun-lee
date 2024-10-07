@@ -45,7 +45,8 @@ import kotlin.text.Typography.bullet
 @Composable
 fun SignUpRoute(
     modifier: Modifier = Modifier,
-    viewModel: SignUpViewModel = viewModel()
+    viewModel: SignUpViewModel = viewModel(),
+    navigateUp: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -55,9 +56,8 @@ fun SignUpRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is SignUpSideEffect.Toast -> {
-                        context.toast(sideEffect.message)
-                    }
+                    is SignUpSideEffect.Toast -> context.toast(sideEffect.message)
+                    is SignUpSideEffect.NavigateUp -> navigateUp()
                 }
             }
     }

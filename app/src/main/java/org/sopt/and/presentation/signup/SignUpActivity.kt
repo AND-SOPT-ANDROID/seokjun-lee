@@ -22,11 +22,12 @@ class SignUpActivity : ComponentActivity() {
                     topBar = {
                         CancelTopBar(
                             title = "회원가입",
-                            onBackClick = {}
+                            onBackClick = {this.finish()}
                         )
                     }
                 ) { innerPadding ->
                     SignUpRoute(
+                        navigateUp = {this.finish()},
                         modifier = Modifier
                             .background(color = Color.Black)
                             .padding(innerPadding)
