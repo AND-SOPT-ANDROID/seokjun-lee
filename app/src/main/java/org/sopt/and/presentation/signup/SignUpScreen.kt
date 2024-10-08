@@ -42,7 +42,7 @@ import kotlin.text.Typography.bullet
 fun SignUpRoute(
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel = viewModel(),
-    navigateUp: () -> Unit = {}
+    navigateUp: (String, String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -53,7 +53,7 @@ fun SignUpRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is SignUpSideEffect.Toast -> context.toast(sideEffect.message)
-                    is SignUpSideEffect.NavigateUp -> navigateUp()
+                    is SignUpSideEffect.NavigateUp -> navigateUp(uiState.id, uiState.password)
                 }
             }
     }

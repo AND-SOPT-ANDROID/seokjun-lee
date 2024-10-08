@@ -1,6 +1,7 @@
 package org.sopt.and.presentation.signup
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -22,12 +23,18 @@ class SignUpActivity : ComponentActivity() {
                     topBar = {
                         CancelTopBar(
                             title = "회원가입",
-                            onBackClick = {this.finish()}
+                            onBackClick = { this.finish() }
                         )
                     }
                 ) { innerPadding ->
                     SignUpRoute(
-                        navigateUp = {this.finish()},
+                        navigateUp = { id, password ->
+                            Log.d("Login", "in SignUp $id, $password")
+                            intent.putExtra("id", id)
+                            intent.putExtra("password", password)
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        },
                         modifier = Modifier
                             .background(color = Color.Black)
                             .padding(innerPadding)
