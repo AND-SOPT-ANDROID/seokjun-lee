@@ -41,4 +41,8 @@
     <string name="mypage_content_title2">관심 프로그램</string>
     <string name="mypage_content_empty2">관심 프로그램이 없어요.</string>
 
+    <!--Component-->
+    <string name="component_text_field_show">show</string>
+    <string name="component_text_field_hide">hide</string>
+
 </resources>

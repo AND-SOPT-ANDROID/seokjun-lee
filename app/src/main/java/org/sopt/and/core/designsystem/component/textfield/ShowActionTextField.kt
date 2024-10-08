@@ -10,14 +10,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import org.sopt.and.R
 import org.sopt.and.core.extension.noRippleClickable
-import kotlin.text.Typography.ellipsis
 
 @Composable
 fun ShowActionTextField(
@@ -29,7 +30,7 @@ fun ShowActionTextField(
     var isPasswordShown by remember { mutableStateOf(false) }
     val visualTransformation = VisualTransformation {
         TransformedText(
-            AnnotatedString(ellipsis.toString().repeat(it.text.length)), OffsetMapping.Identity
+            AnnotatedString("*".repeat(it.text.length)), OffsetMapping.Identity
         )
     }
 
@@ -42,7 +43,9 @@ fun ShowActionTextField(
         visualTransformation = if (isPasswordShown) VisualTransformation.None else visualTransformation,
         actionButton = {
             Text(
-                text = if (isPasswordShown) "hide" else "show",
+                text =
+                if (isPasswordShown) stringResource(R.string.component_text_field_hide)
+                else stringResource(R.string.component_text_field_show),
                 color = Color.White,
                 modifier = Modifier.noRippleClickable { isPasswordShown = !isPasswordShown })
         },
