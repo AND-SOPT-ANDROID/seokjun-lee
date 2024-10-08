@@ -33,15 +33,18 @@ import org.sopt.and.presentation.mypage.component.DoubleTextButton
 
 @Composable
 fun MyPageRoute(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    email: String = ""
 ) {
     MyPageScreen(
+        email = email,
         modifier = modifier
     )
 }
 
 @Composable
 private fun MyPageScreen(
+    email: String,
     modifier: Modifier = Modifier
 ) {
     val commonModifier = Modifier.padding(horizontal = 10.dp)
@@ -67,7 +70,7 @@ private fun MyPageScreen(
             Spacer(Modifier.width(10.dp))
 
             Text(
-                text = "Name",
+                text = email,
                 color = Color.White
             )
 
@@ -131,6 +134,8 @@ private fun MyPageScreenPreview() {
             .fillMaxSize()
             .background(Color.Black)
     ) {
-        MyPageScreen()
+        MyPageScreen(
+            email = "이석준"
+        )
     }
 }

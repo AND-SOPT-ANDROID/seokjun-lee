@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import dagger.hilt.android.AndroidEntryPoint
 import org.sopt.and.core.designsystem.component.topbar.NavigateUpTopBar
 import org.sopt.and.core.designsystem.theme.ANDANDROIDTheme
+import org.sopt.and.core.preference.PreferenceUtil
 import org.sopt.and.presentation.mypage.MyPageActivity
 import org.sopt.and.presentation.signup.SignUpActivity
 
@@ -23,6 +24,7 @@ class SignInActivity : ComponentActivity() {
 
     private var id: String = ""
     private var password: String = ""
+    private lateinit var preferenceUtil: PreferenceUtil
 
     val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
         if(result.resultCode == RESULT_OK) {
@@ -33,6 +35,8 @@ class SignInActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        preferenceUtil = PreferenceUtil(this)
+
         enableEdgeToEdge()
         setContent {
             ANDANDROIDTheme {
@@ -48,6 +52,7 @@ class SignInActivity : ComponentActivity() {
                     SignInRoute(
                         navigateToMyPage = { idTextField, pwTextField ->
                             if(isLoginPossible(idTextField, pwTextField)) {
+                                saveIdAndPassword()
                                 val intent = Intent(this, MyPageActivity::class.java)
                                 startActivity(intent)
                             }
@@ -70,6 +75,11 @@ class SignInActivity : ComponentActivity() {
         val isPasswordCorrect = password.isNotBlank() && (pwTextField == password)
 
         return isIdCorrect && isPasswordCorrect
+    }
+
+    private fun saveIdAndPassword() {
+        preferenceUtil.id = id
+        preferenceUtil.password = password
     }
 }
 
