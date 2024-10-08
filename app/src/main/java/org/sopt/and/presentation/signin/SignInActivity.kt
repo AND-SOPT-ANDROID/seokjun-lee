@@ -57,8 +57,7 @@ class SignInActivity : ComponentActivity() {
                         )
                     },
                     snackbarHost = {
-                        SnackbarHost(
-                            hostState = snackBarHost)
+                        SnackbarHost(hostState = snackBarHost)
                     },
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
@@ -68,6 +67,7 @@ class SignInActivity : ComponentActivity() {
                                 saveIdAndPassword()
                                 val intent = Intent(this, MyPageActivity::class.java)
                                 startActivity(intent)
+                                finish()
                             } else {
                                 coroutine.launch {
                                     snackBarHost.showSnackbar(
