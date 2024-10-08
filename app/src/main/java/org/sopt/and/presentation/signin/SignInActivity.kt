@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import dagger.hilt.android.AndroidEntryPoint
 import org.sopt.and.core.designsystem.component.topbar.NavigateUpTopBar
 import org.sopt.and.core.designsystem.theme.ANDANDROIDTheme
 import org.sopt.and.presentation.signup.SignUpActivity
 
+@AndroidEntryPoint
 class SignInActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +34,7 @@ class SignInActivity : ComponentActivity() {
                 ) { innerPadding ->
                     val intent = Intent(this, SignUpActivity::class.java)
 
-                    SignInScreen(
+                    SignInRoute(
                         navigateToSignUp = { startActivity(intent) },
                         modifier = Modifier.padding(innerPadding).background(color = Color.Black)
                     )

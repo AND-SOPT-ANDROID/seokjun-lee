@@ -26,18 +26,41 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.row.AccountItemRow
 import org.sopt.and.core.designsystem.component.row.TextWithHorizontalLine
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
 import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
 import org.sopt.and.core.extension.noRippleClickable
+import org.sopt.and.presentation.signin.state.SignInUiState
 import kotlin.text.Typography.bullet
 
 @Composable
-fun SignInScreen(
+fun SignInRoute(
     navigateToSignUp: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SignInViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    SignInScreen(
+        uiState = uiState,
+        onIdChange = viewModel::updateId,
+        onPasswordChange = viewModel::updatePassword,
+        onSignUpClick = navigateToSignUp,
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun SignInScreen(
+    uiState: SignInUiState,
+    onIdChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onSignUpClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val commonModifier = Modifier.padding(horizontal = 10.dp)
 
@@ -45,8 +68,6 @@ fun SignInScreen(
         modifier = modifier
             .fillMaxSize()
     ) {
-        var idText by remember { mutableStateOf("") }
-        var pwText by remember { mutableStateOf("") }
 
 
         Spacer(
@@ -54,8 +75,8 @@ fun SignInScreen(
         )
         WavveBasicTextField(
             hint = "이메일 주소 또는 아이디",
-            value = idText,
-            onValueChange = { idText = it },
+            value = uiState.id,
+            onValueChange = onIdChange,
             modifier = commonModifier,
             cursorBrush = SolidColor(Color.Blue)
         )
@@ -64,8 +85,8 @@ fun SignInScreen(
 
         ShowActionTextField(
             hint = "비밀번호",
-            value = pwText,
-            onValueChange = { pwText = it },
+            value = uiState.password,
+            onValueChange = onPasswordChange,
             modifier = commonModifier
         )
 
@@ -118,9 +139,7 @@ fun SignInScreen(
                 text = "회원가입",
                 fontSize = 11.sp,
                 color = Color.Gray,
-                modifier = Modifier.noRippleClickable (
-                    navigateToSignUp
-                )
+                modifier = Modifier.noRippleClickable (onSignUpClick)
             )
 
 
@@ -158,6 +177,11 @@ private fun LoginScreenPreview() {
     Box(
         modifier = Modifier.background(Color.Black)
     ) {
-        SignInScreen(navigateToSignUp = {})
+        SignInScreen(
+            uiState = SignInUiState(),
+            onIdChange = {},
+            onPasswordChange = {},
+            onSignUpClick = {}
+        )
     }
 }
