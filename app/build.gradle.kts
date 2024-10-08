@@ -65,7 +65,8 @@ dependencies {
 
     //hilt
     implementation(libs.hilt.android)
+    implementation(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
     ksp(libs.hilt.manager)
-    implementation(libs.hilt.compiler)
 }
