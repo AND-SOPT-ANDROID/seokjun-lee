@@ -16,8 +16,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.topbar.NavigateUpTopBar
 import org.sopt.and.core.designsystem.theme.ANDANDROIDTheme
 import org.sopt.and.core.preference.PreferenceUtil
@@ -50,7 +52,7 @@ class SignInActivity : ComponentActivity() {
                 Scaffold(
                     topBar = {
                         NavigateUpTopBar(
-                            title = "WAVVE",
+                            title = stringResource(R.string.signin_top_bar_title),
                             onBackClick = {}
                         )
                     },
@@ -69,8 +71,8 @@ class SignInActivity : ComponentActivity() {
                             } else {
                                 coroutine.launch {
                                     snackBarHost.showSnackbar(
-                                        message = "아이디 또는 비밀번호가 일치하지 않습니다.",
-                                        actionLabel = "닫기"
+                                        message = this@SignInActivity.getString(R.string.signin_snackbar_fail),
+                                        actionLabel = this@SignInActivity.getString(R.string.signin_snackbar_cancel)
                                     )
                                 }
                             }
@@ -101,5 +103,5 @@ class SignInActivity : ComponentActivity() {
     }
 }
 
-private const val ID_KEY = "id"
-private const val PASSWORD_KEY = "password"
+const val ID_KEY = "id"
+const val PASSWORD_KEY = "password"

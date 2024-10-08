@@ -1,4 +1,4 @@
-package org.sopt.and.core.designsystem.component.row
+package org.sopt.and.core.designsystem.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
@@ -47,8 +48,6 @@ private fun MyPageScreen(
     email: String,
     modifier: Modifier = Modifier
 ) {
-    val commonModifier = Modifier.padding(horizontal = 10.dp)
-
     Column(
         modifier = modifier.fillMaxSize()
     ) {
@@ -78,7 +77,7 @@ private fun MyPageScreen(
 
             Icon(
                 imageVector = Icons.Outlined.Notifications,
-                contentDescription = "settings",
+                contentDescription = stringResource(R.string.mypage_description_notification),
                 tint = Color.White
             )
 
@@ -86,14 +85,14 @@ private fun MyPageScreen(
 
             Icon(
                 imageVector = Icons.Outlined.Settings,
-                contentDescription = "settings",
+                contentDescription = stringResource(R.string.mypage_description_setting),
                 tint = Color.White
             )
         }
 
         DoubleTextButton(
-            title = "첫 결제 시 첫 달 100원!",
-            subTitle = "구매하기",
+            title = stringResource(R.string.mypage_button_title_1),
+            subTitle = stringResource(R.string.mypage_button_subtitle_1),
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = Color.DarkGray)
@@ -104,8 +103,8 @@ private fun MyPageScreen(
         HorizontalDivider(thickness = 1.dp, color = Color.Black)
 
         DoubleTextButton(
-            title = "첫 결제 시 첫 달 100원!",
-            subTitle = "구매하기",
+            title = stringResource(R.string.mypage_button_title_2),
+            subTitle = stringResource(R.string.mypage_button_subtitle_2),
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = Color.DarkGray)
@@ -113,14 +112,14 @@ private fun MyPageScreen(
         )
 
         ContentList(
-            title = "전체 시청내역",
-            subTitle = "시청내역이 없어요",
+            title = stringResource(R.string.mypage_content_title1),
+            subTitle = stringResource(R.string.mypage_content_empty1),
             modifier = Modifier.fillMaxWidth().padding(10.dp)
         )
 
         ContentList(
-            title = "관심 프로그램",
-            subTitle = "관심 프로그램이 없어요",
+            title = stringResource(R.string.mypage_content_title2),
+            subTitle = stringResource(R.string.mypage_content_empty2),
             modifier = Modifier.fillMaxWidth().padding(10.dp)
         )
     }

@@ -29,8 +29,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
-import org.sopt.and.core.designsystem.component.row.AccountItemRow
-import org.sopt.and.core.designsystem.component.row.TextWithHorizontalLine
+import org.sopt.and.core.designsystem.component.AccountItemRow
+import org.sopt.and.core.designsystem.component.TextWithHorizontalLine
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
 import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
 import org.sopt.and.core.extension.noRippleClickable
@@ -52,7 +52,7 @@ fun SignUpRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is SignUpSideEffect.Toast -> context.toast(sideEffect.message)
+                    is SignUpSideEffect.Toast -> context.toast(context.getString(sideEffect.message))
                     is SignUpSideEffect.NavigateUp -> navigateUp(uiState.id, uiState.password)
                 }
             }

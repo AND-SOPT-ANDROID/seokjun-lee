@@ -33,8 +33,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import org.sopt.and.R
-import org.sopt.and.core.designsystem.component.row.AccountItemRow
-import org.sopt.and.core.designsystem.component.row.TextWithHorizontalLine
+import org.sopt.and.core.designsystem.component.AccountItemRow
+import org.sopt.and.core.designsystem.component.TextWithHorizontalLine
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
 import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
 import org.sopt.and.core.extension.noRippleClickable
@@ -111,7 +111,7 @@ private fun SignInScreen(
             modifier = Modifier.height(20.dp)
         )
         WavveBasicTextField(
-            hint = "이메일 주소 또는 아이디",
+            hint = stringResource(R.string.signin_text_field_id_hint),
             value = uiState.id,
             onValueChange = onIdChange,
             modifier = commonModifier,
@@ -121,7 +121,7 @@ private fun SignInScreen(
         Spacer(modifier = Modifier.height(5.dp))
 
         ShowActionTextField(
-            hint = "비밀번호",
+            hint = stringResource(R.string.signin_text_field_password_hint),
             value = uiState.password,
             onValueChange = onPasswordChange,
             modifier = commonModifier
@@ -138,7 +138,7 @@ private fun SignInScreen(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "로그인",
+                text = stringResource(R.string.signin_button_signin),
                 fontSize = 15.sp,
                 color = Color.White
             )
@@ -152,29 +152,29 @@ private fun SignInScreen(
             horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
         ) {
             Text(
-                text = "아이디 찾기",
+                text = stringResource(R.string.signin_button_find_id),
                 fontSize = 11.sp,
                 color = Color.Gray
             )
 
             Text(
-                text = "|",
+                text = stringResource(R.string.signin_button_divider),
                 fontSize = 12.sp,
                 color = Color.Gray
             )
             Text(
-                text = "비밀번호 재설정",
+                text = stringResource(R.string.signin_button_password_reset),
                 fontSize = 11.sp,
                 color = Color.Gray,
             )
 
             Text(
-                text = "|",
+                text = stringResource(R.string.signin_button_divider),
                 fontSize = 12.sp,
                 color = Color.Gray
             )
             Text(
-                text = "회원가입",
+                text = stringResource(R.string.signin_button_signup),
                 fontSize = 11.sp,
                 color = Color.Gray,
                 modifier = Modifier.noRippleClickable(onSignUpClick)

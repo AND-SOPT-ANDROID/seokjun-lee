@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.sopt.and.R
 import org.sopt.and.presentation.signup.state.SignUpUiState
 
 class SignUpViewModel: ViewModel() {
@@ -43,14 +44,14 @@ class SignUpViewModel: ViewModel() {
 
         if(isValidEmail && isValidPassword) {
             with(_sideEffect) {
-                emit(SignUpSideEffect.Toast("회원가입 성공"))
+                emit(SignUpSideEffect.Toast(R.string.signup_toast_success))
                 emit(SignUpSideEffect.NavigateUp)
             }
         }
         else if(!isValidEmail)
-            _sideEffect.emit(SignUpSideEffect.Toast("이메일 형식이 올바르지 않습니다."))
+            _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_email))
         else
-            _sideEffect.emit(SignUpSideEffect.Toast("비밀번호 형식이 올바르지 않습니다."))
+            _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_password))
 
     }
 
