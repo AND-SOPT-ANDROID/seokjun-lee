@@ -11,20 +11,27 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.row.AccountItemRow
 import org.sopt.and.core.designsystem.component.row.TextWithHorizontalLine
@@ -41,16 +48,43 @@ fun SignInRoute(
     modifier: Modifier = Modifier,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
+    val snackBarHost = remember { SnackbarHostState() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val lifecycleOwner = LocalLifecycleOwner.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is SignInSideEffect.Toast -> {/*TODO: 액티비티 삭제시 구현*/ }
+
+                    is SignInSideEffect.SnackBar -> {/*snackBarHost.showSnackbar(
+                        message = sideEffect.message,
+                        actionLabel = "닫기",
+                        duration = SnackbarDuration.Short
+                    )*/ }
+
+                    SignInSideEffect.NavigateToMyPage -> navigateToMyPage(
+                        uiState.id,
+                        uiState.password
+                    )
+
+                    SignInSideEffect.NavigateToSignUp -> navigateToSignUp()
+                }
+            }
+    }
 
     SignInScreen(
         uiState = uiState,
+        snackBarHost = snackBarHost,
         onIdChange = viewModel::updateId,
         onPasswordChange = viewModel::updatePassword,
         onLoginClick = {
-                navigateToMyPage(uiState.id, uiState.password)
+            viewModel.onLoginButtonClick()
+            keyboardController?.hide()
         },
-        onSignUpClick = navigateToSignUp,
+        onSignUpClick = viewModel::onSignUpButtonClick,
         modifier = modifier
     )
 }
@@ -62,6 +96,7 @@ private fun SignInScreen(
     onPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit,
     onSignUpClick: () -> Unit,
+    snackBarHost: SnackbarHostState,
     modifier: Modifier = Modifier,
 ) {
     val commonModifier = Modifier.padding(horizontal = 10.dp)
@@ -142,7 +177,7 @@ private fun SignInScreen(
                 text = "회원가입",
                 fontSize = 11.sp,
                 color = Color.Gray,
-                modifier = Modifier.noRippleClickable (onSignUpClick)
+                modifier = Modifier.noRippleClickable(onSignUpClick)
             )
 
 
@@ -171,6 +206,12 @@ private fun SignInScreen(
             modifier = Modifier.padding(horizontal = 8.dp)
         )
 
+        Spacer(modifier = Modifier.weight(1f))
+
+        SnackbarHost(
+            hostState = snackBarHost,
+        )
+
     }
 }
 
@@ -185,7 +226,8 @@ private fun LoginScreenPreview() {
             onIdChange = {},
             onPasswordChange = {},
             onSignUpClick = {},
-            onLoginClick = {}
+            onLoginClick = {},
+            snackBarHost = SnackbarHostState()
         )
     }
 }

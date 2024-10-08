@@ -10,9 +10,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import org.sopt.and.core.designsystem.component.topbar.NavigateUpTopBar
 import org.sopt.and.core.designsystem.theme.ANDANDROIDTheme
 import org.sopt.and.core.preference.PreferenceUtil
@@ -39,6 +44,8 @@ class SignInActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
+            val snackBarHost = remember { SnackbarHostState() }
+            val coroutine = rememberCoroutineScope()
             ANDANDROIDTheme {
                 Scaffold(
                     topBar = {
@@ -46,6 +53,10 @@ class SignInActivity : ComponentActivity() {
                             title = "WAVVE",
                             onBackClick = {}
                         )
+                    },
+                    snackbarHost = {
+                        SnackbarHost(
+                            hostState = snackBarHost)
                     },
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
@@ -55,6 +66,13 @@ class SignInActivity : ComponentActivity() {
                                 saveIdAndPassword()
                                 val intent = Intent(this, MyPageActivity::class.java)
                                 startActivity(intent)
+                            } else {
+                                coroutine.launch {
+                                    snackBarHost.showSnackbar(
+                                        message = "아이디 또는 비밀번호가 일치하지 않습니다.",
+                                        actionLabel = "닫기"
+                                    )
+                                }
                             }
                         },
                         navigateToSignUp = {

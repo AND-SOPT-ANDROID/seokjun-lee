@@ -20,13 +20,16 @@ class MainActivity : ComponentActivity() {
         val pref = PreferenceUtil(this)
         val isAutoLogin = pref.id.isNotBlank() && pref.password.isNotBlank()
 
-        if (isAutoLogin) {
+        /*if (isAutoLogin) {
             val intent = Intent(this, MyPageActivity::class.java)
             startActivity(intent)
         } else {
             val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
-        }
+        }*/
+
+        val intent = Intent(this, SignInActivity::class.java)
+        startActivity(intent)
 
     }
 }
