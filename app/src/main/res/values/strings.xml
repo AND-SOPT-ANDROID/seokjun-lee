@@ -42,6 +42,7 @@
     <string name="mypage_content_empty2">관심 프로그램이 없어요.</string>
     <string name="mypage_snackbar_signin_success">로그인에 성공했습니다.</string>
     <string name="mypage_snackbar_cancel">닫기</string>
+    <string name="mypage_button_logout">로그아웃</string>
 
     <!--Component-->
     <string name="component_text_field_show">show</string>

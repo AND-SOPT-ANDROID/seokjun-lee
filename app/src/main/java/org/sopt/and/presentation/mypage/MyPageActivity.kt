@@ -1,5 +1,6 @@
 package org.sopt.and.presentation.mypage
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.theme.ANDANDROIDTheme
 import org.sopt.and.core.preference.PreferenceUtil
+import org.sopt.and.presentation.signin.SignInActivity
 
 @AndroidEntryPoint
 class MyPageActivity : ComponentActivity() {
@@ -50,10 +52,26 @@ class MyPageActivity : ComponentActivity() {
 
                     MyPageRoute(
                         email = preferenceUtil.id,
+                        onLogout = {
+                            initializeIdPwCache()
+                            logout()
+                        },
                         modifier = Modifier.background(color = Color.Black).padding(innerPadding)
                     )
                 }
             }
         }
+    }
+
+    private fun logout() {
+        val intent = Intent(this, SignInActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        startActivity(intent)
+    }
+
+    private fun initializeIdPwCache() {
+        preferenceUtil.id = ""
+        preferenceUtil.password = ""
     }
 }

@@ -30,3 +30,7 @@ class MainActivity : ComponentActivity() {
         finish()
     }
 }
+
+/*
+스택관리 및 로그아웃 버튼
+ */

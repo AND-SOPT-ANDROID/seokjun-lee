@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,7 +34,8 @@ fun ContentList(
         Text(
             text = title,
             color = titleColor,
-            fontSize = 20.sp
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
         )
 
         if (list.isEmpty()) {

@@ -65,9 +65,7 @@ class SignInActivity : ComponentActivity() {
                         navigateToMyPage = { idTextField, pwTextField ->
                             if(isLoginPossible(idTextField, pwTextField)) {
                                 saveIdAndPassword()
-                                val intent = Intent(this, MyPageActivity::class.java)
-                                startActivity(intent)
-                                finish()
+                                moveToMyPage()
                             } else {
                                 coroutine.launch {
                                     snackBarHost.showSnackbar(
@@ -88,6 +86,13 @@ class SignInActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun moveToMyPage() {
+        val intent = Intent(this, MyPageActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        startActivity(intent)
     }
 
     private fun isLoginPossible(idTextField: String, pwTextField: String): Boolean {

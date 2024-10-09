@@ -35,10 +35,12 @@ import org.sopt.and.presentation.mypage.component.DoubleTextButton
 @Composable
 fun MyPageRoute(
     modifier: Modifier = Modifier,
-    email: String = ""
+    email: String = "",
+    onLogout: () -> Unit = {}
 ) {
     MyPageScreen(
         email = email,
+        onLogoutButtonClick = onLogout,
         modifier = modifier
     )
 }
@@ -46,6 +48,7 @@ fun MyPageRoute(
 @Composable
 private fun MyPageScreen(
     email: String,
+    onLogoutButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -114,14 +117,36 @@ private fun MyPageScreen(
         ContentList(
             title = stringResource(R.string.mypage_content_title1),
             subTitle = stringResource(R.string.mypage_content_empty1),
-            modifier = Modifier.fillMaxWidth().padding(10.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         )
 
         ContentList(
             title = stringResource(R.string.mypage_content_title2),
             subTitle = stringResource(R.string.mypage_content_empty2),
-            modifier = Modifier.fillMaxWidth().padding(10.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = Color.DarkGray
+                )
+                .noRippleClickable(onLogoutButtonClick)
+                .padding(vertical = 20.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(R.string.mypage_button_logout),
+                color = Color.White
+            )
+        }
     }
 }
 
@@ -134,7 +159,8 @@ private fun MyPageScreenPreview() {
             .background(Color.Black)
     ) {
         MyPageScreen(
-            email = "이석준"
+            email = "이석준",
+            onLogoutButtonClick = {}
         )
     }
 }
