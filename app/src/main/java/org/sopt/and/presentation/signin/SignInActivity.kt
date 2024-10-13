@@ -29,14 +29,14 @@ import org.sopt.and.presentation.signup.SignUpActivity
 @AndroidEntryPoint
 class SignInActivity : ComponentActivity() {
 
-    private var id: String = ""
-    private var password: String = ""
+    private var id: String = EMPTY_STRING
+    private var password: String = EMPTY_STRING
     private lateinit var preferenceUtil: PreferenceUtil
 
     val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
         if(result.resultCode == RESULT_OK) {
-            id = result.data?.getStringExtra(ID_KEY) ?: ""
-            password = result.data?.getStringExtra(PASSWORD_KEY) ?: ""
+            id = result.data?.getStringExtra(ID_KEY).takeIf { it != null }.toString()
+            password = result.data?.getStringExtra(PASSWORD_KEY).takeIf { it != null }.toString()
         }
     }
 
@@ -110,3 +110,4 @@ class SignInActivity : ComponentActivity() {
 
 const val ID_KEY = "id"
 const val PASSWORD_KEY = "password"
+const val EMPTY_STRING = ""

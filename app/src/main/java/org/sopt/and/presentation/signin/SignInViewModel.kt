@@ -33,7 +33,6 @@ class SignInViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onLoginButtonClick() = viewModelScope.launch {
-        _sideEffect.emit(SignInSideEffect.SnackBar("로그인 버튼 선택"))
         _sideEffect.emit(SignInSideEffect.NavigateToMyPage)
     }
 

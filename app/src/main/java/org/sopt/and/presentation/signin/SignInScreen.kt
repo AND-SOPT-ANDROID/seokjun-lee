@@ -59,11 +59,7 @@ fun SignInRoute(
                 when (sideEffect) {
                     is SignInSideEffect.Toast -> {/*TODO: 액티비티 삭제시 구현*/ }
 
-                    is SignInSideEffect.SnackBar -> {/*snackBarHost.showSnackbar(
-                        message = sideEffect.message,
-                        actionLabel = "닫기",
-                        duration = SnackbarDuration.Short
-                    )*/ }
+                    is SignInSideEffect.SnackBar -> {/*TODO: 액티비티 삭제시 구현*/}
 
                     SignInSideEffect.NavigateToMyPage -> navigateToMyPage(
                         uiState.id,

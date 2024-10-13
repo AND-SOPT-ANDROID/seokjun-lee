@@ -42,17 +42,16 @@ class SignUpViewModel: ViewModel() {
         val isValidEmail = isValidEmail(_uiState.value.id)
         val isValidPassword = isValidPassword(_uiState.value.password)
 
-        if(isValidEmail && isValidPassword) {
-            with(_sideEffect) {
-                emit(SignUpSideEffect.Toast(R.string.signup_toast_success))
-                emit(SignUpSideEffect.NavigateUp)
+        when {
+            isValidEmail && isValidPassword -> {
+                with(_sideEffect) {
+                    emit(SignUpSideEffect.Toast(R.string.signup_toast_success))
+                    emit(SignUpSideEffect.NavigateUp)
+                }
             }
+            !isValidEmail -> _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_email))
+            else -> _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_password))
         }
-        else if(!isValidEmail)
-            _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_email))
-        else
-            _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_password))
-
     }
 
     private fun isValidEmail(email: String): Boolean = email.matches(EMAIL_REGEX.toRegex())

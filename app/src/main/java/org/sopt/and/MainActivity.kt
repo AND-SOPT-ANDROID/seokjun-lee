@@ -20,17 +20,11 @@ class MainActivity : ComponentActivity() {
         val pref = PreferenceUtil(this)
         val isAutoLogin = pref.id.isNotBlank() && pref.password.isNotBlank()
 
-        if (isAutoLogin) {
-            val intent = Intent(this, MyPageActivity::class.java)
-            startActivity(intent)
-        } else {
-            val intent = Intent(this, SignInActivity::class.java)
-            startActivity(intent)
-        }
-        finish()
+        val intent =
+            if (isAutoLogin) Intent(this, MyPageActivity::class.java)
+            else Intent(this, SignInActivity::class.java)
+
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 }
-
-/*
-스택관리 및 로그아웃 버튼
- */
