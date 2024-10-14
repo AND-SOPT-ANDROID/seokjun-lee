@@ -1,9 +1,6 @@
 package org.sopt.and.core.designsystem.theme
 
-import android.content.Context
 import androidx.compose.ui.graphics.Color
-import androidx.core.content.ContextCompat
-import org.sopt.and.R
 
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)

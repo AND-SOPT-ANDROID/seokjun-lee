@@ -48,4 +48,9 @@
     <string name="component_text_field_show">show</string>
     <string name="component_text_field_hide">hide</string>
 
+    <!--BottomBar-->
+    <string name ="maintab_home">홈</string>
+    <string name ="maintab_search">검색</string>
+    <string name ="maintab_mypage">MY</string>
+
 </resources>
