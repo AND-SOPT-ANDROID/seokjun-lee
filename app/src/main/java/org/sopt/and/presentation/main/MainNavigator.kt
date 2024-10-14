@@ -8,10 +8,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import org.sopt.and.presentation.home.navigation.navigateToHome
-import org.sopt.and.presentation.mypage.navigation.MyPage
 import org.sopt.and.presentation.mypage.navigation.navigateToMyPage
 import org.sopt.and.presentation.search.navigation.navigateToSearch
-import org.sopt.and.presentation.signin.navigation.SignIn
 
 class MainNavigator(
     val navController: NavHostController

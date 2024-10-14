@@ -8,23 +8,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
-import androidx.navigation.navOptions
 import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.navigation.Route
-import org.sopt.and.core.preference.PreferenceUtil
 import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
 import org.sopt.and.presentation.home.navigation.Home
 import org.sopt.and.presentation.home.navigation.homeScreen
 import org.sopt.and.presentation.main.component.MainBottomBar
 import org.sopt.and.presentation.mypage.navigation.myPageScreen
-import org.sopt.and.presentation.mypage.navigation.navigateToMyPage
 import org.sopt.and.presentation.search.navigation.searchScreen
 import org.sopt.and.presentation.signin.navigation.SignIn
 import org.sopt.and.presentation.signin.navigation.navigateToSignIn
 import org.sopt.and.presentation.signin.navigation.signInScreen
-import org.sopt.and.presentation.signup.navigation.navigateToSignUp
 import org.sopt.and.presentation.signup.navigation.signUpScreen
 
 @Composable

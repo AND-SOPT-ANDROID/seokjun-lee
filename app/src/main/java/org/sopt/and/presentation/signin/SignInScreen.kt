@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -42,6 +41,7 @@ import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
 import org.sopt.and.core.designsystem.component.topbar.NavigateUpTopBar
 import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.extension.noRippleClickable
+import org.sopt.and.core.extension.showWavveSnackBar
 import org.sopt.and.core.extension.toast
 import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
 import org.sopt.and.presentation.signin.state.SignInUiState
@@ -73,10 +73,9 @@ fun SignInRoute(
                         context.getString(sideEffect.message)
                     )
 
-                    is SignInSideEffect.SnackBar -> snackBarHost.showSnackbar(
-                        message = context.getString(sideEffect.message),
-                        actionLabel = context.getString(R.string.mypage_snackbar_cancel),
-                        duration = SnackbarDuration.Short
+                    is SignInSideEffect.SnackBar -> snackBarHost.showWavveSnackBar(
+                        context = context,
+                        messageId = sideEffect.message
                     )
 
                     SignInSideEffect.NavigateToMyPage -> {

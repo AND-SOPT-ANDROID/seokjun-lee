@@ -19,7 +19,6 @@ import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -41,6 +40,7 @@ import androidx.lifecycle.flowWithLifecycle
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.extension.noRippleClickable
+import org.sopt.and.core.extension.showWavveSnackBar
 import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
 import org.sopt.and.presentation.mypage.component.ContentList
 import org.sopt.and.presentation.mypage.component.DoubleTextButton
@@ -62,10 +62,9 @@ fun MyPageRoute(
                 when (sideEffect) {
                     is MyPageSideEffect.ShowSnackBar -> {
                         onLogout()
-                        snackBarHost.showSnackbar(
-                            message = context.getString(sideEffect.message),
-                            actionLabel = context.getString(R.string.mypage_snackbar_cancel),
-                            duration = SnackbarDuration.Short
+                        snackBarHost.showWavveSnackBar(
+                            context = context,
+                            messageId = sideEffect.message
                         )
                     }
                 }
