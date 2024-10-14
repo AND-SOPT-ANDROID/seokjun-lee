@@ -1,7 +1,5 @@
 package org.sopt.and.presentation.main
 
-import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,7 +8,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import dagger.hilt.android.AndroidEntryPoint
 import org.sopt.and.core.designsystem.theme.ANDANDROIDTheme
 import org.sopt.and.core.preference.PreferenceUtil
-import org.sopt.and.presentation.signin.SignInActivity
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

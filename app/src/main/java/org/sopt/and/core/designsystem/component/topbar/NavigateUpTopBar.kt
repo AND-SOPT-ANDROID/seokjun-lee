@@ -1,6 +1,5 @@
 package org.sopt.and.core.designsystem.component.topbar
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -17,6 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.sopt.and.core.designsystem.theme.Grey500
+import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,14 +26,13 @@ fun NavigateUpTopBar(
     title: String,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = Color.Black,
-    titleContentColor: Color = Color.White,
-    actionIconContentColor: Color = Color.White,
+    containerColor: Color = Grey500,
+    titleContentColor: Color = White,
+    actionIconContentColor: Color = White,
 ) {
     CenterAlignedTopAppBar(
         modifier = modifier
-            .fillMaxWidth()
-            .background(color = Color.Black),
+            .fillMaxWidth(),
         title = {
             Text(
                 text = title,

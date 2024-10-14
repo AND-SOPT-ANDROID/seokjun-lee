@@ -25,10 +25,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.signin.SignInActivity"
-            android:exported="false"
-            android:theme="@style/Theme.ANDANDROID"/>
-        <activity
             android:name=".presentation.signup.SignUpActivity"
             android:exported="false"
             android:theme="@style/Theme.ANDANDROID"/>

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.sopt.and.R
 import org.sopt.and.presentation.signin.state.SignInUiState
 import javax.inject.Inject
 
@@ -32,12 +33,24 @@ class SignInViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-    fun onLoginButtonClick() = viewModelScope.launch {
-        _sideEffect.emit(SignInSideEffect.NavigateToMyPage)
+    fun onLoginButtonClick(id: String, password: String) = viewModelScope.launch {
+        if(isLoginPossible(id, password)) {
+            _sideEffect.emit(SignInSideEffect.NavigateToMyPage)
+        } else {
+            _sideEffect.emit(SignInSideEffect.SnackBar(R.string.signin_snackbar_fail))
+        }
     }
 
     fun onSignUpButtonClick() = viewModelScope.launch {
         _sideEffect.emit(SignInSideEffect.NavigateToSignUp)
+    }
+
+    /*id, password -> 회원가입 화면에서 가져온 아이디 비번*/
+    private fun isLoginPossible(id: String, password: String): Boolean {
+        val isIdCorrect = id.isNotBlank() && (_uiState.value.id == id)
+        val isPasswordCorrect = password.isNotBlank() && (_uiState.value.password == password)
+
+        return isIdCorrect && isPasswordCorrect
     }
 
 

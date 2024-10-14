@@ -13,8 +13,6 @@ import androidx.compose.ui.res.stringResource
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.topbar.CancelTopBar
 import org.sopt.and.core.designsystem.theme.ANDANDROIDTheme
-import org.sopt.and.presentation.signin.ID_KEY
-import org.sopt.and.presentation.signin.PASSWORD_KEY
 
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,10 +30,10 @@ class SignUpActivity : ComponentActivity() {
                 ) { innerPadding ->
                     SignUpRoute(
                         navigateUp = { id, password ->
-                            intent.putExtra(ID_KEY, id)
+                            /*intent.putExtra(ID_KEY, id)
                             intent.putExtra(PASSWORD_KEY, password)
                             setResult(RESULT_OK, intent)
-                            finish()
+                            finish()*/
                         },
                         modifier = Modifier
                             .background(color = Color.Black)

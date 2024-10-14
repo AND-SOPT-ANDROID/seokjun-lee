@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
@@ -37,34 +39,51 @@ import org.sopt.and.core.designsystem.component.AccountItemRow
 import org.sopt.and.core.designsystem.component.TextWithHorizontalLine
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
 import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
+import org.sopt.and.core.designsystem.component.topbar.NavigateUpTopBar
+import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.extension.noRippleClickable
+import org.sopt.and.core.extension.toast
+import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
 import org.sopt.and.presentation.signin.state.SignInUiState
 import kotlin.text.Typography.bullet
 
 @Composable
 fun SignInRoute(
     navigateToSignUp: () -> Unit,
-    navigateToMyPage: (String, String) -> Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
-    val snackBarHost = remember { SnackbarHostState() }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     val keyboardController = LocalSoftwareKeyboardController.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val preference = LocalPreference.current
+    val context = LocalContext.current
+
+    val snackBarHost = remember { SnackbarHostState() }
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is SignInSideEffect.Toast -> {/*TODO: 액티비티 삭제시 구현*/ }
-
-                    is SignInSideEffect.SnackBar -> {/*TODO: 액티비티 삭제시 구현*/}
-
-                    SignInSideEffect.NavigateToMyPage -> navigateToMyPage(
-                        uiState.id,
-                        uiState.password
+                    is SignInSideEffect.Toast -> context.toast(
+                        context.getString(sideEffect.message)
                     )
+
+                    is SignInSideEffect.SnackBar -> snackBarHost.showSnackbar(
+                        message = context.getString(sideEffect.message),
+                        actionLabel = context.getString(R.string.mypage_snackbar_cancel),
+                        duration = SnackbarDuration.Short
+                    )
+
+                    SignInSideEffect.NavigateToMyPage -> {
+                        with(preference) {
+                            id = uiState.id
+                            password = uiState.password
+                        }
+                        navigateToMyPage()
+                    }
 
                     SignInSideEffect.NavigateToSignUp -> navigateToSignUp()
                 }
@@ -77,7 +96,7 @@ fun SignInRoute(
         onIdChange = viewModel::updateId,
         onPasswordChange = viewModel::updatePassword,
         onLoginClick = {
-            viewModel.onLoginButtonClick()
+            viewModel.onLoginButtonClick("seokjun2000@gmail.com", "ssy2163!")
             keyboardController?.hide()
         },
         onSignUpClick = viewModel::onSignUpButtonClick,
@@ -100,8 +119,12 @@ private fun SignInScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(color = Grey500)
     ) {
-
+        NavigateUpTopBar(
+            title = stringResource(R.string.signin_top_bar_title),
+            onBackClick = {}
+        )
 
         Spacer(
             modifier = Modifier.height(20.dp)
