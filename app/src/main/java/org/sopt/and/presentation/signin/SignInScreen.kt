@@ -49,6 +49,8 @@ import kotlin.text.Typography.bullet
 
 @Composable
 fun SignInRoute(
+    signUpId: String,
+    signUpPassword: String,
     navigateToSignUp: () -> Unit,
     navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
@@ -96,7 +98,7 @@ fun SignInRoute(
         onIdChange = viewModel::updateId,
         onPasswordChange = viewModel::updatePassword,
         onLoginClick = {
-            viewModel.onLoginButtonClick("seokjun2000@gmail.com", "ssy2163!")
+            viewModel.onLoginButtonClick(signUpId, signUpPassword)
             keyboardController?.hide()
         },
         onSignUpClick = viewModel::onSignUpButtonClick,

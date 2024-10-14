@@ -12,10 +12,13 @@ import org.sopt.and.presentation.mypage.MyPageRoute
 fun NavController.navigateToMyPage(navOptions: NavOptions? = null) = navigate(MyPage, navOptions)
 
 fun NavGraphBuilder.myPageScreen(
+    navigateToSignIn:() -> Unit,
     modifier: Modifier = Modifier
 ) {
     composable<MyPage> {
-        MyPageRoute(modifier = modifier)
+        MyPageRoute(
+            onLogout = navigateToSignIn,
+            modifier = modifier)
     }
 }
 

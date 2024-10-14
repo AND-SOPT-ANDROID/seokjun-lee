@@ -61,6 +61,7 @@ fun MyPageRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is MyPageSideEffect.ShowSnackBar -> {
+                        onLogout()
                         snackBarHost.showSnackbar(
                             message = context.getString(sideEffect.message),
                             actionLabel = context.getString(R.string.mypage_snackbar_cancel),
