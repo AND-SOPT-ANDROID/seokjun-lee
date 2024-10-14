@@ -23,7 +23,6 @@ import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.topbar.NavigateUpTopBar
 import org.sopt.and.core.designsystem.theme.ANDANDROIDTheme
 import org.sopt.and.core.preference.PreferenceUtil
-import org.sopt.and.presentation.mypage.MyPageActivity
 import org.sopt.and.presentation.signup.SignUpActivity
 
 @AndroidEntryPoint
@@ -65,7 +64,6 @@ class SignInActivity : ComponentActivity() {
                         navigateToMyPage = { idTextField, pwTextField ->
                             if(isLoginPossible(idTextField, pwTextField)) {
                                 saveIdAndPassword()
-                                moveToMyPage()
                             } else {
                                 coroutine.launch {
                                     snackBarHost.showSnackbar(
@@ -86,13 +84,6 @@ class SignInActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    private fun moveToMyPage() {
-        val intent = Intent(this, MyPageActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-        startActivity(intent)
     }
 
     private fun isLoginPossible(idTextField: String, pwTextField: String): Boolean {

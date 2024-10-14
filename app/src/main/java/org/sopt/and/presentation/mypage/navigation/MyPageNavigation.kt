@@ -15,7 +15,7 @@ fun NavGraphBuilder.myPageScreen(
     modifier: Modifier = Modifier
 ) {
     composable<MyPage> {
-        MyPageRoute()
+        MyPageRoute(modifier = modifier)
     }
 }
 

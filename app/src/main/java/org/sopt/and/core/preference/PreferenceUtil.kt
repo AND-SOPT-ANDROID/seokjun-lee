@@ -1,6 +1,7 @@
 package org.sopt.and.core.preference
 
 import android.content.Context
+import androidx.compose.runtime.staticCompositionLocalOf
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 class PreferenceUtil(
@@ -23,5 +24,9 @@ class PreferenceUtil(
         private const val ID = "ID"
         private const val PASSWORD = "PASSWORD"
         private const val DEFAULT_STRING = ""
+
+        val LocalPreference = staticCompositionLocalOf<PreferenceUtil> {
+            error("PreferenceUtil is not initialized")
+        }
     }
 }

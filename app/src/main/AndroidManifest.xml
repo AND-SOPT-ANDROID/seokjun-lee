@@ -32,10 +32,6 @@
             android:name=".presentation.signup.SignUpActivity"
             android:exported="false"
             android:theme="@style/Theme.ANDANDROID"/>
-        <activity
-            android:name=".presentation.mypage.MyPageActivity"
-            android:exported="false"
-            android:theme="@style/Theme.ANDANDROID"/>
     </application>
 
 </manifest>
