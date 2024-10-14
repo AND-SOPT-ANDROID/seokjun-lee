@@ -1,8 +1,5 @@
 package org.sopt.and.presentation.main
 
-import android.graphics.drawable.Icon
-import android.widget.ImageView
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home

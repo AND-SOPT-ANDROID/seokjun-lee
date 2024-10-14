@@ -1,6 +1,5 @@
 package org.sopt.and.core.designsystem.component.topbar
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
