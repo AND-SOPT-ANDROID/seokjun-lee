@@ -12,12 +12,13 @@ import org.sopt.and.presentation.signin.SignInRoute
 fun NavController.navigateToSignIn(navOptions: NavOptions? = null) = navigate(SignIn, navOptions)
 
 fun NavGraphBuilder.signInScreen(
+    navigateToMyPage: () -> Unit,
+    navigateToSignUp: () -> Unit,
     modifier: Modifier = Modifier,
-    navigateToMyPage: () -> Unit = {}
 ) {
     composable<SignIn> {
         SignInRoute(
-            navigateToSignUp = {},
+            navigateToSignUp = navigateToSignUp,
             navigateToMyPage = navigateToMyPage,
             modifier = modifier)
     }

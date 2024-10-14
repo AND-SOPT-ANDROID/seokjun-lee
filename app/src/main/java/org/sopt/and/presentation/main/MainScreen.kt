@@ -17,6 +17,8 @@ import org.sopt.and.presentation.mypage.navigation.myPageScreen
 import org.sopt.and.presentation.mypage.navigation.navigateToMyPage
 import org.sopt.and.presentation.search.navigation.searchScreen
 import org.sopt.and.presentation.signin.navigation.signInScreen
+import org.sopt.and.presentation.signup.navigation.navigateToSignUp
+import org.sopt.and.presentation.signup.navigation.signUpScreen
 
 @Composable
 fun MainScreen(
@@ -58,7 +60,15 @@ private fun MainNavHost(
         startDestination = startDestination,
     ) {
         signInScreen(
+            navigateToSignUp = navController::navigateToSignUp,
             navigateToMyPage = navController::navigateToMyPage,
+            modifier = topBarModifier
+        )
+
+        signUpScreen(
+            navigateUp = { id, password ->
+                navController.navigateUp()
+            },
             modifier = topBarModifier
         )
 

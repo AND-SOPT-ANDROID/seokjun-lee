@@ -33,6 +33,7 @@ import org.sopt.and.core.designsystem.component.AccountItemRow
 import org.sopt.and.core.designsystem.component.TextWithHorizontalLine
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
 import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
+import org.sopt.and.core.designsystem.component.topbar.CancelTopBar
 import org.sopt.and.core.extension.noRippleClickable
 import org.sopt.and.core.extension.toast
 import org.sopt.and.presentation.signup.state.SignUpUiState
@@ -40,9 +41,9 @@ import kotlin.text.Typography.bullet
 
 @Composable
 fun SignUpRoute(
+    navigateUp: (String, String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel = viewModel(),
-    navigateUp: (String, String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -84,6 +85,11 @@ private fun SignUpScreen(
         modifier = modifier
             .fillMaxSize()
     ) {
+        CancelTopBar(
+            title = stringResource(R.string.signup_top_bar_title),
+            onBackClick = {  }
+        )
+
         Spacer(modifier = Modifier.height(20.dp))
 
         Text(
