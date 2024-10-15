@@ -7,6 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.sopt.and.core.navigation.MainTabRoute
+import org.sopt.and.presentation.search.SearchRoute
 
 fun NavController.navigateToSearch(navOptions: NavOptions? = null) = navigate(Search, navOptions)
 
@@ -14,7 +15,9 @@ fun NavGraphBuilder.searchScreen(
     modifier: Modifier = Modifier
 ) {
     composable<Search> {
-
+        SearchRoute(
+            modifier = modifier
+        )
     }
 }
 
