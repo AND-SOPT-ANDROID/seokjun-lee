@@ -1,7 +1,7 @@
 package org.sopt.and.presentation.home.state
 
 import org.sopt.and.R
-import org.sopt.and.core.domain.entity.HomeRecommendation
+import org.sopt.and.core.model.HomeRecommendation
 
 data class HomeUiState(
     val selectedTabIndex: Int = 0,

@@ -36,10 +36,6 @@ fun HomeRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(true) {
-        viewModel.getRecommendations()
-    }
-
     HomeScreen(
         uiState = uiState,
         modifier = modifier,

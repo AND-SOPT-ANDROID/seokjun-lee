@@ -1,4 +1,4 @@
-package org.sopt.and.core.domain.entity
+package org.sopt.and.core.model
 
 data class HomeRecommendation(
     val title: String,
