@@ -44,7 +44,7 @@ fun MainScreen(
 
         MainNavHost(
             navController = mainNavigator.navController,
-            startDestination = Home,
+            startDestination = startDestination,
             paddingValues = paddingValues
         )
     }

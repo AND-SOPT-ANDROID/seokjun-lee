@@ -14,24 +14,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        val pref = PreferenceUtil(this)
-        val isAutoLogin = pref.id.isNotBlank() && pref.password.isNotBlank()
-        /*
-        if (isAutoLogin) {
-            setContent {
-                MainScreen()
-            }
-        } else {
-            val intent = Intent(this, SignInActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }*/
-
         setContent {
             ANDANDROIDTheme {
                 CompositionLocalProvider(
-                    PreferenceUtil.LocalPreference provides pref
+                    PreferenceUtil.LocalPreference provides PreferenceUtil(this)
                 ) {
                     MainScreen()
                 }

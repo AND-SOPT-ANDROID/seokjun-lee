@@ -19,6 +19,11 @@ class PreferenceUtil(
         get() = preference.getString(PASSWORD, DEFAULT_STRING).toString()
         set(value) = preference.edit().putString(PASSWORD, value).apply()
 
+    fun clearIdPassword() {
+        id = ""
+        password = ""
+    }
+
     companion object {
         private const val PREF_NAME = "wavve_prefs"
         private const val ID = "ID"

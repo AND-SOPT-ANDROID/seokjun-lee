@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -40,6 +41,7 @@ import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
 import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
 import org.sopt.and.core.designsystem.component.topbar.NavigateUpTopBar
 import org.sopt.and.core.designsystem.theme.Grey500
+import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.extension.noRippleClickable
 import org.sopt.and.core.extension.showWavveSnackBar
 import org.sopt.and.core.extension.toast
@@ -120,15 +122,12 @@ private fun SignInScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = Grey500)
+            .background(color = WavveBackground)
     ) {
-        NavigateUpTopBar(
-            title = stringResource(R.string.signin_top_bar_title),
-            onBackClick = {}
-        )
+        NavigateUpTopBar()
 
         Spacer(
-            modifier = Modifier.height(20.dp)
+            modifier = Modifier.height(40.dp)
         )
         WavveBasicTextField(
             hint = stringResource(R.string.signin_text_field_id_hint),
@@ -147,7 +146,7 @@ private fun SignInScreen(
             modifier = commonModifier
         )
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         Box(
             modifier = commonModifier
@@ -199,14 +198,12 @@ private fun SignInScreen(
                 color = Color.Gray,
                 modifier = Modifier.noRippleClickable(onSignUpClick)
             )
-
-
         }
 
         TextWithHorizontalLine(
             modifier = commonModifier
                 .fillMaxWidth()
-                .padding(vertical = 40.dp),
+                .padding(top = 40.dp, bottom = 20.dp),
             text = stringResource(R.string.signin_divider)
         )
 

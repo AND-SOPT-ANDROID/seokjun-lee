@@ -46,7 +46,6 @@ fun MyPageRoute(
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
     val snackBarHost = remember { SnackbarHostState() }
-    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val preference = LocalPreference.current
 
@@ -54,12 +53,9 @@ fun MyPageRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is MyPageSideEffect.ShowSnackBar -> {
+                    is MyPageSideEffect.OnLogout -> {
+                        preference.clearIdPassword()
                         onLogout()
-                        snackBarHost.showWavveSnackBar(
-                            context = context,
-                            messageId = sideEffect.message
-                        )
                     }
                 }
             }

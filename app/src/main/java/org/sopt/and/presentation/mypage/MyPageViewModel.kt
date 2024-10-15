@@ -12,7 +12,7 @@ class MyPageViewModel : ViewModel() {
     val sideEffect = _sideEffect.asSharedFlow()
 
     fun onLogoutButtonClick() = viewModelScope.launch {
-        _sideEffect.emit(MyPageSideEffect.ShowSnackBar(R.string.mypage_button_logout))
+        _sideEffect.emit(MyPageSideEffect.OnLogout)
 
     }
 

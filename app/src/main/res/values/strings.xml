@@ -69,4 +69,7 @@
     <string name="icon_banner_description">추천</string>
     <string name="icon_next_description">다음</string>
 
+    <!--TopAppBar-->
+    <string name="top_bar_logo">웨이브</string>
+
 </resources>
