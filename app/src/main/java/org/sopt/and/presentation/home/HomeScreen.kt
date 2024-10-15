@@ -15,9 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.topbar.LogoTopBar
 import org.sopt.and.core.extension.noRippleClickable
 import org.sopt.and.core.type.HomeTabType
@@ -61,7 +64,7 @@ private fun HomeScreen(
             LogoTopBar(
                 actions = listOf<@Composable () -> Unit> {
                     Icon(
-                        imageVector = Icons.Outlined.Star,
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_live_24),
                         contentDescription = null,
                         modifier = Modifier.noRippleClickable { }
                     )

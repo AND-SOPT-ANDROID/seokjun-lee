@@ -63,5 +63,10 @@
     <string name="home_tab_documentary">시사교양</string>
     <string name="home_tab_kids">키즈</string>
     <string name="home_tab_movie_plus">영화플러스</string>
+    <string name="home_banner_indicator">%s | %s</string>
+
+    <!--Image Description-->
+    <string name="icon_banner_description">추천</string>
+    <string name="icon_next_description">다음</string>
 
 </resources>

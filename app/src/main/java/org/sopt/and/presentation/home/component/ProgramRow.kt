@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -60,7 +61,7 @@ fun ProgramRow(
             )
             Icon(
                 imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-                contentDescription = "next",
+                contentDescription = stringResource(R.string.icon_next_description),
                 tint = contentColor,
                 modifier = Modifier.noRippleClickable(onMoreClick)
             )
@@ -76,7 +77,7 @@ fun ProgramRow(
             itemsIndexed(imageList) { index, image ->
                 Image(
                     painterResource(image),
-                    contentDescription = "program",
+                    contentDescription = title,
                     modifier = Modifier
                         .width(100.dp)
                         .clip(RoundedCornerShape(10.dp))

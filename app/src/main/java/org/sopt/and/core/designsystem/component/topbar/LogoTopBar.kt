@@ -2,6 +2,7 @@ package org.sopt.and.core.designsystem.component.topbar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -12,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.designsystem.theme.WavveBackground
@@ -40,7 +42,7 @@ fun LogoTopBar(
             navigationIconContentColor = contentColor,
             titleContentColor = contentColor,
         ),
-        modifier = modifier
+        modifier = modifier.padding(end = 20.dp)
     )
 }
 

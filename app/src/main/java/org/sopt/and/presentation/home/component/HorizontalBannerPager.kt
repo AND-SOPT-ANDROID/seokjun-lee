@@ -18,12 +18,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import org.sopt.and.R
+import org.sopt.and.core.designsystem.theme.Black
 import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.designsystem.theme.White
 
@@ -60,7 +64,7 @@ internal fun HorizontalBannerPager(
         ) {
             Image(
                 painterResource(imageList[page % imageList.size]),
-                contentDescription = "Banner",
+                contentDescription = stringResource(R.string.icon_banner_description),
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(RoundedCornerShape(10.dp)),
@@ -69,15 +73,19 @@ internal fun HorizontalBannerPager(
             )
 
             Text(
-                text = "${(page % imageList.size + 1)}/${imageList.size}",
+                text = stringResource(
+                    id = R.string.home_banner_indicator,
+                    formatArgs = arrayOf((page % imageList.size + 1), imageList.size)
+                ),
                 color = White,
+                fontSize = 10.sp,
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(12.dp)
                     .background(
-                        color = Grey500.copy(alpha = 0.4f),
-                        shape = RoundedCornerShape(20.dp)
+                        color = Black.copy(alpha = 0.7f),
+                        shape = RoundedCornerShape(10.dp)
                     )
-                    .padding(horizontal = 10.dp, vertical = 3.dp)
+                    .padding(horizontal = 5.dp)
             )
         }
     }
