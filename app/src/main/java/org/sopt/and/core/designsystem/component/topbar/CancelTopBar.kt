@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.sopt.and.core.designsystem.theme.Grey500
+import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
 
@@ -25,7 +25,7 @@ fun CancelTopBar(
     title: String,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = Grey500,
+    containerColor: Color = WavveBackground,
     titleContentColor: Color = White,
     actionIconContentColor: Color = White,
 ) {

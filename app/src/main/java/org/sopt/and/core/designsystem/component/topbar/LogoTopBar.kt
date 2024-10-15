@@ -14,6 +14,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.theme.Grey500
+import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -21,7 +22,7 @@ import org.sopt.and.core.designsystem.theme.White
 fun LogoTopBar(
     actions: List<@Composable () -> Unit>,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = Grey500,
+    backgroundColor: Color = WavveBackground,
     contentColor: Color = White
 ) {
     TopAppBar(

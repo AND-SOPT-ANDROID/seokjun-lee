@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.core.designsystem.theme.Grey300
-import org.sopt.and.core.designsystem.theme.Grey500
+import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.util.NoRippleInteractionSource
 import org.sopt.and.presentation.main.MainTab
 
@@ -31,7 +31,7 @@ fun MainBottomBar(
     ) {
         NavigationBar(
             modifier = Modifier.height(120.dp),
-            containerColor = Grey500
+            containerColor = WavveBackground
         ) {
             tabs.forEach { itemType ->
                 NavigationBarItem(
@@ -59,7 +59,7 @@ fun MainBottomBar(
                             selectedTextColor = White,
                             unselectedIconColor = Grey300,
                             unselectedTextColor = Grey300,
-                            indicatorColor = Grey500
+                            indicatorColor = WavveBackground
                         ),
                 )
             }

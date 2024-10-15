@@ -3,6 +3,7 @@ package org.sopt.and.presentation.main
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import org.sopt.and.core.designsystem.theme.Grey500
+import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.navigation.Route
 import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
 import org.sopt.and.presentation.home.navigation.Home
@@ -40,7 +42,7 @@ fun MainScreen(
 
         MainNavHost(
             navController = mainNavigator.navController,
-            startDestination = startDestination,
+            startDestination = Home,
             paddingValues = paddingValues
         )
     }
@@ -62,8 +64,8 @@ private fun MainNavHost(
     paddingValues: PaddingValues
 ) {
     val topBarModifier = Modifier
-        .background(Grey500)
-        .systemBarsPadding()
+        .background(WavveBackground)
+        .statusBarsPadding()
 
     val mainModifier = topBarModifier
         .padding(bottom = paddingValues.calculateBottomPadding())

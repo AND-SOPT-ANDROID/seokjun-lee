@@ -20,3 +20,7 @@ val Grey350 = Color(0xFFADADAD)
 val Grey400 = Color(0xFF666666)
 val Grey500 = Color(0xFF373737)
 val Black = Color(0xFF171717)
+
+//Theme
+val WavveBackground = Color(0xFF1B1B1B)
+

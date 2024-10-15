@@ -2,9 +2,7 @@ package org.sopt.and.presentation.home.component
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.TabRow
@@ -17,17 +15,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.core.designsystem.theme.Grey350
-import org.sopt.and.core.designsystem.theme.Grey500
+import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
 import org.sopt.and.core.type.HomeTabType
 
 @Composable
-internal fun HomeTabBar(
+internal fun HomeTabRow(
     selectedTabIndex: Int,
     modifier: Modifier = Modifier,
     onTabClick: (Int) -> Unit = {},
-    containerColor: Color = Grey500,
+    containerColor: Color = WavveBackground,
     selectedColor: Color = White,
     unselectedColor: Color = Grey350,
     homeTabs: List<HomeTabType> = emptyList(),
@@ -62,8 +60,8 @@ internal fun HomeTabBar(
 
 @Preview(showBackground = true)
 @Composable
-private fun HomeTabBarPreview() {
-    HomeTabBar(
+private fun HomeTabRowPreview() {
+    HomeTabRow(
         homeTabs = HomeTabType.entries,
         selectedTabIndex = 0
     )
