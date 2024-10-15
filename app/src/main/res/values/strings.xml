@@ -53,4 +53,15 @@
     <string name ="maintab_search">검색</string>
     <string name ="maintab_mypage">MY</string>
 
+    <!--Home-->
+    <string name="home_tab_new_classic">뉴클래식</string>
+    <string name="home_tab_drama">드라마</string>
+    <string name="home_tab_entertainment">예능</string>
+    <string name="home_tab_movie">해외시리즈</string>
+    <string name="home_tab_animation">애니메이션</string>
+    <string name="home_tab_oversea">해외시리즈</string>
+    <string name="home_tab_documentary">시사교양</string>
+    <string name="home_tab_kids">키즈</string>
+    <string name="home_tab_movie_plus">영화플러스</string>
+
 </resources>
