@@ -7,6 +7,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import org.sopt.and.presentation.home.navigation.navigateToHome
 import org.sopt.and.presentation.mypage.navigation.navigateToMyPage
 import org.sopt.and.presentation.search.navigation.navigateToSearch
@@ -24,10 +25,15 @@ class MainNavigator(
         }
 
     fun navigate(tab: MainTab) {
+        val mainNavOption = navOptions {
+            launchSingleTop = true
+            restoreState = true
+        }
+
         when (tab) {
-            MainTab.HOME -> navController.navigateToHome()
-            MainTab.SEARCH -> navController.navigateToSearch()
-            MainTab.MYPAGE -> navController.navigateToMyPage()
+            MainTab.HOME -> navController.navigateToHome(mainNavOption)
+            MainTab.SEARCH -> navController.navigateToSearch(mainNavOption)
+            MainTab.MYPAGE -> navController.navigateToMyPage(mainNavOption)
         }
     }
 

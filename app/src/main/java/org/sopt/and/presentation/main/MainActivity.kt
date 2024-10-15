@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
 
         val pref = PreferenceUtil(this)
         val isAutoLogin = pref.id.isNotBlank() && pref.password.isNotBlank()
-/*
+        /*
         if (isAutoLogin) {
             setContent {
                 MainScreen()

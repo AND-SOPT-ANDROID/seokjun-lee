@@ -1,16 +1,18 @@
 package org.sopt.and.presentation.main
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.navigation.Route
 import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
@@ -73,6 +75,18 @@ private fun MainNavHost(
     NavHost(
         navController = navController,
         startDestination = startDestination,
+        enterTransition = {
+            EnterTransition.None
+        },
+        exitTransition = {
+            ExitTransition.None
+        },
+        popEnterTransition = {
+            EnterTransition.None
+        },
+        popExitTransition = {
+            ExitTransition.None
+        },
     ) {
         signInScreen(
             navController = navController,
