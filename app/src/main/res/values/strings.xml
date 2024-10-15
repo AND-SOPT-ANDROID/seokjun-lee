@@ -65,6 +65,13 @@
     <string name="home_tab_movie_plus">영화플러스</string>
     <string name="home_banner_indicator">%s | %s</string>
 
+    <!--Search-->
+    <string name="search_text_field_hint">제목, 장르, 배우로 찾아보세요</string>
+    <string name="search_button_series">시리즈</string>
+    <string name="search_button_movies">영화</string>
+    <string name="search_tab_popular_series">인기 시리즈</string>
+    <string name="search_tab_popular_movies">인기 영화</string>
+
     <!--Image Description-->
     <string name="icon_banner_description">추천</string>
     <string name="icon_next_description">다음</string>
