@@ -47,8 +47,8 @@ class SignInViewModel @Inject constructor() : ViewModel() {
 
     /*id, password -> 회원가입 화면에서 가져온 아이디 비번*/
     private fun isLoginPossible(id: String, password: String): Boolean {
-        val isIdCorrect = id.isNotBlank() && (_uiState.value.id == id)
-        val isPasswordCorrect = password.isNotBlank() && (_uiState.value.password == password)
+        val isIdCorrect = _uiState.value.id == id && id.isNotBlank()
+        val isPasswordCorrect =  _uiState.value.password == password && password.isNotBlank()
 
         return isIdCorrect && isPasswordCorrect
     }

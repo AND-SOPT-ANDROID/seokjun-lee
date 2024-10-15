@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -67,9 +68,11 @@ private fun MainNavHost(
 ) {
     val topBarModifier = Modifier
         .background(WavveBackground)
-        .statusBarsPadding()
+        .systemBarsPadding()
 
-    val mainModifier = topBarModifier
+    val mainModifier = Modifier
+        .background(WavveBackground)
+        .statusBarsPadding()
         .padding(bottom = paddingValues.calculateBottomPadding())
 
     NavHost(
@@ -101,7 +104,7 @@ private fun MainNavHost(
         homeScreen(modifier = mainModifier)
         searchScreen(modifier = mainModifier)
         myPageScreen(
-            navigateToSignIn = navController::navigateToSignIn,
+            navController = navController,
             modifier = mainModifier)
     }
 }
