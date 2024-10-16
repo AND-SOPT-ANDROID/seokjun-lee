@@ -85,7 +85,7 @@ private fun HomeScreen(
 
             ProgramRow(
                 title = recommendation.title,
-                imageList = recommendation.imageList,
+                programList = recommendation.programList,
                 modifier = Modifier.wrapContentHeight()
             )
         }

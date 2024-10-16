@@ -30,15 +30,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.R
+import org.sopt.and.core.data.repositoryimpl.DummyPopularProgramRepositoryImpl
 import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
+import org.sopt.and.core.model.Program
 
 @Composable
 fun ProgramRow(
     title: String,
     modifier: Modifier = Modifier,
-    @DrawableRes imageList: List<Int> = emptyList(),
+    programList: List<Program> = emptyList(),
     contentColor: Color = White,
     onMoreClick: () -> Unit = {},
     onItemClick: (Int) -> Unit = {}
@@ -74,9 +76,9 @@ fun ProgramRow(
             contentPadding = PaddingValues(horizontal = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            itemsIndexed(imageList) { index, image ->
+            itemsIndexed(programList) { index, program ->
                 Image(
-                    painterResource(image),
+                    painterResource(program.imgFile),
                     contentDescription = title,
                     modifier = Modifier
                         .width(100.dp)
@@ -93,16 +95,7 @@ fun ProgramRow(
 private fun ProgramRowPreview() {
     ProgramRow(
         title = "남의 삶을 훔쳐보는 공인중개사",
-        imageList = listOf(
-            R.drawable.img_banner1,
-            R.drawable.img_banner2,
-            R.drawable.img_banner3,
-            R.drawable.img_banner4,
-            R.drawable.img_banner1,
-            R.drawable.img_banner2,
-            R.drawable.img_banner3,
-            R.drawable.img_banner4,
-        ),
+        programList = DummyPopularProgramRepositoryImpl.dummyPopularSeries,
         modifier = Modifier
             .background(WavveBackground)
             .wrapContentHeight()

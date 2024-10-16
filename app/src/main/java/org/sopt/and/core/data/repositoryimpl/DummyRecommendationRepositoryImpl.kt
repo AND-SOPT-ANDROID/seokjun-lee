@@ -21,15 +21,15 @@ class DummyRecommendationRepositoryImpl @Inject constructor(
         listOf(
             HomeRecommendation(
                 title = "믿고 보는 웨이브 에디터 추천작",
-                imageList = tempImgList + tempImgList
+                programList = DummyPopularProgramRepositoryImpl.dummyPopularSeries
             ),
             HomeRecommendation(
                 title = "실시간 인기 콘텐츠",
-                imageList = tempImgList + tempImgList
+                programList = DummyPopularProgramRepositoryImpl.dummyPopularMovies
             ),
             HomeRecommendation(
                 title = "오직 웨이브에서",
-                imageList = tempImgList + tempImgList
+                programList = DummyPopularProgramRepositoryImpl.dummyPopularSeries
             )
         )
 }

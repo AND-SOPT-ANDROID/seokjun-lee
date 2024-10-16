@@ -7,18 +7,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -27,14 +32,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.theme.Grey200
 import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.designsystem.theme.WavveBackground
+import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
-import org.sopt.and.core.extension.showWavveSnackBar
 import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
+import org.sopt.and.presentation.dialog.mypage.SearchDialog
 import org.sopt.and.presentation.mypage.component.ContentList
 import org.sopt.and.presentation.mypage.component.DoubleTextButton
 import org.sopt.and.presentation.mypage.component.ProfileTopBar
@@ -45,6 +52,8 @@ fun MyPageRoute(
     onLogout: () -> Unit = {},
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     val snackBarHost = remember { SnackbarHostState() }
     val lifecycleOwner = LocalLifecycleOwner.current
     val preference = LocalPreference.current
@@ -67,11 +76,39 @@ fun MyPageRoute(
             onLogoutButtonClick = viewModel::onLogoutButtonClick,
             modifier = modifier
         )
+
+        FloatingActionButton(
+            onClick = {
+                viewModel.updateSearchDialogVisibility(true)
+            },
+            shape = CircleShape,
+            containerColor = Color.Blue,
+            contentColor = White,
+            modifier = modifier
+                .align(alignment = Alignment.BottomEnd)
+                .padding(end = 20.dp, bottom = 20.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Add,
+                contentDescription = ""
+            )
+        }
+
         SnackbarHost(
             hostState = snackBarHost,
             modifier = modifier.align(alignment = Alignment.BottomCenter)
         )
     }
+
+    if (uiState.searchDialogVisibility) {
+        SearchDialog(
+            onDismissRequest = { viewModel.updateSearchDialogVisibility(false) },
+            onItemSelect = { program ->
+
+            },
+        )
+    }
+
 }
 
 @Composable

@@ -79,4 +79,7 @@
     <!--TopAppBar-->
     <string name="top_bar_logo">웨이브</string>
 
+    <!--Dialog-->
+    <string name="dialog_search_title">관심 프로그램 추가</string>"
+
 </resources>

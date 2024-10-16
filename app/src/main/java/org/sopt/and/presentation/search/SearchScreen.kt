@@ -12,14 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -27,11 +21,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.theme.Grey500
-import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.presentation.search.component.CategoryButton
 import org.sopt.and.presentation.search.component.SearchItem
 import org.sopt.and.presentation.search.component.SearchTabRow
-import org.sopt.and.presentation.search.component.SearchTextField
+import org.sopt.and.core.designsystem.component.textfield.SearchTextField
+import org.sopt.and.core.model.Program
 import org.sopt.and.presentation.search.state.SearchUiState
 
 @Composable
@@ -44,7 +38,7 @@ fun SearchRoute(
     SearchScreen(
         uiState = uiState,
         onTabClick = viewModel::onTabClick,
-        itemList = viewModel.getTabList(),
+        programList = viewModel.getTabList(),
         onTextFieldValueChange = viewModel::onSearchValueChange,
         modifier = modifier
     )
@@ -55,7 +49,7 @@ private fun SearchScreen(
     uiState: SearchUiState,
     onTabClick: (Int) -> Unit,
     onTextFieldValueChange: (String) -> Unit,
-    itemList: List<String>,
+    programList: List<Program>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -108,13 +102,14 @@ private fun SearchScreen(
             LazyColumn(
                 contentPadding = PaddingValues(vertical = 10.dp, horizontal = 10.dp)
             ) {
-                items(itemList) { item ->
+                items(programList) { program ->
                     Column(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         SearchItem(
-                            text = item,
-                            contentDescription = item,
+                            text = program.title,
+                            contentDescription = program.title,
+                            imageFile = program.imgFile,
                             modifier = Modifier.height(80.dp)
                         )
                         HorizontalDivider(thickness = 1.dp, color = Grey500, modifier = Modifier.padding(10.dp))
