@@ -1,8 +1,5 @@
 package org.sopt.and.core.designsystem.component.tabrow
 
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.TabPosition
 import androidx.compose.material3.TabRow
 import androidx.compose.runtime.Composable

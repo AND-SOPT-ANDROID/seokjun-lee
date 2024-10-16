@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -40,7 +39,6 @@ import org.sopt.and.core.designsystem.component.TextWithHorizontalLine
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
 import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
 import org.sopt.and.core.designsystem.component.topbar.NavigateUpTopBar
-import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.extension.noRippleClickable
 import org.sopt.and.core.extension.showWavveSnackBar

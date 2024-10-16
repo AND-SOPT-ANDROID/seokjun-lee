@@ -2,8 +2,6 @@ package org.sopt.and.presentation.main
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -23,7 +21,6 @@ import org.sopt.and.presentation.main.component.MainBottomBar
 import org.sopt.and.presentation.mypage.navigation.myPageScreen
 import org.sopt.and.presentation.search.navigation.searchScreen
 import org.sopt.and.presentation.signin.navigation.SignIn
-import org.sopt.and.presentation.signin.navigation.navigateToSignIn
 import org.sopt.and.presentation.signin.navigation.signInScreen
 import org.sopt.and.presentation.signup.navigation.signUpScreen
 

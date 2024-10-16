@@ -22,7 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.core.designsystem.component.image.ProgramImage
-import org.sopt.and.core.extension.noRippleClickable
 import org.sopt.and.core.model.Program
 
 @Composable
