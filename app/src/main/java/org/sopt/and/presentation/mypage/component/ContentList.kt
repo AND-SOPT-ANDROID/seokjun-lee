@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.sopt.and.core.designsystem.component.image.ProgramImage
+import org.sopt.and.core.designsystem.component.image.PressableProgramImage
 import org.sopt.and.core.model.Program
 
 @Composable
@@ -30,6 +30,7 @@ fun ContentList(
     subTitle: String,
     modifier: Modifier = Modifier,
     list: List<Program> = emptyList(),
+    onItemPress: (Program) -> Unit = {},
     titleColor: Color = Color.White,
     subTitleColor: Color = Color.Gray
 ) {
@@ -74,10 +75,10 @@ fun ContentList(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 itemsIndexed(list) { index, program ->
-                    ProgramImage(
+                    PressableProgramImage(
                         contentDescription = program.title,
                         imgRes = program.imgFile,
-                        //modifier = Modifier.noRippleClickable { onItemClick(index) }
+                        onItemPress = { onItemPress(program) }
                     )
                 }
             }

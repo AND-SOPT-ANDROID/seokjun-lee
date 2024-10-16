@@ -1,4 +1,4 @@
-package org.sopt.and.presentation.dialog.mypage
+package org.sopt.and.core.designsystem.component.dialog
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -18,7 +18,6 @@ import org.sopt.and.core.designsystem.component.BasicPreview
 import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.extension.noRippleClickable
 import org.sopt.and.core.model.Program
-import org.sopt.and.presentation.dialog.component.BasicDialog
 import org.sopt.and.presentation.search.component.SearchItem
 
 @Composable

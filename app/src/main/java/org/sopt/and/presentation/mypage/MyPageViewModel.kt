@@ -1,5 +1,6 @@
 package org.sopt.and.presentation.mypage
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,16 +17,18 @@ import kotlinx.coroutines.launch
 import org.sopt.and.core.data.repository.StarredProgramRepository
 import org.sopt.and.core.model.Program
 import org.sopt.and.presentation.mypage.state.MyPageUiState
+import org.sopt.and.presentation.mypage.state.VisibilityUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val starredProgramRepository: StarredProgramRepository
 ) : ViewModel() {
-    private var _uiState = MutableStateFlow(MyPageUiState())
+    private var _uiState = MutableStateFlow(VisibilityUiState())
 
     private val starredState: StateFlow<List<Program>> =
-        starredProgramRepository.getStarredPrograms().map { it.map { entity -> Program(entity.programName, entity.programImage) } }
+        starredProgramRepository.getStarredPrograms()
+            .map { it.map { entity -> Program(entity.programName, entity.programImage) } }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(1000),
@@ -38,6 +41,7 @@ class MyPageViewModel @Inject constructor(
         MyPageUiState().copy(
             searchDialogVisibility = uiState.searchDialogVisibility,
             deleteDialogVisibility = uiState.deleteDialogVisibility,
+            pressedProgram = uiState.pressedProgram,
             starredProgram = starredState
         )
     }.stateIn(
@@ -57,8 +61,16 @@ class MyPageViewModel @Inject constructor(
         currentState.copy(searchDialogVisibility = visibility)
     }
 
-    fun updateDeleteDialogVisibility(visibility: Boolean) = _uiState.update { currentState ->
-        currentState.copy(deleteDialogVisibility = visibility)
+    fun updateDeleteDialogVisibility(visibility: Boolean) =
+        _uiState.update { currentState ->
+            currentState.copy(
+                deleteDialogVisibility = visibility
+            )
+        }
+    fun updatePressedProgram(program: Program) {
+        _uiState.update { currentState ->
+            currentState.copy(pressedProgram = program)
+        }
     }
 
     fun onInsertProgram(program: Program) = viewModelScope.launch {

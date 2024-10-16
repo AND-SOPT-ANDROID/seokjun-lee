@@ -1,5 +1,6 @@
 package org.sopt.and.presentation.mypage
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,14 +37,15 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import org.sopt.and.R
-import org.sopt.and.core.designsystem.component.BasicPreview
+import org.sopt.and.core.designsystem.component.dialog.ConfirmDialog
+import org.sopt.and.core.designsystem.component.dialog.SearchDialog
 import org.sopt.and.core.designsystem.theme.Grey200
 import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
+import org.sopt.and.core.model.Program
 import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
-import org.sopt.and.presentation.dialog.mypage.SearchDialog
 import org.sopt.and.presentation.mypage.component.ContentList
 import org.sopt.and.presentation.mypage.component.DoubleTextButton
 import org.sopt.and.presentation.mypage.component.ProfileTopBar
@@ -73,6 +75,12 @@ fun MyPageRoute(
             }
     }
 
+    LaunchedEffect(uiState.pressedProgram) {
+        uiState.pressedProgram?.run {
+            Log.d("Pressed", "Program Pressed $this")
+        }
+    }
+
     Box(
         modifier = modifier
     ) {
@@ -80,6 +88,13 @@ fun MyPageRoute(
             email = preference.id,
             onLogoutButtonClick = viewModel::onLogoutButtonClick,
             snackBarHost = snackBarHost,
+            onProgramPress = { program ->
+                Log.d("Pressed", "pressed $program")
+                with(viewModel) {
+                    updatePressedProgram(program)
+                    updateDeleteDialogVisibility(visibility = true)
+            }
+                },
             uiState = uiState
         )
 
@@ -90,7 +105,10 @@ fun MyPageRoute(
             shape = CircleShape,
             containerColor = Color.Blue,
             contentColor = White,
-            modifier = Modifier.wrapContentSize().align(Alignment.BottomEnd).padding(20.dp)
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.BottomEnd)
+                .padding(20.dp)
         ) {
             Icon(
                 imageVector = Icons.Outlined.Add,
@@ -106,8 +124,17 @@ fun MyPageRoute(
         )
     }
     if (uiState.deleteDialogVisibility) {
-        SearchDialog(
-            onDismissRequest = {viewModel.updateDeleteDialogVisibility(false)}
+        ConfirmDialog(
+            title = stringResource(R.string.dialog_delete_title),
+            text = "제거 ㄱ?",
+            onDismissRequest = { viewModel.updateDeleteDialogVisibility(visibility = false) },
+            onConfirm = {
+                Log.d("Pressed", "onDelete Activated ${uiState.pressedProgram}")
+                uiState.pressedProgram?.run {
+                    viewModel.onDeleteProgram(this)
+                }
+                viewModel.updateDeleteDialogVisibility(visibility = false)
+            }
         )
     }
 
@@ -119,6 +146,7 @@ private fun MyPageScreen(
     uiState: MyPageUiState,
     snackBarHost: SnackbarHostState,
     onLogoutButtonClick: () -> Unit,
+    onProgramPress: (Program) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -170,6 +198,7 @@ private fun MyPageScreen(
             ContentList(
                 title = stringResource(R.string.mypage_content_title2),
                 subTitle = stringResource(R.string.mypage_content_empty2),
+                onItemPress = onProgramPress,
                 list = uiState.starredProgram,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -204,22 +233,5 @@ private fun MyPageScreenPreview() {
             .background(Color.Black)
     ) {
         MyPageRoute()
-    }
-}
-
-@BasicPreview
-@Composable
-private fun MyPageFABPreview() {
-    FloatingActionButton(
-        onClick = {},
-        shape = CircleShape,
-        containerColor = Color.Blue,
-        contentColor = White,
-        modifier = Modifier.wrapContentSize()
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.Add,
-            contentDescription = ""
-        )
     }
 }

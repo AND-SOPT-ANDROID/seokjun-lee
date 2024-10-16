@@ -1,4 +1,4 @@
-package org.sopt.and.presentation.dialog.component
+package org.sopt.and.core.designsystem.component.dialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
