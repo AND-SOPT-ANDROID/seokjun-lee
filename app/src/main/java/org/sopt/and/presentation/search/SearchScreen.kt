@@ -27,6 +27,7 @@ import org.sopt.and.R
 import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.presentation.search.component.CategoryButton
+import org.sopt.and.presentation.search.component.SearchItem
 import org.sopt.and.presentation.search.component.SearchTabRow
 import org.sopt.and.presentation.search.component.SearchTextField
 
@@ -113,11 +114,12 @@ private fun SearchScreen(
                     Column(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(
+                        SearchItem(
                             text = item,
-                            color = White,
-                            modifier = Modifier.padding(vertical = 20.dp))
-                        HorizontalDivider(thickness = 1.dp, color = Grey500)
+                            contentDescription = item,
+                            modifier = Modifier.height(80.dp)
+                        )
+                        HorizontalDivider(thickness = 1.dp, color = Grey500, modifier = Modifier.padding(10.dp))
                     }
                 }
             }

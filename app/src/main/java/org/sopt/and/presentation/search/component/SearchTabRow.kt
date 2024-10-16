@@ -1,9 +1,6 @@
 package org.sopt.and.presentation.search.component
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
@@ -30,17 +27,17 @@ fun SearchTabRow(
     unselectedColor: Color = Grey350,
     indicatorColor: Color = Color.Blue
 ) {
+
     WavveTabRow(
         tabTitles = SearchTabType.entries.map { it.titleRes },
         selectedTabIndex = selectedTabIndex,
         indicator = { tabPositions ->
-            Log.d("tabRow", "selectedtab: $selectedTabIndex, tabPositions: ${tabPositions.size}")
             if(selectedTabIndex < tabPositions.size) {
                 TabRowDefaults.SecondaryIndicator(
                     color = indicatorColor,
                     modifier = Modifier
                         .tabIndicatorOffset(tabPositions[selectedTabIndex])
-                        .padding(horizontal = 20.dp)
+                        .padding(horizontal = 50.dp)
                 )
             }
         }
@@ -56,20 +53,7 @@ fun SearchTabRow(
                 color = if (selectedTabIndex == index) selectedColor
                 else unselectedColor,
             )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            /*
-            if (selectedTabIndex == index) {
-                HorizontalDivider(
-                    thickness = 3.dp,
-                    color = indicatorColor,
-                    modifier = Modifier.width(70.dp)
-                )
-            }*/
         }
-
-
     }
 }
 
