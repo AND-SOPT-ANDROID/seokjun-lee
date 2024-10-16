@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.R
 import org.sopt.and.core.data.repositoryimpl.DummyPopularProgramRepositoryImpl
+import org.sopt.and.core.designsystem.component.image.ProgramImage
 import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
@@ -77,13 +78,10 @@ fun ProgramRow(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             itemsIndexed(programList) { index, program ->
-                Image(
-                    painterResource(program.imgFile),
-                    contentDescription = title,
-                    modifier = Modifier
-                        .width(100.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .noRippleClickable { onItemClick(index) }
+                ProgramImage(
+                    contentDescription = program.title,
+                    imgRes = program.imgFile,
+                    modifier = Modifier.noRippleClickable { onItemClick(index) }
                 )
             }
         }
