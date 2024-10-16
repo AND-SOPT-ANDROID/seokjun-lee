@@ -19,11 +19,10 @@ fun WavveTabRow(
     indicator: @Composable (List<TabPosition>) -> Unit = {},
     content: @Composable (Int, Int) -> Unit = { _, _ -> }
 ) {
-    val scrollState = rememberScrollState()
     TabRow(
         selectedTabIndex = selectedTabIndex,
         containerColor = containerColor,
-        modifier = modifier/*.horizontalScroll(scrollState)*/,
+        modifier = modifier,
         divider = {},
         indicator = indicator
     ) {

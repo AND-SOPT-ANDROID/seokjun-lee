@@ -23,6 +23,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.designsystem.theme.White
@@ -30,36 +32,32 @@ import org.sopt.and.presentation.search.component.CategoryButton
 import org.sopt.and.presentation.search.component.SearchItem
 import org.sopt.and.presentation.search.component.SearchTabRow
 import org.sopt.and.presentation.search.component.SearchTextField
+import org.sopt.and.presentation.search.state.SearchUiState
 
 @Composable
 fun SearchRoute(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     SearchScreen(
+        uiState = uiState,
+        onTabClick = viewModel::onTabClick,
+        itemList = viewModel.getTabList(),
+        onTextFieldValueChange = viewModel::onSearchValueChange,
         modifier = modifier
     )
 }
 
 @Composable
 private fun SearchScreen(
+    uiState: SearchUiState,
+    onTabClick: (Int) -> Unit,
+    onTextFieldValueChange: (String) -> Unit,
+    itemList: List<String>,
     modifier: Modifier = Modifier
 ) {
-    var searchText by remember { mutableStateOf("") }
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
-    var itemList by remember { mutableStateOf(listOf<String>()) }
-
-    LaunchedEffect(selectedTabIndex) {
-        when (selectedTabIndex) {
-            0 -> {
-                itemList = listOf("궁금한 이야기 Y", "나는 SOLO", "무한도전", "1박2일", "지구오락실", "용감무쌍 용수정", "여왕벌 게임", "돌싱글스", "꼬리에 꼬리를 무는 그날 이야기")
-            }
-
-            1 -> {
-                itemList = listOf("국가대표", "올드보이", "기생충", "명탐정 코난", "택시운전사", "추격자", "조커", "시간을 달리는 소녀", "센과 치히로의 행방불명", "스파이더맨: 노 웨이 홈")
-            }
-        }
-    }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -70,8 +68,8 @@ private fun SearchScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             SearchTextField(
-                value = searchText,
-                onValueChange = { searchText = it },
+                value = uiState.searchText,
+                onValueChange = onTextFieldValueChange,
                 placeholder = stringResource(R.string.search_text_field_hint)
             )
 
@@ -103,8 +101,8 @@ private fun SearchScreen(
             Spacer(modifier = Modifier.height(30.dp))
 
             SearchTabRow(
-                selectedTabIndex = selectedTabIndex,
-                onTabClick = { selectedTabIndex = it }
+                selectedTabIndex = uiState.selectedTabIndex,
+                onTabClick = onTabClick
             )
 
             LazyColumn(
