@@ -5,7 +5,7 @@ import org.sopt.and.core.data.local.entity.StarredProgramEntity
 import org.sopt.and.core.model.Program
 
 interface StarredProgramRepository {
-    suspend fun getStarredPrograms(): Flow<List<StarredProgramEntity>>
+    fun getStarredPrograms(): Flow<List<StarredProgramEntity>>
     suspend fun postStarredProgram(program: Program)
     suspend fun deletedStarredProgram(program: Program)
 }

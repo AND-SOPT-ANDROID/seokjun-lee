@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import org.sopt.and.core.data.local.dao.StarredProgramDao
 import org.sopt.and.core.data.local.entity.StarredProgramEntity
 
-@Database(entities = [StarredProgramEntity::class], version = 1, exportSchema = false)
+@Database(entities = [StarredProgramEntity::class], version = 2, exportSchema = false)
 abstract class StarredProgramDatabase : RoomDatabase() {
     abstract fun starredProgramDao(): StarredProgramDao
 
@@ -18,7 +18,6 @@ abstract class StarredProgramDatabase : RoomDatabase() {
         fun getDatabase(context: Context): StarredProgramDatabase {
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, StarredProgramDatabase::class.java, "starred_program")
-                    .createFromAsset("database/starred_program.db")
                     .fallbackToDestructiveMigration()
                     .build()
                     .also { Instance = it }

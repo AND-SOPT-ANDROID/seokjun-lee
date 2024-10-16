@@ -1,10 +1,6 @@
 package org.sopt.and.presentation.mypage.state
 
-import org.sopt.and.core.model.Program
-
-data class MyPageUiState(
+data class VisibilityUiState(
     val searchDialogVisibility: Boolean = false,
     val deleteDialogVisibility: Boolean = false,
-    val starredProgram: List<Program> = emptyList()
-
 )

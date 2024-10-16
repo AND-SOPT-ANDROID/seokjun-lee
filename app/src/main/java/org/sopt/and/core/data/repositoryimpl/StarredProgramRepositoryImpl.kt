@@ -6,11 +6,12 @@ import org.sopt.and.core.data.local.entity.StarredProgramEntity
 import org.sopt.and.core.data.mapper.toStarredProgramEntity
 import org.sopt.and.core.data.repository.StarredProgramRepository
 import org.sopt.and.core.model.Program
+import javax.inject.Inject
 
-class StarredProgramRepositoryImpl(
+class StarredProgramRepositoryImpl @Inject constructor(
     private val starredProgramDatabase: StarredProgramDatabase
 ): StarredProgramRepository {
-    override suspend fun getStarredPrograms(): Flow<List<StarredProgramEntity>> = starredProgramDatabase.starredProgramDao().getAllStarredPrograms()
+    override fun getStarredPrograms(): Flow<List<StarredProgramEntity>> = starredProgramDatabase.starredProgramDao().getAllStarredPrograms()
 
     override suspend fun postStarredProgram(program: Program) {
         starredProgramDatabase.starredProgramDao().insertStarredProgram(program.toStarredProgramEntity())

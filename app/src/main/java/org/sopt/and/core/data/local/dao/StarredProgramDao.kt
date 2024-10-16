@@ -9,10 +9,10 @@ import org.sopt.and.core.data.local.entity.StarredProgramEntity
 
 @Dao
 interface StarredProgramDao {
-    @Query("SELECT * FROM starred")
-    suspend fun getAllStarredPrograms(): Flow<List<StarredProgramEntity>>
+    @Query("SELECT * FROM Starred")
+    fun getAllStarredPrograms(): Flow<List<StarredProgramEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertStarredProgram(program: StarredProgramEntity)
 
     @Query("DELETE FROM Starred WHERE program_name = :programName")

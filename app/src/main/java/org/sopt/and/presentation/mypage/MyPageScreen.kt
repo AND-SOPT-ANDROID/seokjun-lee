@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -35,6 +36,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import org.sopt.and.R
+import org.sopt.and.core.designsystem.component.BasicPreview
 import org.sopt.and.core.designsystem.theme.Grey200
 import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.designsystem.theme.WavveBackground
@@ -45,6 +47,7 @@ import org.sopt.and.presentation.dialog.mypage.SearchDialog
 import org.sopt.and.presentation.mypage.component.ContentList
 import org.sopt.and.presentation.mypage.component.DoubleTextButton
 import org.sopt.and.presentation.mypage.component.ProfileTopBar
+import org.sopt.and.presentation.mypage.state.MyPageUiState
 
 @Composable
 fun MyPageRoute(
@@ -70,11 +73,14 @@ fun MyPageRoute(
             }
     }
 
-    Box {
+    Box(
+        modifier = modifier
+    ) {
         MyPageScreen(
             email = preference.id,
             onLogoutButtonClick = viewModel::onLogoutButtonClick,
-            modifier = modifier
+            snackBarHost = snackBarHost,
+            uiState = uiState
         )
 
         FloatingActionButton(
@@ -84,28 +90,24 @@ fun MyPageRoute(
             shape = CircleShape,
             containerColor = Color.Blue,
             contentColor = White,
-            modifier = modifier
-                .align(alignment = Alignment.BottomEnd)
-                .padding(end = 20.dp, bottom = 20.dp)
+            modifier = Modifier.wrapContentSize().align(Alignment.BottomEnd).padding(20.dp)
         ) {
             Icon(
                 imageVector = Icons.Outlined.Add,
                 contentDescription = ""
             )
         }
-
-        SnackbarHost(
-            hostState = snackBarHost,
-            modifier = modifier.align(alignment = Alignment.BottomCenter)
-        )
     }
 
     if (uiState.searchDialogVisibility) {
         SearchDialog(
             onDismissRequest = { viewModel.updateSearchDialogVisibility(false) },
-            onItemSelect = { program ->
-
-            },
+            onItemSelect = viewModel::onInsertProgram,
+        )
+    }
+    if (uiState.deleteDialogVisibility) {
+        SearchDialog(
+            onDismissRequest = {viewModel.updateDeleteDialogVisibility(false)}
         )
     }
 
@@ -114,6 +116,8 @@ fun MyPageRoute(
 @Composable
 private fun MyPageScreen(
     email: String,
+    uiState: MyPageUiState,
+    snackBarHost: SnackbarHostState,
     onLogoutButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -154,6 +158,7 @@ private fun MyPageScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         ) {
+
             ContentList(
                 title = stringResource(R.string.mypage_content_title1),
                 subTitle = stringResource(R.string.mypage_content_empty1),
@@ -165,6 +170,7 @@ private fun MyPageScreen(
             ContentList(
                 title = stringResource(R.string.mypage_content_title2),
                 subTitle = stringResource(R.string.mypage_content_empty2),
+                list = uiState.starredProgram,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 10.dp)
@@ -182,6 +188,10 @@ private fun MyPageScreen(
                 .padding(vertical = 20.dp)
         )
 
+        SnackbarHost(
+            hostState = snackBarHost,
+        )
+
     }
 }
 
@@ -193,9 +203,23 @@ private fun MyPageScreenPreview() {
             .fillMaxSize()
             .background(Color.Black)
     ) {
-        MyPageScreen(
-            email = "이석준",
-            onLogoutButtonClick = {}
+        MyPageRoute()
+    }
+}
+
+@BasicPreview
+@Composable
+private fun MyPageFABPreview() {
+    FloatingActionButton(
+        onClick = {},
+        shape = CircleShape,
+        containerColor = Color.Blue,
+        contentColor = White,
+        modifier = Modifier.wrapContentSize()
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Add,
+            contentDescription = ""
         )
     }
 }
