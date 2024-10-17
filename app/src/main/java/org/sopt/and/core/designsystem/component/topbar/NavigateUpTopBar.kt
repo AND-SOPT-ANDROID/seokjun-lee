@@ -30,7 +30,7 @@ fun NavigateUpTopBar(
         title = {
             Image(
                 imageVector = ImageVector.vectorResource(id = R.drawable.wavve_logo),
-                contentDescription = stringResource(R.string.top_bar_logo)
+                contentDescription = stringResource(R.string.icon_logo_description)
             )
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(

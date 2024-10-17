@@ -30,7 +30,6 @@ fun PressableProgramImage(
         interactionSource.interactions.collect { interaction ->
             when (interaction) {
                 is PressInteraction.Press -> {
-                    //Log.d("Pressed", "Pressed")
                     pressStartTime = System.currentTimeMillis()
                     isPressing = true
                 }
@@ -53,7 +52,7 @@ fun PressableProgramImage(
                     pressStartTime = null
                 }
             }
-            delay(100L) // 반복 간격 (100ms)
+            delay(100L)
         }
     }
 

@@ -1,6 +1,7 @@
 package org.sopt.and.core.designsystem.component.textfield
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -74,19 +75,27 @@ fun SearchTextField(
 @Preview(showBackground = true)
 @Composable
 private fun SearchTextFieldPreview() {
-    SearchTextField(
-        value = "Search",
-        onValueChange = {},
-        placeholder = ""
-    )
+    Box(
+        modifier = Modifier.background(color = WavveBackground)
+    ) {
+        SearchTextField(
+            value = "Value Entered",
+            onValueChange = {},
+            placeholder = ""
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun SearchTextFieldPlaceholderPreview() {
-    SearchTextField(
-        value = "",
-        onValueChange = {},
-        placeholder = "Search"
-    )
+    Box(
+        modifier = Modifier.background(color = WavveBackground)
+    ) {
+        SearchTextField(
+            value = "",
+            onValueChange = {},
+            placeholder = "Value Not Entered"
+        )
+    }
 }
