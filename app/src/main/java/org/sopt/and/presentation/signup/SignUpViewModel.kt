@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import org.sopt.and.R
 import org.sopt.and.presentation.signup.state.SignUpUiState
 
-class SignUpViewModel: ViewModel() {
+class SignUpViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(SignUpUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -39,23 +39,25 @@ class SignUpViewModel: ViewModel() {
     }
 
     fun checkTextFields() = viewModelScope.launch {
-        val isValidEmail = isValidEmail(_uiState.value.id)
-        val isValidPassword = isValidPassword(_uiState.value.password)
+        if (_uiState.value.isButtonEnabled) {
+            val isValidEmail = isValidEmail(_uiState.value.id)
+            val isValidPassword = isValidPassword(_uiState.value.password)
 
-        when {
-            isValidEmail && isValidPassword -> {
-                with(_sideEffect) {
-                    emit(SignUpSideEffect.Toast(R.string.signup_toast_success))
-                    emit(SignUpSideEffect.NavigateUp)
+            when {
+                isValidEmail && isValidPassword -> {
+                    with(_sideEffect) {
+                        emit(SignUpSideEffect.Toast(R.string.signup_toast_success))
+                        emit(SignUpSideEffect.NavigateUp)
+                    }
                 }
+
+                !isValidEmail -> _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_email))
+                else -> _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_password))
             }
-            !isValidEmail -> _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_email))
-            else -> _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_password))
         }
     }
 
     private fun isValidEmail(email: String): Boolean = email.matches(EMAIL_REGEX.toRegex())
-
 
     private fun isValidPassword(password: String): Boolean {
         var count = 0
@@ -73,7 +75,7 @@ class SignUpViewModel: ViewModel() {
         private const val PWD_LENGTH_MAX = 20
         private const val PWD_TYPE_MIX = 3
 
-        const val EMAIL_REGEX ="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$"
+        const val EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$"
         const val UPPER_CASE_REGEX = "[A-Z]"
         const val LOWER_CASE_REGEX = "[a-z]"
         const val DIGIT_REGEX = "[0-9]"

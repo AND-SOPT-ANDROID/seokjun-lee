@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,11 +29,6 @@ fun ShowActionTextField(
     modifier: Modifier = Modifier
 ) {
     var isPasswordShown by remember { mutableStateOf(false) }
-    val visualTransformation = VisualTransformation {
-        TransformedText(
-            AnnotatedString("*".repeat(it.text.length)), OffsetMapping.Identity
-        )
-    }
 
     WavveBasicTextField(
         modifier = modifier,
@@ -40,7 +36,7 @@ fun ShowActionTextField(
         onValueChange = onValueChange,
         value = value,
         cursorBrush = SolidColor(Color.Blue),
-        visualTransformation = if (isPasswordShown) VisualTransformation.None else visualTransformation,
+        visualTransformation = if (isPasswordShown) VisualTransformation.None else PasswordVisualTransformation(),
         actionButton = {
             Text(
                 text =
