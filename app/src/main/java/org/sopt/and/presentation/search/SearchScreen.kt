@@ -112,7 +112,11 @@ private fun SearchScreen(
                             imageFile = program.imgFile,
                             modifier = Modifier.height(80.dp)
                         )
-                        HorizontalDivider(thickness = 1.dp, color = Grey500, modifier = Modifier.padding(10.dp))
+                        HorizontalDivider(
+                            thickness = 1.dp,
+                            color = Grey500,
+                            modifier = Modifier.padding(10.dp)
+                        )
                     }
                 }
             }

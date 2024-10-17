@@ -86,7 +86,10 @@ fun SignInRoute(
                         navigateToMyPage()
                     }
 
-                    SignInSideEffect.NavigateToSignUp -> navigateToSignUp()
+                    SignInSideEffect.NavigateToSignUp -> {
+                        keyboardController?.hide()
+                        navigateToSignUp()
+                    }
                 }
             }
     }
@@ -96,10 +99,7 @@ fun SignInRoute(
         snackBarHost = snackBarHost,
         onIdChange = viewModel::updateId,
         onPasswordChange = viewModel::updatePassword,
-        onLoginClick = {
-            viewModel.onLoginButtonClick(signUpId, signUpPassword)
-            keyboardController?.hide()
-        },
+        onLoginClick = { viewModel.onLoginButtonClick(signUpId, signUpPassword) },
         onSignUpClick = viewModel::onSignUpButtonClick,
         modifier = modifier
     )

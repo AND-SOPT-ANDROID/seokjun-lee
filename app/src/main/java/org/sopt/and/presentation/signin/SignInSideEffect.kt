@@ -7,4 +7,5 @@ sealed class SignInSideEffect{
     data class SnackBar(@StringRes val message: Int) : SignInSideEffect()
     data object NavigateToMyPage : SignInSideEffect()
     data object NavigateToSignUp : SignInSideEffect()
+
 }

@@ -36,7 +36,6 @@ fun HomeRoute(
         uiState = uiState,
         modifier = modifier,
         onTabClick = viewModel::updateSelectedTabIndex
-
     )
 }
 
