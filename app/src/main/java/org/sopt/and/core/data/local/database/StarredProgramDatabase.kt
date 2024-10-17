@@ -11,7 +11,7 @@ import org.sopt.and.core.data.local.entity.StarredProgramEntity
 abstract class StarredProgramDatabase : RoomDatabase() {
     abstract fun starredProgramDao(): StarredProgramDao
 
-    companion object{
+    companion object {
         @Volatile
         private var Instance: StarredProgramDatabase? = null
 

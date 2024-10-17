@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -18,8 +16,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.core.designsystem.component.BasicPreview
-import org.sopt.and.core.designsystem.theme.Grey200
-import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.WavveMain
 import org.sopt.and.core.designsystem.theme.White
 
@@ -57,19 +53,23 @@ fun RoundedCornerButton(
 @BasicPreview
 @Composable
 private fun RoundedCornerButtonPreview() {
-    Row (
+    Row(
         modifier = Modifier.fillMaxWidth()
     ) {
         RoundedCornerButton(
             text = "테스트",
             textStyle = TextStyle.Default.copy(fontSize = 16.sp, textAlign = TextAlign.Center),
-            modifier = Modifier.weight(1f).padding(10.dp),
+            modifier = Modifier
+                .weight(1f)
+                .padding(10.dp),
             onClick = {}
         )
         RoundedCornerButton(
             text = "테스트",
             textStyle = TextStyle.Default.copy(fontSize = 16.sp, textAlign = TextAlign.Center),
-            modifier = Modifier.weight(1f).padding(10.dp),
+            modifier = Modifier
+                .weight(1f)
+                .padding(10.dp),
             onClick = {}
         )
     }

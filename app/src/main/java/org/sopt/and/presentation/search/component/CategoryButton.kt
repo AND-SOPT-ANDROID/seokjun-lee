@@ -49,7 +49,8 @@ fun CategoryButton(
                 color = borderColor,
                 shape = RoundedCornerShape(30.dp)
             )
-            .padding(vertical = 12.dp).padding(start=16.dp, end = 10.dp),
+            .padding(vertical = 12.dp)
+            .padding(start = 16.dp, end = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -79,14 +80,18 @@ fun CategoryButton(
 @Composable
 private fun CategoryButtons() {
     Row(
-        modifier = Modifier.fillMaxWidth().background(WavveBackground),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(WavveBackground),
         horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         CategoryButton(
             titleRes = R.string.home_tab_new_classic,
             iconRes = R.drawable.ic_live_24,
             contentDescriptionRes = R.string.icon_banner_description,
-            modifier = Modifier.wrapContentHeight().weight(1f)
+            modifier = Modifier
+                .wrapContentHeight()
+                .weight(1f)
         )
 
 
@@ -94,7 +99,9 @@ private fun CategoryButtons() {
             titleRes = R.string.home_tab_movie,
             iconRes = R.drawable.ic_live_24,
             contentDescriptionRes = R.string.icon_banner_description,
-                    modifier = Modifier.wrapContentHeight().weight(1f)
+            modifier = Modifier
+                .wrapContentHeight()
+                .weight(1f)
         )
 
     }

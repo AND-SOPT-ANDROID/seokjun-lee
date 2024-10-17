@@ -28,7 +28,9 @@ fun SearchItem(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 10.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(

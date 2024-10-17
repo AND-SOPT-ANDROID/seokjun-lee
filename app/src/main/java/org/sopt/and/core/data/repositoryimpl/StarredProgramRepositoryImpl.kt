@@ -10,11 +10,13 @@ import javax.inject.Inject
 
 class StarredProgramRepositoryImpl @Inject constructor(
     private val starredProgramDatabase: StarredProgramDatabase
-): StarredProgramRepository {
-    override fun getStarredPrograms(): Flow<List<StarredProgramEntity>> = starredProgramDatabase.starredProgramDao().getAllStarredPrograms()
+) : StarredProgramRepository {
+    override fun getStarredPrograms(): Flow<List<StarredProgramEntity>> =
+        starredProgramDatabase.starredProgramDao().getAllStarredPrograms()
 
     override suspend fun postStarredProgram(program: Program) {
-        starredProgramDatabase.starredProgramDao().insertStarredProgram(program.toStarredProgramEntity())
+        starredProgramDatabase.starredProgramDao()
+            .insertStarredProgram(program.toStarredProgramEntity())
     }
 
     override suspend fun deletedStarredProgram(program: Program) {

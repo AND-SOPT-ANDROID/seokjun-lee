@@ -22,9 +22,9 @@ import org.sopt.and.presentation.search.component.SearchItem
 
 @Composable
 fun SearchDialog(
+    modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit = {},
     onItemSelect: (Program) -> Unit = {},
-    modifier: Modifier = Modifier,
     programList: List<Program> = DummyPopularProgramRepositoryImpl.dummyPopularSeries
 ) {
     BasicDialog(

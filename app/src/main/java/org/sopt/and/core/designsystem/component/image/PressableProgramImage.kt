@@ -28,12 +28,13 @@ fun PressableProgramImage(
 
     LaunchedEffect(interactionSource) {
         interactionSource.interactions.collect { interaction ->
-            when(interaction) {
+            when (interaction) {
                 is PressInteraction.Press -> {
                     //Log.d("Pressed", "Pressed")
                     pressStartTime = System.currentTimeMillis()
                     isPressing = true
                 }
+
                 is PressInteraction.Release, is PressInteraction.Cancel -> {
                     isPressing = false
                     pressStartTime = null
@@ -46,7 +47,7 @@ fun PressableProgramImage(
         while (isPressing) {
             pressStartTime?.let { startTime ->
                 val pressDuration = System.currentTimeMillis() - startTime
-                if(pressDuration > 500L) {
+                if (pressDuration > 500L) {
                     onItemPress()
                     isPressing = false
                     pressStartTime = null

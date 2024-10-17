@@ -33,8 +33,10 @@ fun ScrollableWavveTabRow(
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(20.dp),
-            modifier = Modifier.horizontalScroll(scrollState).padding(horizontal = 20.dp)
-        ){
+            modifier = Modifier
+                .horizontalScroll(scrollState)
+                .padding(horizontal = 20.dp)
+        ) {
             tabTitles.forEachIndexed { index, tab ->
                 content(index, tab)
             }

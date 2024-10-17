@@ -24,14 +24,17 @@ enum class AccountType(
     NAVER(
         typeName = "naver",
         iconRes = 0,
-        color = Color.Green),
+        color = Color.Green
+    ),
     FACEBOOK(
         typeName = "facebook",
         iconRes = 0,
-        color = Color.Cyan),
+        color = Color.Cyan
+    ),
     APPLE(
         typeName = "apple",
         iconRes = 0,
-        color = Color.White)
+        color = Color.White
+    )
 
 }

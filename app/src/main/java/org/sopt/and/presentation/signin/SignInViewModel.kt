@@ -34,7 +34,7 @@ class SignInViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onLoginButtonClick(id: String, password: String) = viewModelScope.launch {
-        if(isLoginPossible(id, password)) {
+        if (isLoginPossible(id, password)) {
             _sideEffect.emit(SignInSideEffect.NavigateToMyPage)
         } else {
             _sideEffect.emit(SignInSideEffect.SnackBar(R.string.signin_snackbar_fail))
@@ -48,7 +48,7 @@ class SignInViewModel @Inject constructor() : ViewModel() {
     /*id, password -> 회원가입 화면에서 가져온 아이디 비번*/
     private fun isLoginPossible(id: String, password: String): Boolean {
         val isIdCorrect = _uiState.value.id == id && id.isNotBlank()
-        val isPasswordCorrect =  _uiState.value.password == password && password.isNotBlank()
+        val isPasswordCorrect = _uiState.value.password == password && password.isNotBlank()
 
         return isIdCorrect && isPasswordCorrect
     }

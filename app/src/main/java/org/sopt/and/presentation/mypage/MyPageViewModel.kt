@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.sopt.and.core.data.repository.StarredProgramRepository
 import org.sopt.and.core.model.Program
-import org.sopt.and.presentation.mypage.state.MyPageUiState
 import org.sopt.and.presentation.mypage.state.MyPageInteractionState
+import org.sopt.and.presentation.mypage.state.MyPageUiState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,9 +62,10 @@ class MyPageViewModel @Inject constructor(
         updateDeleteDialogVisibility(false)
     }
 
-    fun updateSearchDialogVisibility(visibility: Boolean) = interactionState.update { currentState ->
-        currentState.copy(searchDialogVisibility = visibility)
-    }
+    fun updateSearchDialogVisibility(visibility: Boolean) =
+        interactionState.update { currentState ->
+            currentState.copy(searchDialogVisibility = visibility)
+        }
 
     fun updateDeleteDialogVisibility(visibility: Boolean) =
         interactionState.update { currentState ->
@@ -72,6 +73,7 @@ class MyPageViewModel @Inject constructor(
                 deleteDialogVisibility = visibility
             )
         }
+
     fun updatePressedProgram(program: Program) {
         interactionState.update { currentState ->
             currentState.copy(pressedProgram = program)
@@ -79,6 +81,8 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun onInsertProgram(program: Program) = viewModelScope.launch {
+        if (uiState.value.starredProgram.contains(program)) return@launch
+
         starredProgramRepository.postStarredProgram(program)
     }
 }

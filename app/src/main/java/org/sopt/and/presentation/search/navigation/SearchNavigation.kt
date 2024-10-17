@@ -22,4 +22,4 @@ fun NavGraphBuilder.searchScreen(
 }
 
 @Serializable
-data object Search: MainTabRoute
+data object Search : MainTabRoute

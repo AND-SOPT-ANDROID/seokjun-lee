@@ -87,7 +87,7 @@ private fun SignUpScreen(
     ) {
         CancelTopBar(
             title = stringResource(R.string.signup_top_bar_title),
-            onBackClick = {  }
+            onBackClick = { }
         )
 
         Spacer(modifier = Modifier.height(20.dp))

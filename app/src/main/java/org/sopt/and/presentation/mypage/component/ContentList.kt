@@ -42,7 +42,8 @@ fun ContentList(
             text = title,
             color = titleColor,
             fontWeight = FontWeight.Bold,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            modifier = Modifier.padding(start = 20.dp)
         )
 
         if (list.isEmpty()) {

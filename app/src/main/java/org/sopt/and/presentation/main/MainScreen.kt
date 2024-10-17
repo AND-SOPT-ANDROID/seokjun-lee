@@ -47,10 +47,11 @@ fun MainScreen(
         )
     }
 }
+
 @Composable
 private fun getStartDestination(): Route {
     val preference = LocalPreference.current
-    return if (preference.id.isEmpty() || preference.password.isEmpty())  {
+    return if (preference.id.isEmpty() || preference.password.isEmpty()) {
         SignIn
     } else {
         Home
@@ -102,6 +103,7 @@ private fun MainNavHost(
         searchScreen(modifier = mainModifier)
         myPageScreen(
             navController = navController,
-            modifier = mainModifier)
+            modifier = mainModifier
+        )
     }
 }

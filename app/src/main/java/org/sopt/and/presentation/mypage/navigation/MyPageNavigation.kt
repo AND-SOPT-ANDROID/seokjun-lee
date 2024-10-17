@@ -27,7 +27,8 @@ fun NavGraphBuilder.myPageScreen(
                     }
                 )
             },
-            modifier = modifier)
+            modifier = modifier
+        )
     }
 }
 

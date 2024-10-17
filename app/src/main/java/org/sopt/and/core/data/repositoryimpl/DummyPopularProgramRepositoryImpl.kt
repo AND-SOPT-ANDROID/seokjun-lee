@@ -5,49 +5,28 @@ import org.sopt.and.core.data.repository.PopularProgramRepository
 import org.sopt.and.core.model.Program
 import javax.inject.Inject
 
-class DummyPopularProgramRepositoryImpl @Inject constructor()
-    :PopularProgramRepository{
+class DummyPopularProgramRepositoryImpl @Inject constructor() : PopularProgramRepository {
     override fun getPopularSeries(): List<Program> = dummyPopularSeries
 
-    override fun getPopularMovies(): List<Program>  = dummyPopularMovies
+    override fun getPopularMovies(): List<Program> = dummyPopularMovies
 
     companion object {
         val dummyPopularSeries = listOf(
             Program(
-                title = "궁금한 이야기 Y",
+                title = "원피스",
                 imgFile = R.drawable.img_banner1
             ),
             Program(
-                title = "나는 SOLO",
+                title = "런닝맨",
                 imgFile = R.drawable.img_banner2
             ),
             Program(
-                title = "무한도전",
+                title = "지옥에서 온 판사",
                 imgFile = R.drawable.img_banner3
-            ),
-            Program(
-                title = "1박2일",
-                imgFile = R.drawable.img_banner4
-            ),
-            Program(
-                title = "지구오락실",
-                imgFile = R.drawable.img_banner1
-            ),
-            Program(
-                title = "용감무쌍 용수정",
-                imgFile = R.drawable.img_banner2
             ),
             Program(
                 title = "여왕벌 게임",
-                imgFile = R.drawable.img_banner3
-            ),
-            Program(
-                title = "돌싱글스",
                 imgFile = R.drawable.img_banner4
-            ),
-            Program(
-                title = "꼬리에 꼬리를 무는 그날 이야기",
-                imgFile = R.drawable.img_banner1
             )
         )
         val dummyPopularMovies = listOf(

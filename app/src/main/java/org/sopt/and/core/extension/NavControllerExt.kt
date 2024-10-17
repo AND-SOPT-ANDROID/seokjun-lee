@@ -9,8 +9,11 @@ fun NavHostController.saveIdAndPassword(id: String, password: String) {
     }
 }
 
-fun NavHostController.getId(): String = this.currentBackStackEntry?.savedStateHandle?.get<String>(ID_KEY) ?: DEFAULT_VALUE
-fun NavHostController.getPassword(): String = this.currentBackStackEntry?.savedStateHandle?.get<String>(PASSWORD_KEY) ?: DEFAULT_VALUE
+fun NavHostController.getId(): String =
+    this.currentBackStackEntry?.savedStateHandle?.get<String>(ID_KEY) ?: DEFAULT_VALUE
+
+fun NavHostController.getPassword(): String =
+    this.currentBackStackEntry?.savedStateHandle?.get<String>(PASSWORD_KEY) ?: DEFAULT_VALUE
 
 private const val ID_KEY = "id"
 private const val PASSWORD_KEY = "password"
