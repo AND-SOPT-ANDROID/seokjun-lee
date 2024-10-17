@@ -82,5 +82,8 @@
     <!--Dialog-->
     <string name="dialog_search_title">관심 프로그램 추가</string>
     <string name="dialog_delete_title">관심 프로그램 제거</string>
+    <string name="dialog_delete_confirm">확인</string>
+    <string name="dialog_delete_cancel">취소</string>
+    <string name="dialog_delete_content">%s을(를) 관심 프로그램에서 제거하시겠습니까?</string>
 
 </resources>

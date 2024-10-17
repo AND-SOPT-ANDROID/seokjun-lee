@@ -1,6 +1,5 @@
 package org.sopt.and.presentation.mypage
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,15 +16,14 @@ import kotlinx.coroutines.launch
 import org.sopt.and.core.data.repository.StarredProgramRepository
 import org.sopt.and.core.model.Program
 import org.sopt.and.presentation.mypage.state.MyPageUiState
-import org.sopt.and.presentation.mypage.state.VisibilityUiState
+import org.sopt.and.presentation.mypage.state.MyPageInteractionState
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val starredProgramRepository: StarredProgramRepository
 ) : ViewModel() {
-    private var _uiState = MutableStateFlow(VisibilityUiState())
-
+    private var interactionState = MutableStateFlow(MyPageInteractionState())
     private val starredState: StateFlow<List<Program>> =
         starredProgramRepository.getStarredPrograms()
             .map { it.map { entity -> Program(entity.programName, entity.programImage) } }
@@ -36,7 +34,7 @@ class MyPageViewModel @Inject constructor(
             )
 
     val uiState: StateFlow<MyPageUiState> = combine(
-        _uiState, starredState
+        interactionState, starredState
     ) { uiState, starredState ->
         MyPageUiState().copy(
             searchDialogVisibility = uiState.searchDialogVisibility,
@@ -57,18 +55,25 @@ class MyPageViewModel @Inject constructor(
         _sideEffect.emit(MyPageSideEffect.OnLogout)
     }
 
-    fun updateSearchDialogVisibility(visibility: Boolean) = _uiState.update { currentState ->
+    fun onConfirmDelete() = viewModelScope.launch {
+        interactionState.value.pressedProgram?.run {
+            starredProgramRepository.deletedStarredProgram(this)
+        }
+        updateDeleteDialogVisibility(false)
+    }
+
+    fun updateSearchDialogVisibility(visibility: Boolean) = interactionState.update { currentState ->
         currentState.copy(searchDialogVisibility = visibility)
     }
 
     fun updateDeleteDialogVisibility(visibility: Boolean) =
-        _uiState.update { currentState ->
+        interactionState.update { currentState ->
             currentState.copy(
                 deleteDialogVisibility = visibility
             )
         }
     fun updatePressedProgram(program: Program) {
-        _uiState.update { currentState ->
+        interactionState.update { currentState ->
             currentState.copy(pressedProgram = program)
         }
     }
@@ -76,10 +81,4 @@ class MyPageViewModel @Inject constructor(
     fun onInsertProgram(program: Program) = viewModelScope.launch {
         starredProgramRepository.postStarredProgram(program)
     }
-
-    fun onDeleteProgram(program: Program) = viewModelScope.launch {
-        starredProgramRepository.deletedStarredProgram(program)
-    }
-
-
 }

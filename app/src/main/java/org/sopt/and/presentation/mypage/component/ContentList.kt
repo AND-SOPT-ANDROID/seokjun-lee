@@ -74,7 +74,10 @@ fun ContentList(
                 contentPadding = PaddingValues(horizontal = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                itemsIndexed(list) { index, program ->
+                itemsIndexed(
+                    items = list,
+                    key = { index, _ -> index }
+                ) { _, program ->
                     PressableProgramImage(
                         contentDescription = program.title,
                         imgRes = program.imgFile,

@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import org.sopt.and.R
 
 @Composable
 fun DoubleTextButton(
@@ -33,7 +35,7 @@ fun DoubleTextButton(
             )
             Icon(
                 imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-                contentDescription = "next",
+                contentDescription = stringResource(R.string.icon_next_description),
                 tint = Color.White
             )
         }

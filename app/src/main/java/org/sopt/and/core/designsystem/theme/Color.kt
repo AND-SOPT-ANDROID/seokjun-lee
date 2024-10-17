@@ -23,4 +23,5 @@ val Black = Color(0xFF171717)
 
 //Theme
 val WavveBackground = Color(0xFF1B1B1B)
+val WavveMain = Color(0xFF0050FF)
 

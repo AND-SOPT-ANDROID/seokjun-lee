@@ -75,33 +75,133 @@ fun MyPageRoute(
             }
     }
 
-    LaunchedEffect(uiState.pressedProgram) {
-        uiState.pressedProgram?.run {
-            Log.d("Pressed", "Program Pressed $this")
-        }
-    }
-
     Box(
         modifier = modifier
     ) {
         MyPageScreen(
             email = preference.id,
-            onLogoutButtonClick = viewModel::onLogoutButtonClick,
             snackBarHost = snackBarHost,
+            onLogoutButtonClick = viewModel::onLogoutButtonClick,
             onProgramPress = { program ->
-                Log.d("Pressed", "pressed $program")
                 with(viewModel) {
                     updatePressedProgram(program)
                     updateDeleteDialogVisibility(visibility = true)
-            }
-                },
+                }
+            },
+            onFABClick = { viewModel.updateSearchDialogVisibility(true) },
             uiState = uiState
         )
 
+
+    }
+
+    if (uiState.searchDialogVisibility) {
+        SearchDialog(
+            onDismissRequest = { viewModel.updateSearchDialogVisibility(false) },
+            onItemSelect = viewModel::onInsertProgram,
+        )
+    }
+    if (uiState.deleteDialogVisibility) {
+        ConfirmDialog(
+            title = stringResource(R.string.dialog_delete_title),
+            text = stringResource(
+                R.string.dialog_delete_content,
+                uiState.pressedProgram?.title.orEmpty()
+            ),
+            onDismissRequest = { viewModel.updateDeleteDialogVisibility(visibility = false) },
+            onConfirm = viewModel::onConfirmDelete
+        )
+    }
+
+}
+
+@Composable
+private fun MyPageScreen(
+    email: String,
+    uiState: MyPageUiState,
+    snackBarHost: SnackbarHostState,
+    onLogoutButtonClick: () -> Unit,
+    onProgramPress: (Program) -> Unit,
+    onFABClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val scrollState = rememberScrollState()
+
+    Box(
+        modifier = modifier
+    ) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .background(WavveBackground)
+                .verticalScroll(scrollState)
+        ) {
+            ProfileTopBar(
+                email = email,
+                image = painterResource(R.drawable.ic_launcher_foreground),
+            )
+
+            DoubleTextButton(
+                title = stringResource(R.string.mypage_button_title_1),
+                subTitle = stringResource(R.string.mypage_button_subtitle_1),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = Grey500)
+                    .padding(top = 10.dp, bottom = 15.dp, start = 10.dp)
+            )
+
+            HorizontalDivider(thickness = 1.dp, color = Color.Black)
+
+            DoubleTextButton(
+                title = stringResource(R.string.mypage_button_title_2),
+                subTitle = stringResource(R.string.mypage_button_subtitle_2),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = Grey500)
+                    .padding(top = 10.dp, bottom = 15.dp, start = 10.dp)
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+            ) {
+
+                ContentList(
+                    title = stringResource(R.string.mypage_content_title1),
+                    subTitle = stringResource(R.string.mypage_content_empty1),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
+                )
+
+                ContentList(
+                    title = stringResource(R.string.mypage_content_title2),
+                    subTitle = stringResource(R.string.mypage_content_empty2),
+                    onItemPress = onProgramPress,
+                    list = uiState.starredProgram,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
+                )
+            }
+
+            Text(
+                text = stringResource(R.string.mypage_button_logout),
+                color = Grey200,
+                textAlign = TextAlign.Center,
+                textDecoration = TextDecoration.Underline,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .noRippleClickable(onLogoutButtonClick)
+                    .padding(vertical = 20.dp)
+            )
+
+            SnackbarHost(
+                hostState = snackBarHost,
+            )
+        }
         FloatingActionButton(
-            onClick = {
-                viewModel.updateSearchDialogVisibility(true)
-            },
+            onClick = onFABClick,
             shape = CircleShape,
             containerColor = Color.Blue,
             contentColor = White,
@@ -115,112 +215,6 @@ fun MyPageRoute(
                 contentDescription = ""
             )
         }
-    }
-
-    if (uiState.searchDialogVisibility) {
-        SearchDialog(
-            onDismissRequest = { viewModel.updateSearchDialogVisibility(false) },
-            onItemSelect = viewModel::onInsertProgram,
-        )
-    }
-    if (uiState.deleteDialogVisibility) {
-        ConfirmDialog(
-            title = stringResource(R.string.dialog_delete_title),
-            text = "제거 ㄱ?",
-            onDismissRequest = { viewModel.updateDeleteDialogVisibility(visibility = false) },
-            onConfirm = {
-                Log.d("Pressed", "onDelete Activated ${uiState.pressedProgram}")
-                uiState.pressedProgram?.run {
-                    viewModel.onDeleteProgram(this)
-                }
-                viewModel.updateDeleteDialogVisibility(visibility = false)
-            }
-        )
-    }
-
-}
-
-@Composable
-private fun MyPageScreen(
-    email: String,
-    uiState: MyPageUiState,
-    snackBarHost: SnackbarHostState,
-    onLogoutButtonClick: () -> Unit,
-    onProgramPress: (Program) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val scrollState = rememberScrollState()
-
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(WavveBackground)
-            .verticalScroll(scrollState)
-    ) {
-        ProfileTopBar(
-            email = email,
-            image = painterResource(R.drawable.ic_launcher_foreground),
-        )
-
-        DoubleTextButton(
-            title = stringResource(R.string.mypage_button_title_1),
-            subTitle = stringResource(R.string.mypage_button_subtitle_1),
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Grey500)
-                .padding(top = 10.dp, bottom = 15.dp, start = 10.dp)
-        )
-
-        HorizontalDivider(thickness = 1.dp, color = Color.Black)
-
-        DoubleTextButton(
-            title = stringResource(R.string.mypage_button_title_2),
-            subTitle = stringResource(R.string.mypage_button_subtitle_2),
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Grey500)
-                .padding(top = 10.dp, bottom = 15.dp, start = 10.dp)
-        )
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-        ) {
-
-            ContentList(
-                title = stringResource(R.string.mypage_content_title1),
-                subTitle = stringResource(R.string.mypage_content_empty1),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 10.dp)
-            )
-
-            ContentList(
-                title = stringResource(R.string.mypage_content_title2),
-                subTitle = stringResource(R.string.mypage_content_empty2),
-                onItemPress = onProgramPress,
-                list = uiState.starredProgram,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 10.dp)
-            )
-        }
-
-        Text(
-            text = stringResource(R.string.mypage_button_logout),
-            color = Grey200,
-            textAlign = TextAlign.Center,
-            textDecoration = TextDecoration.Underline,
-            modifier = Modifier
-                .fillMaxWidth()
-                .noRippleClickable(onLogoutButtonClick)
-                .padding(vertical = 20.dp)
-        )
-
-        SnackbarHost(
-            hostState = snackBarHost,
-        )
-
     }
 }
 
