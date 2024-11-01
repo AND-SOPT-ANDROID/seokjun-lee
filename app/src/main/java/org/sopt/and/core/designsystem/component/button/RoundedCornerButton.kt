@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.core.designsystem.component.BasicPreview
@@ -25,6 +26,7 @@ fun RoundedCornerButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = TextStyle.Default,
+    cornerRadius: Dp = 10.dp,
     contentColor: Color = White,
     containerColor: Color = WavveMain,
     disabledContentColor: Color = Color.Transparent,
@@ -32,7 +34,7 @@ fun RoundedCornerButton(
     contentPaddingValues: PaddingValues = PaddingValues(0.dp)
 ) {
     Button(
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(cornerRadius),
         onClick = onClick,
         colors = ButtonColors(
             contentColor = contentColor,

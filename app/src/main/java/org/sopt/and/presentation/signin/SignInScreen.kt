@@ -1,31 +1,25 @@
 package org.sopt.and.presentation.signin
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,16 +30,18 @@ import androidx.lifecycle.flowWithLifecycle
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.AccountItemRow
 import org.sopt.and.core.designsystem.component.TextWithHorizontalLine
+import org.sopt.and.core.designsystem.component.button.RoundedCornerButton
+import org.sopt.and.core.designsystem.component.text.BulletAnnotedText
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
 import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
-import org.sopt.and.core.designsystem.component.topbar.NavigateUpTopBar
+import org.sopt.and.core.designsystem.component.topbar.CenterLogoTopBar
 import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.extension.noRippleClickable
 import org.sopt.and.core.extension.showWavveSnackBar
 import org.sopt.and.core.extension.toast
 import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
+import org.sopt.and.presentation.signin.component.SignInExtraServiceGroup
 import org.sopt.and.presentation.signin.state.SignInUiState
-import kotlin.text.Typography.bullet
 
 @Composable
 fun SignInRoute(
@@ -122,107 +118,60 @@ private fun SignInScreen(
             .fillMaxSize()
             .background(color = WavveBackground)
     ) {
-        NavigateUpTopBar()
+        CenterLogoTopBar()
 
-        Spacer(
-            modifier = Modifier.height(40.dp)
-        )
         WavveBasicTextField(
             hint = stringResource(R.string.signin_text_field_id_hint),
             value = uiState.id,
             onValueChange = onIdChange,
-            modifier = commonModifier,
+            modifier = commonModifier.padding(top = 40.dp),
             cursorBrush = SolidColor(Color.Blue)
         )
-
-        Spacer(modifier = Modifier.height(5.dp))
 
         ShowActionTextField(
             hint = stringResource(R.string.signin_text_field_password_hint),
             value = uiState.password,
             onValueChange = onPasswordChange,
-            modifier = commonModifier
+            modifier = commonModifier.padding(top = 5.dp)
         )
 
-        Spacer(modifier = Modifier.height(40.dp))
-
-        Box(
+        RoundedCornerButton(
+            text = stringResource(R.string.signin_button_signin),
+            onClick = onLoginClick,
+            textStyle = TextStyle(
+                fontSize = 15.sp,
+                color = Color.White
+            ),
+            cornerRadius = 30.dp,
             modifier = commonModifier
                 .fillMaxWidth()
                 .noRippleClickable(onLoginClick)
-                .background(color = Color.Blue, shape = RoundedCornerShape(30.dp))
-                .padding(vertical = 15.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.signin_button_signin),
-                fontSize = 15.sp,
-                color = Color.White
-            )
-        }
+                .padding(top = 55.dp, bottom = 15.dp),
+        )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
+        SignInExtraServiceGroup(
+            onSignUpClick = onSignUpClick,
             modifier = commonModifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
-        ) {
-            Text(
-                text = stringResource(R.string.signin_button_find_id),
-                fontSize = 11.sp,
-                color = Color.Gray
-            )
-
-            Text(
-                text = stringResource(R.string.signin_button_divider),
-                fontSize = 12.sp,
-                color = Color.Gray
-            )
-            Text(
-                text = stringResource(R.string.signin_button_password_reset),
-                fontSize = 11.sp,
-                color = Color.Gray,
-            )
-
-            Text(
-                text = stringResource(R.string.signin_button_divider),
-                fontSize = 12.sp,
-                color = Color.Gray
-            )
-            Text(
-                text = stringResource(R.string.signin_button_signup),
-                fontSize = 11.sp,
-                color = Color.Gray,
-                modifier = Modifier.noRippleClickable(onSignUpClick)
-            )
-        }
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+        )
 
         TextWithHorizontalLine(
             modifier = commonModifier
                 .fillMaxWidth()
-                .padding(top = 40.dp, bottom = 20.dp),
+                .padding(top = 40.dp),
             text = stringResource(R.string.signin_divider)
         )
 
-        AccountItemRow(modifier = commonModifier)
+        AccountItemRow(modifier = commonModifier.padding(top = 20.dp))
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Text(
-            text = buildAnnotatedString {
-                append(bullet)
-                append(
-                    stringResource(R.string.signin_text_sns_guide)
-                )
-            },
-            color = Color.Gray,
-            fontSize = 11.sp,
-            modifier = Modifier.padding(horizontal = 8.dp)
+        BulletAnnotedText(
+            text = stringResource(R.string.signin_text_sns_guide),
+            style = TextStyle(fontSize = 11.sp, color = Color.Gray),
+            modifier = Modifier.padding(top = 24.dp, start = 8.dp, end = 8.dp)
         )
 
         Spacer(modifier = Modifier.weight(1f))
-
         SnackbarHost(
             hostState = snackBarHost,
         )

@@ -18,7 +18,7 @@ import org.sopt.and.core.designsystem.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavigateUpTopBar(
+fun CenterLogoTopBar(
     modifier: Modifier = Modifier,
     containerColor: Color = WavveBackground,
     titleContentColor: Color = White,
@@ -45,6 +45,6 @@ fun NavigateUpTopBar(
 @Preview(showBackground = true)
 @Composable
 private fun NavigateUpTopBarPreview() {
-    NavigateUpTopBar(
+    CenterLogoTopBar(
     )
 }
