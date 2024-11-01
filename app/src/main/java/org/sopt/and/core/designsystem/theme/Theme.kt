@@ -55,7 +55,7 @@ fun ANDANDROIDTheme(
 
     val view = LocalView.current
     if (!view.isInEditMode) {
-        SideEffect{
+        SideEffect {
             val window = (view.context as Activity).window
             val controller = WindowCompat.getInsetsController(window, view)
             controller.isAppearanceLightStatusBars = false

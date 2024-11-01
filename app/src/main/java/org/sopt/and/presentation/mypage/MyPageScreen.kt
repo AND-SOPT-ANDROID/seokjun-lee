@@ -1,150 +1,216 @@
 package org.sopt.and.presentation.mypage
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import org.sopt.and.R
+import org.sopt.and.core.designsystem.component.dialog.ConfirmDialog
+import org.sopt.and.core.designsystem.component.dialog.SearchDialog
+import org.sopt.and.core.designsystem.theme.Grey200
+import org.sopt.and.core.designsystem.theme.Grey500
+import org.sopt.and.core.designsystem.theme.WavveBackground
+import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
+import org.sopt.and.core.model.Program
+import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
 import org.sopt.and.presentation.mypage.component.ContentList
 import org.sopt.and.presentation.mypage.component.DoubleTextButton
+import org.sopt.and.presentation.mypage.component.ProfileTopBar
+import org.sopt.and.presentation.mypage.state.MyPageUiState
 
 @Composable
 fun MyPageRoute(
     modifier: Modifier = Modifier,
-    email: String = "",
-    onLogout: () -> Unit = {}
+    onLogout: () -> Unit = {},
+    viewModel: MyPageViewModel = hiltViewModel()
 ) {
-    MyPageScreen(
-        email = email,
-        onLogoutButtonClick = onLogout,
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val snackBarHost = remember { SnackbarHostState() }
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val preference = LocalPreference.current
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is MyPageSideEffect.OnLogout -> {
+                        preference.clearIdPassword()
+                        onLogout()
+                    }
+                }
+            }
+    }
+
+    Box(
         modifier = modifier
-    )
+    ) {
+        MyPageScreen(
+            email = preference.id,
+            snackBarHost = snackBarHost,
+            onLogoutButtonClick = viewModel::onLogoutButtonClick,
+            onProgramPress = { program ->
+                with(viewModel) {
+                    updatePressedProgram(program)
+                    updateDeleteDialogVisibility(visibility = true)
+                }
+            },
+            onFABClick = { viewModel.updateSearchDialogVisibility(true) },
+            uiState = uiState
+        )
+
+
+    }
+
+    if (uiState.searchDialogVisibility) {
+        SearchDialog(
+            onDismissRequest = { viewModel.updateSearchDialogVisibility(false) },
+            onItemSelect = viewModel::onInsertProgram,
+        )
+    }
+    if (uiState.deleteDialogVisibility) {
+        ConfirmDialog(
+            title = stringResource(R.string.dialog_delete_title),
+            text = stringResource(
+                R.string.dialog_delete_content,
+                uiState.pressedProgram?.title.orEmpty()
+            ),
+            onDismissRequest = { viewModel.updateDeleteDialogVisibility(visibility = false) },
+            onConfirm = viewModel::onConfirmDelete
+        )
+    }
+
 }
 
 @Composable
 private fun MyPageScreen(
     email: String,
+    uiState: MyPageUiState,
+    snackBarHost: SnackbarHostState,
     onLogoutButtonClick: () -> Unit,
+    onProgramPress: (Program) -> Unit,
+    onFABClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.fillMaxSize()
+    val scrollState = rememberScrollState()
+
+    Box(
+        modifier = modifier
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Color.DarkGray)
-                .padding(vertical = 20.dp, horizontal = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .background(WavveBackground)
+                .verticalScroll(scrollState)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
-                contentDescription = null,
+            ProfileTopBar(
+                email = email,
+                image = painterResource(R.drawable.ic_launcher_foreground),
+            )
+
+            DoubleTextButton(
+                title = stringResource(R.string.mypage_button_title_1),
+                subTitle = stringResource(R.string.mypage_button_subtitle_1),
                 modifier = Modifier
-                    .clip(CircleShape)
-                    .size(64.dp)
-
-            )
-            Spacer(Modifier.width(10.dp))
-
-            Text(
-                text = email,
-                color = Color.White
+                    .fillMaxWidth()
+                    .background(color = Grey500)
+                    .padding(top = 10.dp, bottom = 15.dp, start = 10.dp)
             )
 
-            Spacer(Modifier.weight(1f))
+            HorizontalDivider(thickness = 1.dp, color = Color.Black)
 
-            Icon(
-                imageVector = Icons.Outlined.Notifications,
-                contentDescription = stringResource(R.string.mypage_description_notification),
-                tint = Color.White
+            DoubleTextButton(
+                title = stringResource(R.string.mypage_button_title_2),
+                subTitle = stringResource(R.string.mypage_button_subtitle_2),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = Grey500)
+                    .padding(top = 10.dp, bottom = 15.dp, start = 10.dp)
             )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
 
-            Spacer(Modifier.width(20.dp))
-
-            Icon(
-                imageVector = Icons.Outlined.Settings,
-                contentDescription = stringResource(R.string.mypage_description_setting),
-                tint = Color.White
-            )
-        }
-
-        DoubleTextButton(
-            title = stringResource(R.string.mypage_button_title_1),
-            subTitle = stringResource(R.string.mypage_button_subtitle_1),
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Color.DarkGray)
-                .noRippleClickable { }
-                .padding(top = 10.dp, bottom = 15.dp, start = 10.dp)
-        )
-
-        HorizontalDivider(thickness = 1.dp, color = Color.Black)
-
-        DoubleTextButton(
-            title = stringResource(R.string.mypage_button_title_2),
-            subTitle = stringResource(R.string.mypage_button_subtitle_2),
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Color.DarkGray)
-                .padding(top = 10.dp, bottom = 15.dp, start = 10.dp)
-        )
-
-        ContentList(
-            title = stringResource(R.string.mypage_content_title1),
-            subTitle = stringResource(R.string.mypage_content_empty1),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        )
-
-        ContentList(
-            title = stringResource(R.string.mypage_content_title2),
-            subTitle = stringResource(R.string.mypage_content_empty2),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = Color.DarkGray
+                ContentList(
+                    title = stringResource(R.string.mypage_content_title1),
+                    subTitle = stringResource(R.string.mypage_content_empty1),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
                 )
-                .noRippleClickable(onLogoutButtonClick)
-                .padding(vertical = 20.dp),
-            contentAlignment = Alignment.Center
-        ) {
+
+                ContentList(
+                    title = stringResource(R.string.mypage_content_title2),
+                    subTitle = stringResource(R.string.mypage_content_empty2),
+                    onItemPress = onProgramPress,
+                    list = uiState.starredProgram,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
+                )
+            }
+
             Text(
                 text = stringResource(R.string.mypage_button_logout),
-                color = Color.White
+                color = Grey200,
+                textAlign = TextAlign.Center,
+                textDecoration = TextDecoration.Underline,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .noRippleClickable(onLogoutButtonClick)
+                    .padding(vertical = 20.dp)
+            )
+
+            SnackbarHost(
+                hostState = snackBarHost,
+            )
+        }
+        FloatingActionButton(
+            onClick = onFABClick,
+            shape = CircleShape,
+            containerColor = Color.Blue,
+            contentColor = White,
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.BottomEnd)
+                .padding(20.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Add,
+                contentDescription = ""
             )
         }
     }
@@ -158,9 +224,6 @@ private fun MyPageScreenPreview() {
             .fillMaxSize()
             .background(Color.Black)
     ) {
-        MyPageScreen(
-            email = "이석준",
-            onLogoutButtonClick = {}
-        )
+        MyPageRoute()
     }
 }

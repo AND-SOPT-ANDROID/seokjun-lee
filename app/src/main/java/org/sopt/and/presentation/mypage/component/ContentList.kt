@@ -1,10 +1,14 @@
 package org.sopt.and.presentation.mypage.component
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
@@ -17,13 +21,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.sopt.and.core.designsystem.component.image.PressableProgramImage
+import org.sopt.and.core.model.Program
 
 @Composable
 fun ContentList(
     title: String,
     subTitle: String,
     modifier: Modifier = Modifier,
-    list: List<String> = emptyList(),
+    list: List<Program> = emptyList(),
+    onItemPress: (Program) -> Unit = {},
     titleColor: Color = Color.White,
     subTitleColor: Color = Color.Gray
 ) {
@@ -35,7 +42,8 @@ fun ContentList(
             text = title,
             color = titleColor,
             fontWeight = FontWeight.Bold,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            modifier = Modifier.padding(start = 20.dp)
         )
 
         if (list.isEmpty()) {
@@ -58,6 +66,25 @@ fun ContentList(
                     text = subTitle,
                     color = subTitleColor
                 )
+            }
+        } else {
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp),
+                contentPadding = PaddingValues(horizontal = 24.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                itemsIndexed(
+                    items = list,
+                    key = { index, _ -> index }
+                ) { _, program ->
+                    PressableProgramImage(
+                        contentDescription = program.title,
+                        imgRes = program.imgFile,
+                        onItemPress = { onItemPress(program) }
+                    )
+                }
             }
         }
     }

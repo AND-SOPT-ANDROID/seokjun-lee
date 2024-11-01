@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
@@ -37,36 +38,58 @@ import org.sopt.and.core.designsystem.component.AccountItemRow
 import org.sopt.and.core.designsystem.component.TextWithHorizontalLine
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
 import org.sopt.and.core.designsystem.component.textfield.WavveBasicTextField
+import org.sopt.and.core.designsystem.component.topbar.NavigateUpTopBar
+import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.extension.noRippleClickable
+import org.sopt.and.core.extension.showWavveSnackBar
+import org.sopt.and.core.extension.toast
+import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
 import org.sopt.and.presentation.signin.state.SignInUiState
 import kotlin.text.Typography.bullet
 
 @Composable
 fun SignInRoute(
+    signUpId: String,
+    signUpPassword: String,
     navigateToSignUp: () -> Unit,
-    navigateToMyPage: (String, String) -> Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
-    val snackBarHost = remember { SnackbarHostState() }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     val keyboardController = LocalSoftwareKeyboardController.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val preference = LocalPreference.current
+    val context = LocalContext.current
+
+    val snackBarHost = remember { SnackbarHostState() }
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is SignInSideEffect.Toast -> {/*TODO: 액티비티 삭제시 구현*/ }
-
-                    is SignInSideEffect.SnackBar -> {/*TODO: 액티비티 삭제시 구현*/}
-
-                    SignInSideEffect.NavigateToMyPage -> navigateToMyPage(
-                        uiState.id,
-                        uiState.password
+                    is SignInSideEffect.Toast -> context.toast(
+                        context.getString(sideEffect.message)
                     )
 
-                    SignInSideEffect.NavigateToSignUp -> navigateToSignUp()
+                    is SignInSideEffect.SnackBar -> snackBarHost.showWavveSnackBar(
+                        context = context,
+                        messageId = sideEffect.message
+                    )
+
+                    SignInSideEffect.NavigateToMyPage -> {
+                        with(preference) {
+                            id = uiState.id
+                            password = uiState.password
+                        }
+                        navigateToMyPage()
+                    }
+
+                    SignInSideEffect.NavigateToSignUp -> {
+                        keyboardController?.hide()
+                        navigateToSignUp()
+                    }
                 }
             }
     }
@@ -76,10 +99,7 @@ fun SignInRoute(
         snackBarHost = snackBarHost,
         onIdChange = viewModel::updateId,
         onPasswordChange = viewModel::updatePassword,
-        onLoginClick = {
-            viewModel.onLoginButtonClick()
-            keyboardController?.hide()
-        },
+        onLoginClick = { viewModel.onLoginButtonClick(signUpId, signUpPassword) },
         onSignUpClick = viewModel::onSignUpButtonClick,
         modifier = modifier
     )
@@ -100,11 +120,12 @@ private fun SignInScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(color = WavveBackground)
     ) {
-
+        NavigateUpTopBar()
 
         Spacer(
-            modifier = Modifier.height(20.dp)
+            modifier = Modifier.height(40.dp)
         )
         WavveBasicTextField(
             hint = stringResource(R.string.signin_text_field_id_hint),
@@ -123,7 +144,7 @@ private fun SignInScreen(
             modifier = commonModifier
         )
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         Box(
             modifier = commonModifier
@@ -175,14 +196,12 @@ private fun SignInScreen(
                 color = Color.Gray,
                 modifier = Modifier.noRippleClickable(onSignUpClick)
             )
-
-
         }
 
         TextWithHorizontalLine(
             modifier = commonModifier
                 .fillMaxWidth()
-                .padding(vertical = 40.dp),
+                .padding(top = 40.dp, bottom = 20.dp),
             text = stringResource(R.string.signin_divider)
         )
 
