@@ -19,7 +19,7 @@ import org.sopt.and.core.designsystem.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LogoTopBar(
+fun LogoActionTopBar(
     actions: List<@Composable () -> Unit>,
     modifier: Modifier = Modifier,
     backgroundColor: Color = WavveBackground,
@@ -47,7 +47,7 @@ fun LogoTopBar(
 @Preview(showBackground = true)
 @Composable
 private fun LogoTopBarPreview() {
-    LogoTopBar(
+    LogoActionTopBar(
         actions = listOf()
     )
 }

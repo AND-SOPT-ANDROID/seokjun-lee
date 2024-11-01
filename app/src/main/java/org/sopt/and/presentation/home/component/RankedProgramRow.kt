@@ -3,6 +3,7 @@ package org.sopt.and.presentation.home.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -36,7 +37,7 @@ import org.sopt.and.core.extension.noRippleClickable
 import org.sopt.and.core.model.Program
 
 @Composable
-fun ProgramRow(
+fun RankedProgramRow(
     title: String,
     modifier: Modifier = Modifier,
     programList: List<Program> = emptyList(),
@@ -76,14 +77,24 @@ fun ProgramRow(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             itemsIndexed(programList) { index, program ->
-                Image(
-                    painter = painterResource(program.imgFile),
-                    contentDescription = program.title,
-                    modifier = Modifier
-                        .noRippleClickable{ onItemClick(index) }
-                        .width(100.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                )
+                Box {
+                    Image(
+                        painter = painterResource(program.imgFile),
+                        contentDescription = program.title,
+                        modifier = Modifier
+                            .width(130.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .noRippleClickable { onItemClick(index) }
+                            .padding(bottom = 30.dp)
+                    )
+
+                    Text(
+                        text = (index + 1).toString(),
+                        modifier = Modifier.align(Alignment.BottomStart),
+                        fontSize = 50.sp,
+                        color = White
+                    )
+                }
             }
         }
     }
@@ -92,8 +103,8 @@ fun ProgramRow(
 @Preview(showBackground = true)
 @Composable
 private fun ProgramRowPreview() {
-    ProgramRow(
-        title = "남의 삶을 훔쳐보는 공인중개사",
+    RankedProgramRow(
+        title = "오늘의 TOP 20",
         programList = DummyPopularProgramRepositoryImpl.dummyPopularSeries,
         modifier = Modifier
             .background(WavveBackground)

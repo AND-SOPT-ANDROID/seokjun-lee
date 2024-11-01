@@ -18,9 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.sopt.and.R
-import org.sopt.and.core.designsystem.component.topbar.LogoTopBar
+import org.sopt.and.core.designsystem.component.topbar.LogoActionTopBar
 import org.sopt.and.core.extension.noRippleClickable
 import org.sopt.and.presentation.home.component.HomeTabRow
+import org.sopt.and.presentation.home.component.HomeTopBar
 import org.sopt.and.presentation.home.component.HorizontalBannerPager
 import org.sopt.and.presentation.home.component.ProgramRow
 import org.sopt.and.presentation.home.state.HomeUiState
@@ -51,17 +52,7 @@ private fun HomeScreen(
             .fillMaxSize(),
         contentPadding = PaddingValues(bottom = 20.dp)
     ) {
-        item {
-            LogoTopBar(
-                actions = listOf<@Composable () -> Unit> {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_live_24),
-                        contentDescription = null,
-                        modifier = Modifier.noRippleClickable { }
-                    )
-                }
-            )
-        }
+        item { HomeTopBar() }
 
         stickyHeader {
             HomeTabRow(
@@ -79,7 +70,8 @@ private fun HomeScreen(
 
         items(
             items = uiState.recommendations,
-            key = { recommendation -> recommendation.title }) { recommendation ->
+            key = { recommendation -> recommendation.title }
+        ) { recommendation ->
             Spacer(modifier = Modifier.height(20.dp))
 
             ProgramRow(
@@ -90,4 +82,6 @@ private fun HomeScreen(
         }
     }
 }
+
+
 
