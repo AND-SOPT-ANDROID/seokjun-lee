@@ -23,7 +23,8 @@ class HomeViewModel @Inject constructor(
     private fun initializeHomeState() = _uiState.update { currentState ->
         currentState.copy(
             bannerImgList = recommendationRepository.getBannerImages(),
-            recommendations = recommendationRepository.getRecommendations()
+            recommendations = recommendationRepository.getRecommendations(),
+            rankedSeries = recommendationRepository.getMostPopularSeries()
         )
     }
 
