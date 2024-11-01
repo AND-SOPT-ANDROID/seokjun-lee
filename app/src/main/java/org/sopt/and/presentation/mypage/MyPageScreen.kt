@@ -39,14 +39,13 @@ import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.dialog.ConfirmDialog
 import org.sopt.and.core.designsystem.component.dialog.SearchDialog
 import org.sopt.and.core.designsystem.theme.Grey200
-import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
 import org.sopt.and.core.model.Program
 import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
-import org.sopt.and.presentation.mypage.component.ContentList
-import org.sopt.and.presentation.mypage.component.DoubleTextButton
+import org.sopt.and.presentation.mypage.component.ProfileLogGroup
+import org.sopt.and.presentation.mypage.component.ProfilePurchaseGroup
 import org.sopt.and.presentation.mypage.component.ProfileTopBar
 import org.sopt.and.presentation.mypage.state.MyPageUiState
 
@@ -87,9 +86,25 @@ fun MyPageRoute(
                     updateDeleteDialogVisibility(visibility = true)
                 }
             },
-            onFABClick = { viewModel.updateSearchDialogVisibility(true) },
             uiState = uiState
         )
+
+
+        FloatingActionButton(
+            onClick = { viewModel.updateSearchDialogVisibility(true) },
+            shape = CircleShape,
+            containerColor = Color.Blue,
+            contentColor = White,
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.BottomEnd)
+                .padding(20.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Add,
+                contentDescription = ""
+            )
+        }
 
 
     }
@@ -121,98 +136,65 @@ private fun MyPageScreen(
     snackBarHost: SnackbarHostState,
     onLogoutButtonClick: () -> Unit,
     onProgramPress: (Program) -> Unit,
-    onFABClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
 
-    Box(
+    Column(
         modifier = modifier
+            .fillMaxSize()
+            .background(WavveBackground)
+            .verticalScroll(scrollState)
     ) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .background(WavveBackground)
-                .verticalScroll(scrollState)
-        ) {
-            ProfileTopBar(
-                email = email,
-                image = painterResource(R.drawable.ic_launcher_foreground),
-            )
+        ProfileTopBar(
+            email = email,
+            image = painterResource(R.drawable.ic_launcher_foreground),
+        )
 
-            DoubleTextButton(
-                title = stringResource(R.string.mypage_button_title_1),
-                subTitle = stringResource(R.string.mypage_button_subtitle_1),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = Grey500)
-                    .padding(top = 10.dp, bottom = 15.dp, start = 10.dp)
-            )
+        ProfilePurchaseGroup(
+            title = stringResource(R.string.mypage_button_title_1),
+            subTitle = stringResource(R.string.mypage_button_subtitle_1)
+        )
 
-            HorizontalDivider(thickness = 1.dp, color = Color.Black)
+        HorizontalDivider(thickness = 1.dp, color = Color.Black)
 
-            DoubleTextButton(
-                title = stringResource(R.string.mypage_button_title_2),
-                subTitle = stringResource(R.string.mypage_button_subtitle_2),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = Grey500)
-                    .padding(top = 10.dp, bottom = 15.dp, start = 10.dp)
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
+        ProfilePurchaseGroup(
+            title = stringResource(R.string.mypage_button_title_2),
+            subTitle = stringResource(R.string.mypage_button_subtitle_2)
+        )
 
-                ContentList(
-                    title = stringResource(R.string.mypage_content_title1),
-                    subTitle = stringResource(R.string.mypage_content_empty1),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp)
-                )
-
-                ContentList(
-                    title = stringResource(R.string.mypage_content_title2),
-                    subTitle = stringResource(R.string.mypage_content_empty2),
-                    onItemPress = onProgramPress,
-                    list = uiState.starredProgram,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp)
-                )
-            }
-
-            Text(
-                text = stringResource(R.string.mypage_button_logout),
-                color = Grey200,
-                textAlign = TextAlign.Center,
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .noRippleClickable(onLogoutButtonClick)
-                    .padding(vertical = 20.dp)
-            )
-
-            SnackbarHost(
-                hostState = snackBarHost,
-            )
-        }
-        FloatingActionButton(
-            onClick = onFABClick,
-            shape = CircleShape,
-            containerColor = Color.Blue,
-            contentColor = White,
+        ProfileLogGroup(
+            title = stringResource(R.string.mypage_content_title1),
+            subTitle = stringResource(R.string.mypage_content_empty1),
             modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.BottomEnd)
-                .padding(20.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Add,
-                contentDescription = ""
-            )
-        }
+                .fillMaxWidth()
+                .padding(vertical = 10.dp)
+        )
+
+        ProfileLogGroup(
+            title = stringResource(R.string.mypage_content_title2),
+            subTitle = stringResource(R.string.mypage_content_empty2),
+            onItemPress = onProgramPress,
+            list = uiState.starredProgram,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp)
+        )
+
+        Text(
+            text = stringResource(R.string.mypage_button_logout),
+            color = Grey200,
+            textAlign = TextAlign.Center,
+            textDecoration = TextDecoration.Underline,
+            modifier = Modifier
+                .fillMaxWidth()
+                .noRippleClickable(onLogoutButtonClick)
+                .padding(vertical = 20.dp)
+        )
+
+        SnackbarHost(
+            hostState = snackBarHost,
+        )
     }
 }
 

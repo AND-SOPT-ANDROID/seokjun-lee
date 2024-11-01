@@ -25,7 +25,7 @@ import org.sopt.and.core.designsystem.component.image.PressableProgramImage
 import org.sopt.and.core.model.Program
 
 @Composable
-fun ContentList(
+fun ProfileLogGroup(
     title: String,
     subTitle: String,
     modifier: Modifier = Modifier,
@@ -93,7 +93,7 @@ fun ContentList(
 @Preview(showBackground = false)
 @Composable
 private fun ContentListPreview() {
-    ContentList(
+    ProfileLogGroup(
         title = "전체 시청내역",
         subTitle = "시청내역이 없어요."
     )
