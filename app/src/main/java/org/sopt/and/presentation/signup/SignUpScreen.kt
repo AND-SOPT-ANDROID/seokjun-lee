@@ -73,7 +73,6 @@ private fun SignUpScreen(
     onSignUpButtonPress: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val commonModifier = Modifier.padding(horizontal = 5.dp)
 
     Column(
         modifier = modifier
@@ -85,7 +84,7 @@ private fun SignUpScreen(
         )
 
         SignUpTitle(
-            modifier = commonModifier.padding(top = 20.dp, start = 10.dp)
+            modifier = Modifier.padding(top = 20.dp, start = 15.dp, end = 5.dp)
         )
 
         WavveBasicTextField(
@@ -93,26 +92,26 @@ private fun SignUpScreen(
             onValueChange = onIdChange,
             value = uiState.id,
             cursorBrush = SolidColor(Color.Blue),
-            modifier = commonModifier.padding(top = 20.dp)
+            modifier = Modifier.padding(top = 20.dp, start = 5.dp, end = 5.dp)
         )
         Text(
             text = stringResource(R.string.signup_text_field_id_guide),
             color = Color.Gray,
             fontSize = 12.sp,
-            modifier = commonModifier
+            modifier = Modifier.padding(start = 5.dp, end = 5.dp)
         )
 
         ShowActionTextField(
             hint = stringResource(R.string.signup_text_field_pw_hint),
             value = uiState.password,
             onValueChange = onPasswordChange,
-            modifier = commonModifier.padding(top = 10.dp)
+            modifier = Modifier.padding(top = 10.dp, start = 5.dp, end = 5.dp)
         )
         Text(
             text = stringResource(R.string.signup_text_field_pw_guide),
             color = Color.Gray,
             fontSize = 12.sp,
-            modifier = commonModifier
+            modifier = Modifier.padding(start = 5.dp, end = 5.dp)
         )
 
         SocialAccountGroup(modifier = modifier.padding(top = 40.dp))

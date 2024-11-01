@@ -29,7 +29,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.SocialAccountGroup
-import org.sopt.and.core.designsystem.component.text.HorizontalLineText
 import org.sopt.and.core.designsystem.component.button.RoundedCornerButton
 import org.sopt.and.core.designsystem.component.text.BulletAnnotedText
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
@@ -58,7 +57,6 @@ fun SignInRoute(
     val lifecycleOwner = LocalLifecycleOwner.current
     val preference = LocalPreference.current
     val context = LocalContext.current
-
     val snackBarHost = remember { SnackbarHostState() }
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
@@ -111,7 +109,6 @@ private fun SignInScreen(
     snackBarHost: SnackbarHostState,
     modifier: Modifier = Modifier,
 ) {
-    val commonModifier = Modifier.padding(horizontal = 10.dp)
 
     Column(
         modifier = modifier
@@ -124,7 +121,7 @@ private fun SignInScreen(
             hint = stringResource(R.string.signin_text_field_id_hint),
             value = uiState.id,
             onValueChange = onIdChange,
-            modifier = commonModifier.padding(top = 40.dp),
+            modifier = Modifier.padding(top = 40.dp, start = 10.dp, end = 10.dp),
             cursorBrush = SolidColor(Color.Blue)
         )
 
@@ -132,7 +129,7 @@ private fun SignInScreen(
             hint = stringResource(R.string.signin_text_field_password_hint),
             value = uiState.password,
             onValueChange = onPasswordChange,
-            modifier = commonModifier.padding(top = 5.dp)
+            modifier = Modifier.padding(top = 5.dp, start = 10.dp, end = 10.dp)
         )
 
         RoundedCornerButton(
@@ -143,27 +140,21 @@ private fun SignInScreen(
                 color = Color.White
             ),
             cornerRadius = 30.dp,
-            modifier = commonModifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .noRippleClickable(onLoginClick)
-                .padding(top = 55.dp, bottom = 15.dp),
+                .padding(top = 55.dp, start = 10.dp, end = 10.dp),
         )
 
         SignInExtraServiceGroup(
             onSignUpClick = onSignUpClick,
-            modifier = commonModifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
+                .padding(top = 30.dp, start = 10.dp, end = 10.dp)
         )
 
-        HorizontalLineText(
-            modifier = commonModifier
-                .fillMaxWidth()
-                .padding(top = 40.dp),
-            text = stringResource(R.string.signin_divider)
-        )
 
-        SocialAccountGroup(modifier = commonModifier.padding(top = 20.dp))
+        SocialAccountGroup(modifier = Modifier.padding(top = 20.dp, start = 10.dp, end = 10.dp))
 
         BulletAnnotedText(
             text = stringResource(R.string.signin_text_sns_guide),
