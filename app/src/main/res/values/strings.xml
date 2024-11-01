@@ -3,7 +3,10 @@
 
     <!--SignUp-->
     <string name="signup_top_bar_title">회원가입</string>
-    <string name="signup_intro">이메일과 비밀번호만으로\nWavve를 즐길 수 있어요!</string>
+    <string name="signup_intro1">이메일과 비밀번호</string>
+    <string name="signup_intro2">만으로\n</string>
+    <string name="signup_intro3">Wavve를 즐길 수 </string>
+    <string name="signup_intro4">있어요!</string>
     <string name="signup_text_field_id_hint">wavve@example.com</string>
     <string name="signup_text_field_id_guide">로그인, 비밀번호 찾기, 알림에 사용되니 정확한 이메일을 입력해주세요</string>
     <string name="signup_text_field_pw_hint">Wavve 비밀번호 설정</string>

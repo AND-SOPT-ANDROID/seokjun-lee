@@ -28,8 +28,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import org.sopt.and.R
-import org.sopt.and.core.designsystem.component.AccountItemRow
-import org.sopt.and.core.designsystem.component.TextWithHorizontalLine
+import org.sopt.and.core.designsystem.component.SocialAccountGroup
+import org.sopt.and.core.designsystem.component.text.HorizontalLineText
 import org.sopt.and.core.designsystem.component.button.RoundedCornerButton
 import org.sopt.and.core.designsystem.component.text.BulletAnnotedText
 import org.sopt.and.core.designsystem.component.textfield.ShowActionTextField
@@ -156,14 +156,14 @@ private fun SignInScreen(
                 .padding(top = 16.dp)
         )
 
-        TextWithHorizontalLine(
+        HorizontalLineText(
             modifier = commonModifier
                 .fillMaxWidth()
                 .padding(top = 40.dp),
             text = stringResource(R.string.signin_divider)
         )
 
-        AccountItemRow(modifier = commonModifier.padding(top = 20.dp))
+        SocialAccountGroup(modifier = commonModifier.padding(top = 20.dp))
 
         BulletAnnotedText(
             text = stringResource(R.string.signin_text_sns_guide),

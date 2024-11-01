@@ -1,4 +1,4 @@
-package org.sopt.and.core.designsystem.component
+package org.sopt.and.core.designsystem.component.text
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import org.sopt.and.core.designsystem.theme.Grey300
 
 @Composable
-fun TextWithHorizontalLine(
+fun HorizontalLineText(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = Grey300
@@ -50,5 +50,5 @@ fun TextWithHorizontalLine(
 @Preview(showBackground = false)
 @Composable
 private fun TextWithHorizontalLinePreview() {
-    TextWithHorizontalLine(text = "구분선")
+    HorizontalLineText(text = "구분선")
 }
