@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.sopt.and.core.model.Program
-import org.sopt.and.data.repository.PopularProgramRepository
+import org.sopt.and.domain.repository.PopularProgramRepository
 import org.sopt.and.presentation.search.state.SearchUiState
 import javax.inject.Inject
 

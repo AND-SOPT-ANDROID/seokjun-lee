@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.sopt.and.core.model.Program
-import org.sopt.and.data.repository.StarredProgramRepository
+import org.sopt.and.domain.repository.StarredProgramRepository
 import org.sopt.and.presentation.mypage.state.MyPageInteractionState
 import org.sopt.and.presentation.mypage.state.MyPageUiState
 import javax.inject.Inject

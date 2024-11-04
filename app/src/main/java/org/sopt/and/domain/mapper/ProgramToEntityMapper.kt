@@ -1,4 +1,4 @@
-package org.sopt.and.data.mapper
+package org.sopt.and.domain.mapper
 
 import org.sopt.and.core.model.Program
 import org.sopt.and.data.local.entity.StarredProgramEntity
