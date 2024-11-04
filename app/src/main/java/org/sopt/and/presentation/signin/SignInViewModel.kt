@@ -1,5 +1,6 @@
 package org.sopt.and.presentation.signin
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,12 +10,22 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import org.sopt.and.R
+import org.sopt.and.data.dto.BaseResponse
+import org.sopt.and.data.dto.response.SignInResponseDto
+import org.sopt.and.domain.entity.User
+import org.sopt.and.domain.repository.SignInRepository
 import org.sopt.and.presentation.signin.state.SignInUiState
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor() : ViewModel() {
+class SignInViewModel @Inject constructor(
+    private val signInRepository: SignInRepository
+) : ViewModel() {
     private var _uiState = MutableStateFlow(SignInUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -33,24 +44,48 @@ class SignInViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-    fun onLoginButtonClick(id: String, password: String) = viewModelScope.launch {
-        if (isLoginPossible(id, password)) {
-            _sideEffect.emit(SignInSideEffect.NavigateToMyPage)
-        } else {
-            _sideEffect.emit(SignInSideEffect.SnackBar(R.string.signin_snackbar_fail))
+    fun onSignUpButtonClick() {
+        viewModelScope.launch {
+            _sideEffect.emit(SignInSideEffect.NavigateToSignUp)
         }
     }
 
-    fun onSignUpButtonClick() = viewModelScope.launch {
-        _sideEffect.emit(SignInSideEffect.NavigateToSignUp)
-    }
+    fun onSignInButtonClick() {
+        val user = with(_uiState.value) { User(id, password, "") }
+        signInRepository.signInUser(user)
+            .enqueue(object : Callback<BaseResponse<SignInResponseDto>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<SignInResponseDto>>,
+                    response: Response<BaseResponse<SignInResponseDto>>
+                ) {
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        body?.result?.token?.run {
+                            Log.d("success", "success $this")
+                            viewModelScope.launch {
+                                _sideEffect.emit(SignInSideEffect.NavigateToMyPage)
+                            }
+                        }
+                    } else {
+                        response.errorBody()?.run {
+                            val body = JSONObject(string())
+                            Log.d("error", body.getString("code"))
+                            viewModelScope.launch {
+                                _sideEffect.emit(SignInSideEffect.SnackBar(R.string.signin_snackbar_fail))
+                            }
+                        }
 
-    /*id, password -> 회원가입 화면에서 가져온 아이디 비번*/
-    private fun isLoginPossible(id: String, password: String): Boolean {
-        val isIdCorrect = _uiState.value.id == id && id.isNotBlank()
-        val isPasswordCorrect = _uiState.value.password == password && password.isNotBlank()
+                    }
+                }
 
-        return isIdCorrect && isPasswordCorrect
+                override fun onFailure(
+                    call: Call<BaseResponse<SignInResponseDto>>,
+                    response: Throwable
+                ) {
+                    Log.d("error", response.toString())
+                }
+
+            })
     }
 
 

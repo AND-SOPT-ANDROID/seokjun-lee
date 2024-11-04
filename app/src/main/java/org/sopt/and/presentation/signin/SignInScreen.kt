@@ -93,7 +93,7 @@ fun SignInRoute(
         snackBarHost = snackBarHost,
         onIdChange = viewModel::updateId,
         onPasswordChange = viewModel::updatePassword,
-        onLoginClick = { viewModel.onLoginButtonClick(signUpId, signUpPassword) },
+        onLoginClick = viewModel::onSignInButtonClick,
         onSignUpClick = viewModel::onSignUpButtonClick,
         modifier = modifier
     )

@@ -6,10 +6,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.sopt.and.data.repositoryimpl.DummyPopularProgramRepositoryImpl
 import org.sopt.and.data.repositoryimpl.DummyRecommendationRepositoryImpl
+import org.sopt.and.data.repositoryimpl.SignInRepositoryImpl
 import org.sopt.and.data.repositoryimpl.SignUpRepositoryImpl
 import org.sopt.and.data.repositoryimpl.StarredProgramRepositoryImpl
 import org.sopt.and.domain.repository.PopularProgramRepository
 import org.sopt.and.domain.repository.RecommendationRepository
+import org.sopt.and.domain.repository.SignInRepository
 import org.sopt.and.domain.repository.SignUpRepository
 import org.sopt.and.domain.repository.StarredProgramRepository
 import javax.inject.Singleton
@@ -41,4 +43,11 @@ abstract class RepositoryModule() {
     abstract fun bindsSignUpRepository(
         signUpRepositoryImpl: SignUpRepositoryImpl
     ): SignUpRepository
+
+
+    @Binds
+    @Singleton
+    abstract fun bindsSignInRepository(
+        signInRepositoryImpl: SignInRepositoryImpl
+    ): SignInRepository
 }
