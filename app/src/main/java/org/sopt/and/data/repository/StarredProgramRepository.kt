@@ -1,8 +1,8 @@
-package org.sopt.and.core.data.repository
+package org.sopt.and.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import org.sopt.and.core.data.local.entity.StarredProgramEntity
 import org.sopt.and.core.model.Program
+import org.sopt.and.data.local.entity.StarredProgramEntity
 
 interface StarredProgramRepository {
     fun getStarredPrograms(): Flow<List<StarredProgramEntity>>

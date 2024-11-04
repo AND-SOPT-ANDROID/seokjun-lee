@@ -1,11 +1,11 @@
-package org.sopt.and.core.data.local.database
+package org.sopt.and.data.local.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import org.sopt.and.core.data.local.dao.StarredProgramDao
-import org.sopt.and.core.data.local.entity.StarredProgramEntity
+import org.sopt.and.data.local.dao.StarredProgramDao
+import org.sopt.and.data.local.entity.StarredProgramEntity
 
 @Database(entities = [StarredProgramEntity::class], version = 2, exportSchema = false)
 abstract class StarredProgramDatabase : RoomDatabase() {

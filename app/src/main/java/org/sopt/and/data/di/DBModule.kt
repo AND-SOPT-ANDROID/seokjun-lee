@@ -1,4 +1,4 @@
-package org.sopt.and.core.data.di
+package org.sopt.and.data.di
 
 import android.content.Context
 import dagger.Module
@@ -6,7 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.sopt.and.core.data.local.database.StarredProgramDatabase
+import org.sopt.and.data.local.database.StarredProgramDatabase
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)

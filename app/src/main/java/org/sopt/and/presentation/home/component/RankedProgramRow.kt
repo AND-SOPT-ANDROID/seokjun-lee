@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import org.sopt.and.R
-import org.sopt.and.core.data.repositoryimpl.DummyPopularProgramRepositoryImpl
 import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
@@ -112,7 +111,7 @@ fun RankedProgramRow(
 private fun ProgramRowPreview() {
     RankedProgramRow(
         title = "오늘의 TOP 20",
-        programList = DummyPopularProgramRepositoryImpl.dummyPopularSeries,
+        programList = emptyList(),
         modifier = Modifier
             .background(WavveBackground)
             .wrapContentHeight()

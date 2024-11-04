@@ -1,4 +1,4 @@
-package org.sopt.and.core.data.local.entity
+package org.sopt.and.data.local.entity
 
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo

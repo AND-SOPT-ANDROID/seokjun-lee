@@ -1,7 +1,7 @@
-package org.sopt.and.core.data.mapper
+package org.sopt.and.data.mapper
 
-import org.sopt.and.core.data.local.entity.StarredProgramEntity
 import org.sopt.and.core.model.Program
+import org.sopt.and.data.local.entity.StarredProgramEntity
 
 fun Program.toStarredProgramEntity(): StarredProgramEntity = StarredProgramEntity(
     programName = this.title,

@@ -1,11 +1,11 @@
-package org.sopt.and.core.data.local.dao
+package org.sopt.and.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import org.sopt.and.core.data.local.entity.StarredProgramEntity
+import org.sopt.and.data.local.entity.StarredProgramEntity
 
 @Dao
 interface StarredProgramDao {

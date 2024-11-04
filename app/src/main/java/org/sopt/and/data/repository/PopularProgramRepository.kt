@@ -1,4 +1,4 @@
-package org.sopt.and.core.data.repository
+package org.sopt.and.data.repository
 
 import org.sopt.and.core.model.Program
 

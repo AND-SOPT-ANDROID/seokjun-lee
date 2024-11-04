@@ -1,9 +1,9 @@
-package org.sopt.and.core.data.repositoryimpl
+package org.sopt.and.data.repositoryimpl
 
 import org.sopt.and.R
-import org.sopt.and.core.data.repository.RecommendationRepository
 import org.sopt.and.core.model.HomeRecommendation
 import org.sopt.and.core.model.Program
+import org.sopt.and.data.repository.RecommendationRepository
 import javax.inject.Inject
 
 class DummyRecommendationRepositoryImpl @Inject constructor(
