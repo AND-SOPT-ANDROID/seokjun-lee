@@ -26,7 +26,7 @@ class MyPageViewModel @Inject constructor(
     private var interactionState = MutableStateFlow(MyPageInteractionState())
     private val starredState: StateFlow<List<Program>> =
         starredProgramRepository.getStarredPrograms()
-            .map { it.map { entity -> Program(entity.programName, entity.programImage) } }
+            .map { it.map { entity -> Program(title = entity.programName, imgFile = entity.programImage) } }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(1000),

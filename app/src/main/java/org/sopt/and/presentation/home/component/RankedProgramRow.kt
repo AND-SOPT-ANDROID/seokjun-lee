@@ -1,8 +1,8 @@
 package org.sopt.and.presentation.home.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -22,12 +22,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import org.sopt.and.R
 import org.sopt.and.core.data.repositoryimpl.DummyPopularProgramRepositoryImpl
 import org.sopt.and.core.designsystem.theme.WavveBackground
@@ -36,7 +39,7 @@ import org.sopt.and.core.extension.noRippleClickable
 import org.sopt.and.core.model.Program
 
 @Composable
-fun ProgramRow(
+fun RankedProgramRow(
     title: String,
     modifier: Modifier = Modifier,
     programList: List<Program> = emptyList(),
@@ -44,6 +47,7 @@ fun ProgramRow(
     onMoreClick: () -> Unit = {},
     onItemClick: (Int) -> Unit = {}
 ) {
+    val context = LocalContext.current
     Column(
         modifier = modifier
     ) {
@@ -76,14 +80,28 @@ fun ProgramRow(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             itemsIndexed(programList) { index, program ->
-                Image(
-                    painter = painterResource(program.imgFile),
-                    contentDescription = program.title,
-                    modifier = Modifier
-                        .noRippleClickable{ onItemClick(index) }
-                        .width(100.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                )
+                Box {
+                    AsyncImage(
+                        model = ImageRequest.Builder(context)
+                            .data(program.imgUrl)
+                            .build(),
+                        contentDescription = program.title,
+                        modifier = Modifier
+                            .width(130.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .noRippleClickable { onItemClick(index) }
+                            .padding(bottom = 30.dp)
+                    )
+
+                    Text(
+                        text = (index + 1).toString(),
+                        modifier = Modifier.align(Alignment.BottomStart).padding(start = 5.dp),
+                        fontSize = 50.sp,
+                        color = White,
+                        fontWeight = FontWeight.Bold,
+                        fontStyle = FontStyle.Italic
+                    )
+                }
             }
         }
     }
@@ -92,8 +110,8 @@ fun ProgramRow(
 @Preview(showBackground = true)
 @Composable
 private fun ProgramRowPreview() {
-    ProgramRow(
-        title = "남의 삶을 훔쳐보는 공인중개사",
+    RankedProgramRow(
+        title = "오늘의 TOP 20",
         programList = DummyPopularProgramRepositoryImpl.dummyPopularSeries,
         modifier = Modifier
             .background(WavveBackground)
