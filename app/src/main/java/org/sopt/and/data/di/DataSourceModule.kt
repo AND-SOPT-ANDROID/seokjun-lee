@@ -4,8 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.sopt.and.data.datasource.UserDataSource
-import org.sopt.and.data.datasourceImpl.UserDataSourceImpl
+import org.sopt.and.data.datasource.AuthDataSource
+import org.sopt.and.data.datasourceImpl.AuthDataSourceImpl
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -15,7 +15,7 @@ abstract class DataSourceModule {
     @Binds
     @Singleton
     abstract fun bindsUserDataSource(
-        userDataSourceImpl: UserDataSourceImpl
-    ): UserDataSource
+        userDataSourceImpl: AuthDataSourceImpl
+    ): AuthDataSource
 
 }
