@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
- data class  BaseSuccessResponse<T>(
+ data class  BaseResponse<T>(
     @SerialName("result")
     val result: T
 )

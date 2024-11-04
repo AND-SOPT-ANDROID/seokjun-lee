@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.sopt.and.R
-import org.sopt.and.data.dto.BaseSuccessResponse
+import org.sopt.and.data.dto.BaseResponse
 import org.sopt.and.data.dto.response.SignUpResponseDto
 import org.sopt.and.domain.entity.User
 import org.sopt.and.domain.repository.SignUpRepository
@@ -55,10 +55,10 @@ class SignUpViewModel @Inject constructor(
     fun registerUser() {
         val user = with(_uiState.value) { User(id, password, "hobby") }
         signUpRepository.registerUser(user)
-            .enqueue(object : Callback<BaseSuccessResponse<SignUpResponseDto>> {
+            .enqueue(object : Callback<BaseResponse<SignUpResponseDto>> {
                 override fun onResponse(
-                    call: Call<BaseSuccessResponse<SignUpResponseDto>>,
-                    response: Response<BaseSuccessResponse<SignUpResponseDto>>
+                    call: Call<BaseResponse<SignUpResponseDto>>,
+                    response: Response<BaseResponse<SignUpResponseDto>>
                 ) {
                     if (response.isSuccessful) {
                         val body = response.body()
@@ -79,7 +79,7 @@ class SignUpViewModel @Inject constructor(
                     }
                 }
                 override fun onFailure(
-                    call: Call<BaseSuccessResponse<SignUpResponseDto>>,
+                    call: Call<BaseResponse<SignUpResponseDto>>,
                     response: Throwable
                 ) {
                     Log.d("error", response.toString())

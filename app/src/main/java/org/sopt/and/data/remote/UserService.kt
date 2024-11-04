@@ -1,6 +1,6 @@
 package org.sopt.and.data.remote
 
-import org.sopt.and.data.dto.BaseSuccessResponse
+import org.sopt.and.data.dto.BaseResponse
 import org.sopt.and.data.dto.request.SignUpRequest
 import org.sopt.and.data.dto.response.SignUpResponseDto
 import retrofit2.Call
@@ -11,5 +11,5 @@ interface UserService {
     @POST("/user")
     fun signUp(
         @Body request: SignUpRequest
-    ): Call<BaseSuccessResponse<SignUpResponseDto>>
+    ): Call<BaseResponse<SignUpResponseDto>>
 }
