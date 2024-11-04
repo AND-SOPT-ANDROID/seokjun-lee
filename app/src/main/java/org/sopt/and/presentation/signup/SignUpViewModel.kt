@@ -1,17 +1,31 @@
 package org.sopt.and.presentation.signup
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import org.sopt.and.R
+import org.sopt.and.data.dto.BaseSuccessResponse
+import org.sopt.and.data.dto.response.SignUpResponseDto
+import org.sopt.and.domain.entity.User
+import org.sopt.and.domain.repository.SignUpRepository
 import org.sopt.and.presentation.signup.state.SignUpUiState
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import javax.inject.Inject
 
-class SignUpViewModel : ViewModel() {
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
+    private val signUpRepository: SignUpRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(SignUpUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -38,6 +52,48 @@ class SignUpViewModel : ViewModel() {
         )
     }
 
+    fun registerUser() {
+        val user = with(_uiState.value) { User(id, password, "hobby") }
+        signUpRepository.registerUser(user)
+            .enqueue(object : Callback<BaseSuccessResponse<SignUpResponseDto>> {
+                override fun onResponse(
+                    call: Call<BaseSuccessResponse<SignUpResponseDto>>,
+                    response: Response<BaseSuccessResponse<SignUpResponseDto>>
+                ) {
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        body?.result?.userNumber?.run {
+                            viewModelScope.launch {
+                                with(_sideEffect) {
+                                    emit(SignUpSideEffect.Toast(R.string.signup_toast_success))
+                                    emit(SignUpSideEffect.NavigateUp)
+                                }
+                            }
+                        }
+                    } else {
+                        response.errorBody()?.run {
+                            val body = JSONObject(string())
+                            Log.d("error", body.getString("code"))
+                        }
+
+                    }
+                }
+                override fun onFailure(
+                    call: Call<BaseSuccessResponse<SignUpResponseDto>>,
+                    response: Throwable
+                ) {
+                    Log.d("error", response.toString())
+                }
+
+            })
+    }
+
+
+
+    /**
+     * 4주차 이후로 쓸모가 없어진 코드
+     * 만든게 아까워서 전시용으로 놔둠
+     */
     fun checkTextFields() = viewModelScope.launch {
         if (_uiState.value.isButtonEnabled) {
             val isValidEmail = isValidEmail(_uiState.value.id)

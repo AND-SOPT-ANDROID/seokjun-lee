@@ -17,6 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -36,7 +37,7 @@ import org.sopt.and.presentation.signup.state.SignUpUiState
 fun SignUpRoute(
     navigateUp: (String, String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SignUpViewModel = viewModel(),
+    viewModel: SignUpViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -58,7 +59,7 @@ fun SignUpRoute(
         onIdChange = viewModel::updateId,
         onPasswordChange = viewModel::updatePassword,
         onSignUpButtonPress = {
-            if (uiState.isButtonEnabled) viewModel.checkTextFields()
+            if (uiState.isButtonEnabled) viewModel.registerUser()
         },
         onCloseClick = {}
     )

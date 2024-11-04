@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import org.sopt.and.core.model.Program
 import org.sopt.and.data.local.database.StarredProgramDatabase
 import org.sopt.and.data.local.entity.StarredProgramEntity
-import org.sopt.and.domain.mapper.toStarredProgramEntity
+import org.sopt.and.data.mapper.toStarredProgramEntity
 import org.sopt.and.domain.repository.StarredProgramRepository
 import javax.inject.Inject
 
