@@ -44,8 +44,6 @@ import org.sopt.and.presentation.signin.state.SignInUiState
 
 @Composable
 fun SignInRoute(
-    signUpId: String,
-    signUpPassword: String,
     navigateToSignUp: () -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,

@@ -25,8 +25,6 @@ fun NavGraphBuilder.signInScreen(
         SignInRoute(
             navigateToSignUp = navController::navigateToSignUp,
             navigateToHome = navController::navigateToHome,
-            signUpId = navController.getId(),
-            signUpPassword = navController.getPassword(),
             modifier = modifier
         )
     }
