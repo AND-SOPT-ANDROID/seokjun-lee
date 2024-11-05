@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.sopt.and.data.remote.AuthService
+import org.sopt.and.data.remote.UserService
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -17,5 +18,11 @@ object ServiceModule {
     fun providesAuthService(
         retrofit: Retrofit
     ): AuthService = retrofit.create(AuthService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesHomeService(
+        retrofit: Retrofit
+    ): UserService = retrofit.create(UserService::class.java)
 
 }

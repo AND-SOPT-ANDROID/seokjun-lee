@@ -11,24 +11,19 @@ class PreferenceUtil(
         PREF_NAME, Context.MODE_PRIVATE
     )
 
-    var id: String
-        get() = preference.getString(ID, DEFAULT_STRING).toString()
-        set(value) = preference.edit().putString(ID, value).apply()
+    var token: String
+        get() = preference.getString(TOKEN, DEFAULT_STRING).toString()
+        set(value) = preference.edit().putString(TOKEN, value).apply()
 
-    var password: String
-        get() = preference.getString(PASSWORD, DEFAULT_STRING).toString()
-        set(value) = preference.edit().putString(PASSWORD, value).apply()
-
-    fun clearIdPassword() {
-        id = ""
-        password = ""
+    fun clearToken() {
+        token = ""
     }
 
     companion object {
         private const val PREF_NAME = "wavve_prefs"
-        private const val ID = "ID"
-        private const val PASSWORD = "PASSWORD"
+        private const val TOKEN = "TOKEN"
         private const val DEFAULT_STRING = ""
+
 
         val LocalPreference = staticCompositionLocalOf<PreferenceUtil> {
             error("PreferenceUtil is not initialized")

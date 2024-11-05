@@ -66,18 +66,22 @@ fun MyPageRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is MyPageSideEffect.OnLogout -> {
-                        preference.clearIdPassword()
+                        preference.clearToken()
                         onLogout()
                     }
                 }
             }
     }
 
+    LaunchedEffect(true) {
+        viewModel.getMyHobby(preference.token)
+    }
+
     Box(
         modifier = modifier
     ) {
         MyPageScreen(
-            email = preference.id,
+            hobby = uiState.hobby,
             snackBarHost = snackBarHost,
             onLogoutButtonClick = viewModel::onLogoutButtonClick,
             onProgramPress = { program ->
@@ -131,7 +135,7 @@ fun MyPageRoute(
 
 @Composable
 private fun MyPageScreen(
-    email: String,
+    hobby: String,
     uiState: MyPageUiState,
     snackBarHost: SnackbarHostState,
     onLogoutButtonClick: () -> Unit,
@@ -147,7 +151,7 @@ private fun MyPageScreen(
             .verticalScroll(scrollState)
     ) {
         ProfileTopBar(
-            email = email,
+            email = hobby,
             image = painterResource(R.drawable.ic_launcher_foreground),
         )
 

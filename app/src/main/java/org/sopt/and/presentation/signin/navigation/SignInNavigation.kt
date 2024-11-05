@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 import org.sopt.and.core.extension.getId
 import org.sopt.and.core.extension.getPassword
 import org.sopt.and.core.navigation.Route
-import org.sopt.and.presentation.mypage.navigation.navigateToMyPage
+import org.sopt.and.presentation.home.navigation.navigateToHome
 import org.sopt.and.presentation.signin.SignInRoute
 import org.sopt.and.presentation.signup.navigation.navigateToSignUp
 
@@ -24,7 +24,7 @@ fun NavGraphBuilder.signInScreen(
     composable<SignIn> {
         SignInRoute(
             navigateToSignUp = navController::navigateToSignUp,
-            navigateToMyPage = navController::navigateToMyPage,
+            navigateToHome = navController::navigateToHome,
             signUpId = navController.getId(),
             signUpPassword = navController.getPassword(),
             modifier = modifier

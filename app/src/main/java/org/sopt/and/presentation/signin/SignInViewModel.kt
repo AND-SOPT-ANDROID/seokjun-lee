@@ -60,10 +60,9 @@ class SignInViewModel @Inject constructor(
                 ) {
                     if (response.isSuccessful) {
                         val body = response.body()
-                        body?.result?.token?.run {
-                            Log.d("success", "success $this")
+                        body?.result?.token?.let {
                             viewModelScope.launch {
-                                _sideEffect.emit(SignInSideEffect.NavigateToMyPage)
+                                _sideEffect.emit(SignInSideEffect.NavigateToHome(it))
                             }
                         }
                     } else {
