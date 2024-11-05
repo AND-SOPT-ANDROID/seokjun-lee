@@ -7,8 +7,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
-import org.sopt.and.core.extension.getId
-import org.sopt.and.core.extension.getPassword
 import org.sopt.and.core.navigation.Route
 import org.sopt.and.presentation.home.navigation.navigateToHome
 import org.sopt.and.presentation.signin.SignInRoute

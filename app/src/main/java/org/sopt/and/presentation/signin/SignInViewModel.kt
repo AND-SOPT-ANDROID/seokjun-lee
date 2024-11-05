@@ -1,6 +1,5 @@
 package org.sopt.and.presentation.signin
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,16 +9,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import org.sopt.and.R
-import org.sopt.and.data.dto.BaseResponse
-import org.sopt.and.data.dto.response.SignInResponseDto
 import org.sopt.and.domain.entity.User
 import org.sopt.and.domain.repository.SignInRepository
 import org.sopt.and.presentation.signin.state.SignInUiState
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,42 +43,17 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun onSignInButtonClick() {
+    fun onSignInButtonClick() = viewModelScope.launch {
         val user = with(_uiState.value) { User(id, password, "") }
-        signInRepository.signInUser(user)
-            .enqueue(object : Callback<BaseResponse<SignInResponseDto>> {
-                override fun onResponse(
-                    call: Call<BaseResponse<SignInResponseDto>>,
-                    response: Response<BaseResponse<SignInResponseDto>>
-                ) {
-                    if (response.isSuccessful) {
-                        val body = response.body()
-                        body?.result?.token?.let {
-                            viewModelScope.launch {
-                                _sideEffect.emit(SignInSideEffect.NavigateToHome(it))
-                            }
-                        }
-                    } else {
-                        response.errorBody()?.run {
-                            val body = JSONObject(string())
-                            Log.d("error", body.getString("code"))
-                            viewModelScope.launch {
-                                _sideEffect.emit(SignInSideEffect.SnackBar(R.string.signin_snackbar_fail))
-                            }
-                        }
-
-                    }
-                }
-
-                override fun onFailure(
-                    call: Call<BaseResponse<SignInResponseDto>>,
-                    response: Throwable
-                ) {
-                    Log.d("error", response.toString())
-                }
-
-            })
+        signInRepository.signInUser(user).onSuccess { response ->
+            val token = response.token
+            if(token != null) {
+                    _sideEffect.emit(SignInSideEffect.NavigateToHome(token))
+            } else {
+                _sideEffect.emit(SignInSideEffect.SnackBar(R.string.signin_snackbar_fail))
+            }
+        }.onFailure {
+            _sideEffect.emit(SignInSideEffect.SnackBar(R.string.signin_snackbar_fail))
+        }
     }
-
-
 }
