@@ -10,7 +10,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -57,9 +56,8 @@ fun SignUpRoute(
         uiState = uiState,
         onIdChange = viewModel::updateId,
         onPasswordChange = viewModel::updatePassword,
-        onSignUpButtonPress = {
-            if (uiState.isButtonEnabled) viewModel.registerUser()
-        },
+        onHobbyChange = viewModel::updateHobby,
+        onSignUpButtonPress = viewModel::registerUser,
         onCloseClick = {}
     )
 }
@@ -70,6 +68,7 @@ private fun SignUpScreen(
     onCloseClick: () -> Unit,
     onIdChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    onHobbyChange: (String) -> Unit,
     onSignUpButtonPress: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -91,7 +90,6 @@ private fun SignUpScreen(
             hint = stringResource(R.string.signup_text_field_id_hint),
             onValueChange = onIdChange,
             value = uiState.id,
-            cursorBrush = SolidColor(Color.Blue),
             modifier = Modifier.padding(top = 20.dp, start = 5.dp, end = 5.dp)
         )
         Text(
@@ -105,10 +103,23 @@ private fun SignUpScreen(
             hint = stringResource(R.string.signup_text_field_pw_hint),
             value = uiState.password,
             onValueChange = onPasswordChange,
-            modifier = Modifier.padding(top = 10.dp, start = 5.dp, end = 5.dp)
+            modifier = Modifier.padding(top = 15.dp, start = 5.dp, end = 5.dp)
         )
         Text(
             text = stringResource(R.string.signup_text_field_pw_guide),
+            color = Color.Gray,
+            fontSize = 12.sp,
+            modifier = Modifier.padding(start = 5.dp, end = 5.dp)
+        )
+
+        WavveBasicTextField(
+            hint = stringResource(R.string.signup_text_field_hobby_hint),
+            value = uiState.hobby,
+            onValueChange = onHobbyChange,
+            modifier = Modifier.padding(top = 15.dp, start = 5.dp, end = 5.dp)
+        )
+        Text(
+            text = stringResource(R.string.signup_text_field_hobby_guide),
             color = Color.Gray,
             fontSize = 12.sp,
             modifier = Modifier.padding(start = 5.dp, end = 5.dp)
@@ -138,6 +149,7 @@ fun SignUpScreenPreview() {
         onCloseClick = {},
         onIdChange = {},
         onPasswordChange = {},
+        onHobbyChange = {},
         onSignUpButtonPress = {}
     )
 }

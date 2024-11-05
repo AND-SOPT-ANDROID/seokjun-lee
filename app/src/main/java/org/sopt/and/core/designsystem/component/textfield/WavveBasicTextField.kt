@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
@@ -26,8 +27,8 @@ import androidx.compose.ui.unit.dp
 fun WavveBasicTextField(
     value: String,
     hint: String,
-    cursorBrush: Brush,
     modifier: Modifier = Modifier,
+    cursorBrush: Brush = SolidColor(Color.Blue),
     hintColor: Color = Color.LightGray,
     valueColor: Color = Color.White,
     onValueChange: (String) -> Unit = {},

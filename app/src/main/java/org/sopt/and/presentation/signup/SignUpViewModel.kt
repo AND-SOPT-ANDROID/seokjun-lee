@@ -39,25 +39,36 @@ class SignUpViewModel @Inject constructor(
         updateButtonEnabled()
     }
 
+    fun updateHobby(hobby: String) {
+        _uiState.update { currentState ->
+            currentState.copy(hobby = hobby)
+        }
+        updateButtonEnabled()
+    }
+
     private fun updateButtonEnabled() = _uiState.update { currentState ->
         currentState.copy(
-            isButtonEnabled = _uiState.value.id.isNotBlank() && _uiState.value.password.isNotBlank()
+            isButtonEnabled = _uiState.value.id.isNotBlank()
+                    && _uiState.value.password.isNotBlank()
+                    && _uiState.value.hobby.isNotBlank()
         )
     }
 
     fun registerUser() = viewModelScope.launch {
-        val user = with(_uiState.value) { User(id, password, "hobby") }
-        signUpRepository.registerUser(user)
-            .onSuccess { response ->
-                _sideEffect.emit(SignUpSideEffect.Toast(response.message))
-                if(response.id != null) {
-                    _sideEffect.emit(SignUpSideEffect.NavigateUp)
-                }
-            }.onFailure {
-                _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_unknown))
+        with(_uiState.value) {
+            if (isButtonEnabled) {
+                signUpRepository.registerUser(User(id, password, hobby))
+                    .onSuccess { response ->
+                        _sideEffect.emit(SignUpSideEffect.Toast(response.message))
+                        if (response.id != null) {
+                            _sideEffect.emit(SignUpSideEffect.NavigateUp)
+                        }
+                    }.onFailure {
+                        _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_unknown))
+                    }
             }
+        }
     }
-
 
 
     /**
