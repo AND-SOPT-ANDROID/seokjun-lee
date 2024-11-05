@@ -1,6 +1,5 @@
 package org.sopt.and.presentation.signup
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,16 +9,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import org.sopt.and.R
-import org.sopt.and.data.dto.BaseResponse
-import org.sopt.and.data.dto.response.SignUpResponseDto
 import org.sopt.and.domain.entity.User
 import org.sopt.and.domain.repository.SignUpRepository
 import org.sopt.and.presentation.signup.state.SignUpUiState
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,40 +45,17 @@ class SignUpViewModel @Inject constructor(
         )
     }
 
-    fun registerUser() {
+    fun registerUser() = viewModelScope.launch {
         val user = with(_uiState.value) { User(id, password, "hobby") }
         signUpRepository.registerUser(user)
-            .enqueue(object : Callback<BaseResponse<SignUpResponseDto>> {
-                override fun onResponse(
-                    call: Call<BaseResponse<SignUpResponseDto>>,
-                    response: Response<BaseResponse<SignUpResponseDto>>
-                ) {
-                    if (response.isSuccessful) {
-                        val body = response.body()
-                        body?.result?.userNumber?.run {
-                            viewModelScope.launch {
-                                with(_sideEffect) {
-                                    emit(SignUpSideEffect.Toast(R.string.signup_toast_success))
-                                    emit(SignUpSideEffect.NavigateUp)
-                                }
-                            }
-                        }
-                    } else {
-                        response.errorBody()?.run {
-                            val body = JSONObject(string())
-                            Log.d("error", body.getString("code"))
-                        }
-
-                    }
+            .onSuccess { response ->
+                _sideEffect.emit(SignUpSideEffect.Toast(response.message))
+                if(response.id != null) {
+                    _sideEffect.emit(SignUpSideEffect.NavigateUp)
                 }
-                override fun onFailure(
-                    call: Call<BaseResponse<SignUpResponseDto>>,
-                    response: Throwable
-                ) {
-                    Log.d("error", response.toString())
-                }
-
-            })
+            }.onFailure {
+                _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_unknown))
+            }
     }
 
 

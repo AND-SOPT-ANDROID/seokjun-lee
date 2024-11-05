@@ -1,10 +1,8 @@
 package org.sopt.and.domain.repository
 
-import org.sopt.and.data.dto.BaseResponse
-import org.sopt.and.data.dto.response.SignUpResponseDto
+import org.sopt.and.domain.entity.SignUpResponse
 import org.sopt.and.domain.entity.User
-import retrofit2.Call
 
 interface SignUpRepository {
-    fun registerUser(user: User): Call<BaseResponse<SignUpResponseDto>>
+    suspend fun registerUser(user: User): Result<SignUpResponse>
 }

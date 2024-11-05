@@ -17,6 +17,9 @@
     <string name="signup_toast_success">회원가입을 성공했습니다.</string>
     <string name="signup_toast_failure_email">이메일 형식이 올바르지 않습니다.</string>
     <string name="signup_toast_failure_password">비밀번호 형식이 올바르지 않습니다.</string>
+    <string name="signup_toast_failure_out_of_range">모든 입력은 8자 이하여야 합니다.</string>
+    <string name="signup_toast_failure_id_exist">이미 존재하는 아이디입니다.</string>
+    <string name="signup_toast_failure_unknown">회원가입에 실패하였습니다.</string>
 
     <!--SignIn-->
     <string name="signin_top_bar_title">WAVVE</string>
