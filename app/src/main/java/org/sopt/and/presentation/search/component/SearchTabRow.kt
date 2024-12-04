@@ -25,12 +25,14 @@ import org.sopt.and.core.type.SearchTabType
 fun SearchTabRow(
     selectedTabIndex: Int,
     onTabClick: (Int) -> Unit,
+    modifier: Modifier = Modifier,
     selectedColor: Color = White,
     unselectedColor: Color = Grey350,
-    indicatorColor: Color = Color.Blue
+    indicatorColor: Color = Color.Blue,
 ) {
 
     WavveTabRow(
+        modifier = modifier,
         tabTitles = SearchTabType.entries.map { it.titleRes },
         selectedTabIndex = selectedTabIndex,
         indicator = { tabPositions ->

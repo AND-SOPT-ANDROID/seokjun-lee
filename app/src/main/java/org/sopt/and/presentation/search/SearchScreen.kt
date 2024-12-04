@@ -59,20 +59,18 @@ private fun SearchScreen(
         Column(
             modifier = Modifier.padding(horizontal = 16.dp)
         ) {
-            Spacer(modifier = Modifier.height(20.dp))
-
             SearchTextField(
                 value = uiState.searchText,
                 onValueChange = onTextFieldValueChange,
-                placeholder = stringResource(R.string.search_text_field_hint)
+                placeholder = stringResource(R.string.search_text_field_hint),
+                modifier = Modifier.padding(top = 20.dp)
             )
 
             HorizontalDivider()
 
-            Spacer(modifier = Modifier.height(30.dp))
-
             Row(
                 modifier = Modifier
+                    .padding(top = 30.dp)
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -96,7 +94,8 @@ private fun SearchScreen(
 
             SearchTabRow(
                 selectedTabIndex = uiState.selectedTabIndex,
-                onTabClick = onTabClick
+                onTabClick = onTabClick,
+                modifier = Modifier.padding(top = 30.dp)
             )
 
             LazyColumn(
