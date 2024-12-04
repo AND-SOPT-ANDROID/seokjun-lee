@@ -1,8 +1,6 @@
 package org.sopt.and.domain.entity
 
-import androidx.annotation.StringRes
-
 data class SignUpResponse(
     val id: Int? = null,
-    @StringRes val message: Int
+    val message: String = "회원가입을 성공했습니다."
 )

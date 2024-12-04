@@ -16,16 +16,9 @@ class SignUpRepositoryImpl @Inject constructor(
         val response = userDataSource.postSignUp(user.toSignUpRequest())
         response.result.userNumber.run {
             SignUpResponse(
-                id = this,
-                message = R.string.signup_toast_success
+                id = this
             )
         }
     }
 
-    private fun getMessageByCode(code: String): Int =
-        when (code) {
-            "00" -> R.string.signup_toast_failure_id_exist
-            "01" -> R.string.signup_toast_failure_out_of_range
-            else -> R.string.signup_toast_failure_unknown
-        }
 }
