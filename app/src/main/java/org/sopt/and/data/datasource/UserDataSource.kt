@@ -5,5 +5,6 @@ import org.sopt.and.data.dto.response.MyHobbyResponseDto
 import retrofit2.Call
 
 interface UserDataSource {
-    fun getMyHobby(token: String): Call<BaseResponse<MyHobbyResponseDto>>
+
+    suspend fun getMyHobby(token: String): BaseResponse<MyHobbyResponseDto>
 }

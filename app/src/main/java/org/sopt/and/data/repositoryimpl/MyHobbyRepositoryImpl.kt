@@ -17,34 +17,9 @@ import kotlin.coroutines.suspendCoroutine
 class MyHobbyRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource
 ) : MyHobbyRepository {
+
     override suspend fun getMyHobby(token: String): Result<Hobby> = runCatching {
-        suspendCoroutine { continuation ->
-            userDataSource.getMyHobby(token)
-                .enqueue(object : Callback<BaseResponse<MyHobbyResponseDto>> {
-                    override fun onResponse(
-                        call: Call<BaseResponse<MyHobbyResponseDto>>,
-                        response: Response<BaseResponse<MyHobbyResponseDto>>
-                    ) {
-                        if (response.isSuccessful) {
-                            response.body()?.result?.hobby?.let {
-                                val hobby = Hobby(it)
-                                Log.d("MyHobby", it)
-                                continuation.resume(hobby)
-                            }
-                        } else {
-                            continuation.resumeWithException(Exception())
-                        }
-                    }
-
-                    override fun onFailure(
-                        call: Call<BaseResponse<MyHobbyResponseDto>>,
-                        response: Throwable
-                    ) {
-                        Log.d("MyHobby", "fail")
-                        continuation.resumeWithException(response)
-                    }
-                })
-        }
+        val response = userDataSource.getMyHobby(token)
+        Hobby(response.result.hobby)
     }
-
 }

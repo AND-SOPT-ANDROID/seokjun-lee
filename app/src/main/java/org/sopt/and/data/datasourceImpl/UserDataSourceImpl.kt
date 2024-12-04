@@ -10,6 +10,7 @@ import javax.inject.Inject
 class UserDataSourceImpl @Inject constructor(
     private val userService: UserService
 ) : UserDataSource {
-    override fun getMyHobby(token: String): Call<BaseResponse<MyHobbyResponseDto>> =
+
+    override suspend fun getMyHobby(token: String): BaseResponse<MyHobbyResponseDto> =
         userService.getMyHobby(token)
 }
