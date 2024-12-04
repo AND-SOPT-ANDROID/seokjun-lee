@@ -1,8 +1,8 @@
 package org.sopt.and.data.repositoryimpl
 
 import org.sopt.and.R
-import org.sopt.and.core.model.HomeRecommendation
-import org.sopt.and.core.model.Program
+import org.sopt.and.domain.entity.HomeRecommendation
+import org.sopt.and.domain.entity.Program
 import org.sopt.and.domain.repository.RecommendationRepository
 import javax.inject.Inject
 

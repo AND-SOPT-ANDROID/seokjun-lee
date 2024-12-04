@@ -22,7 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.textfield.SearchTextField
 import org.sopt.and.core.designsystem.theme.Grey500
-import org.sopt.and.core.model.Program
+import org.sopt.and.domain.entity.Program
 import org.sopt.and.presentation.search.component.CategoryButton
 import org.sopt.and.presentation.search.component.SearchItem
 import org.sopt.and.presentation.search.component.SearchTabRow

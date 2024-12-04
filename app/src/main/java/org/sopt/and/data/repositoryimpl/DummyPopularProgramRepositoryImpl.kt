@@ -1,7 +1,7 @@
 package org.sopt.and.data.repositoryimpl
 
 import org.sopt.and.R
-import org.sopt.and.core.model.Program
+import org.sopt.and.domain.entity.Program
 import org.sopt.and.domain.repository.PopularProgramRepository
 import javax.inject.Inject
 

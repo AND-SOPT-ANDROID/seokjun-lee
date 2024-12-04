@@ -1,6 +1,6 @@
 package org.sopt.and.domain.repository
 
-import org.sopt.and.core.model.HomeRecommendation
+import org.sopt.and.domain.entity.HomeRecommendation
 
 interface RecommendationRepository {
     fun getBannerImages(): List<Int>

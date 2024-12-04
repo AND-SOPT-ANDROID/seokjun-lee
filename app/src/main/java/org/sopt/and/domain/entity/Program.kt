@@ -1,4 +1,4 @@
-package org.sopt.and.core.model
+package org.sopt.and.domain.entity
 
 import org.sopt.and.R
 
