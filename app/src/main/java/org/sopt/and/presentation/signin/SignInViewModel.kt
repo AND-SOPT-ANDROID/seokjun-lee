@@ -9,15 +9,14 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.sopt.and.R
 import org.sopt.and.domain.entity.User
-import org.sopt.and.domain.repository.SignInRepository
+import org.sopt.and.domain.usecase.SignInUseCase
 import org.sopt.and.presentation.signin.state.SignInUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val signInRepository: SignInRepository
+    private val signInUseCase: SignInUseCase
 ) : ViewModel() {
     private var _uiState = MutableStateFlow(SignInUiState())
     val uiState = _uiState.asStateFlow()
@@ -45,15 +44,12 @@ class SignInViewModel @Inject constructor(
 
     fun onSignInButtonClick() = viewModelScope.launch {
         val user = with(_uiState.value) { User(id, password, "") }
-        signInRepository.signInUser(user).onSuccess { response ->
-            val token = response.token
-            if(token != null) {
-                    _sideEffect.emit(SignInSideEffect.NavigateToHome(token))
-            } else {
-                _sideEffect.emit(SignInSideEffect.SnackBar(R.string.signin_snackbar_fail))
+        signInUseCase.invoke(user).onSuccess { response ->
+            response.token?.run {
+                _sideEffect.emit(SignInSideEffect.NavigateToHome(this))
             }
-        }.onFailure {
-            _sideEffect.emit(SignInSideEffect.SnackBar(R.string.signin_snackbar_fail))
+        }.onFailure { throwable ->
+            _sideEffect.emit(SignInSideEffect.SnackBar(throwable.message.orEmpty()))
         }
     }
 }

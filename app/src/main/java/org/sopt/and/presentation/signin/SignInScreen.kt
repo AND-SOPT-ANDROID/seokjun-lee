@@ -67,7 +67,7 @@ fun SignInRoute(
 
                     is SignInSideEffect.SnackBar -> snackBarHost.showWavveSnackBar(
                         context = context,
-                        messageId = sideEffect.message
+                        message = sideEffect.message
                     )
 
                     is SignInSideEffect.NavigateToHome -> {

@@ -63,7 +63,7 @@ class SignUpViewModel @Inject constructor(
                             _sideEffect.emit(SignUpSideEffect.NavigateUp)
                         }
                     }.onFailure { throwable ->
-                        _sideEffect.emit(SignUpSideEffect.Toast(throwable.message?:""))
+                        _sideEffect.emit(SignUpSideEffect.Toast(throwable.message.orEmpty()))
                     }
             }
         }

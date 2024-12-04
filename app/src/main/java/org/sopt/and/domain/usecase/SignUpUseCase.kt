@@ -10,8 +10,8 @@ class SignUpUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(user: User): Result<SignUpResponse> =
         signUpRepository.registerUser(user).onFailure { throwable ->
-            val message1 = throwable.message?.split(" ")?.get(1)
-            return Result.failure(Throwable(getMessageByCode(message1)))
+            val code = throwable.message?.split(" ")?.get(1)
+            return Result.failure(Throwable(getMessageByCode(code)))
         }
 
     private fun getMessageByCode(code: String?): String =
