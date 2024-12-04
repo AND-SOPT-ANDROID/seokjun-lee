@@ -13,6 +13,7 @@ import javax.inject.Inject
 class AuthDataSourceImpl @Inject constructor(
     private val userService: AuthService
 ): AuthDataSource {
+
     override fun postSignUp(request: SignUpRequestDto): Call<BaseResponse<SignUpResponseDto>> = userService.signUp(request)
     override fun postSignIn(request: SignInRequestDto): Call<BaseResponse<SignInResponseDto>> = userService.signIn(request)
 }

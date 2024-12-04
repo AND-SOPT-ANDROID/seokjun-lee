@@ -23,8 +23,7 @@ class PreferenceUtil(
         private const val PREF_NAME = "wavve_prefs"
         private const val TOKEN = "TOKEN"
         private const val DEFAULT_STRING = ""
-
-
+        
         val LocalPreference = staticCompositionLocalOf<PreferenceUtil> {
             error("PreferenceUtil is not initialized")
         }
