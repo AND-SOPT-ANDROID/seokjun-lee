@@ -7,16 +7,21 @@
     <string name="signup_intro2">만으로\n</string>
     <string name="signup_intro3">Wavve를 즐길 수 </string>
     <string name="signup_intro4">있어요!</string>
-    <string name="signup_text_field_id_hint">wavve@example.com</string>
-    <string name="signup_text_field_id_guide">로그인, 비밀번호 찾기, 알림에 사용되니 정확한 이메일을 입력해주세요</string>
+    <string name="signup_text_field_id_hint">Wavve 아이디 설정</string>
+    <string name="signup_text_field_id_guide">로그인, 비밀번호 찾기, 알림에 사용됩니다. 8자 이내로 입력해주세요.</string>
     <string name="signup_text_field_pw_hint">Wavve 비밀번호 설정</string>
-    <string name="signup_text_field_pw_guide">비밀번호는 8~20자 이내로 영문 대소문자, 숫자, 특수문자 중 3가지 이상 혼용하여 입력해주세요.</string>
+    <string name="signup_text_field_pw_guide">비밀번호는 8자 이내로 입력해주세요.</string>
+    <string name="signup_text_field_hobby_hint">취미 (예시: 영화, 음악, 게임)</string>
+    <string name="signup_text_field_hobby_guide">취미는 8자 이내로 입력해주세요.</string>
     <string name="signup_divider">또는 다른 서비스 계정으로 가입</string>
     <string name="signup_text_sns_guide">"\tSNS계정을 간편하게 가입하여 서비스를 이용하실 수 있습니다. 기\n\t존 POOQ 계정 또는 Wavve 계정과는 연동되지 않으니 이용에 참고\n\t하세요."</string>
     <string name="signup_button_signup">Wavve 회원가입</string>
     <string name="signup_toast_success">회원가입을 성공했습니다.</string>
     <string name="signup_toast_failure_email">이메일 형식이 올바르지 않습니다.</string>
     <string name="signup_toast_failure_password">비밀번호 형식이 올바르지 않습니다.</string>
+    <string name="signup_toast_failure_out_of_range">모든 입력은 8자 이하여야 합니다.</string>
+    <string name="signup_toast_failure_id_exist">이미 존재하는 아이디입니다.</string>
+    <string name="signup_toast_failure_unknown">회원가입에 실패하였습니다.</string>
 
     <!--SignIn-->
     <string name="signin_top_bar_title">WAVVE</string>
@@ -30,6 +35,7 @@
     <string name="signin_divider">또는 다른 서비스 계정으로 로그인</string>
     <string name="signin_text_sns_guide">"\tSNS계정을 간편하게 가입하여 서비스를 이용하실 수 있습니다.\n\t기존 POOQ 계정 또는 Wavve 계정과는 연동되지 않으니 이용에 참고하세요."</string>
     <string name="signin_snackbar_fail">아이디 또는 비밀번호가 일치하지 않습니다.</string>
+    <string name="signin_snackbar_success">로그인에 성공했습니다.</string>
     <string name="signin_snackbar_cancel">닫기</string>
 
     <!--MyPage-->
@@ -43,7 +49,6 @@
     <string name="mypage_content_empty1">시청내역이 없어요.</string>
     <string name="mypage_content_title2">관심 프로그램</string>
     <string name="mypage_content_empty2">관심 프로그램이 없어요.</string>
-    <string name="mypage_snackbar_signin_success">로그인에 성공했습니다.</string>
     <string name="mypage_snackbar_cancel">닫기</string>
     <string name="mypage_button_logout">로그아웃</string>
 

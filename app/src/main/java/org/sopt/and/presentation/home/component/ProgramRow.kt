@@ -29,7 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.R
-import org.sopt.and.core.data.repositoryimpl.DummyPopularProgramRepositoryImpl
 import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
@@ -94,7 +93,7 @@ fun ProgramRow(
 private fun ProgramRowPreview() {
     ProgramRow(
         title = "남의 삶을 훔쳐보는 공인중개사",
-        programList = DummyPopularProgramRepositoryImpl.dummyPopularSeries,
+        programList = emptyList(),
         modifier = Modifier
             .background(WavveBackground)
             .wrapContentHeight()

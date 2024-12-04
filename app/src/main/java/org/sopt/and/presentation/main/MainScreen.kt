@@ -51,7 +51,7 @@ fun MainScreen(
 @Composable
 private fun getStartDestination(): Route {
     val preference = LocalPreference.current
-    return if (preference.id.isEmpty() || preference.password.isEmpty()) {
+    return if (preference.token.isEmpty()) {
         SignIn
     } else {
         Home

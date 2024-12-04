@@ -10,11 +10,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.sopt.and.R
+import org.sopt.and.domain.entity.User
+import org.sopt.and.domain.repository.SignInRepository
 import org.sopt.and.presentation.signin.state.SignInUiState
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor() : ViewModel() {
+class SignInViewModel @Inject constructor(
+    private val signInRepository: SignInRepository
+) : ViewModel() {
     private var _uiState = MutableStateFlow(SignInUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -33,25 +37,23 @@ class SignInViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-    fun onLoginButtonClick(id: String, password: String) = viewModelScope.launch {
-        if (isLoginPossible(id, password)) {
-            _sideEffect.emit(SignInSideEffect.NavigateToMyPage)
-        } else {
-            _sideEffect.emit(SignInSideEffect.SnackBar(R.string.signin_snackbar_fail))
+    fun onSignUpButtonClick() {
+        viewModelScope.launch {
+            _sideEffect.emit(SignInSideEffect.NavigateToSignUp)
         }
     }
 
-    fun onSignUpButtonClick() = viewModelScope.launch {
-        _sideEffect.emit(SignInSideEffect.NavigateToSignUp)
+    fun onSignInButtonClick() = viewModelScope.launch {
+        val user = with(_uiState.value) { User(id, password, "") }
+        signInRepository.signInUser(user).onSuccess { response ->
+            val token = response.token
+            if(token != null) {
+                    _sideEffect.emit(SignInSideEffect.NavigateToHome(token))
+            } else {
+                _sideEffect.emit(SignInSideEffect.SnackBar(R.string.signin_snackbar_fail))
+            }
+        }.onFailure {
+            _sideEffect.emit(SignInSideEffect.SnackBar(R.string.signin_snackbar_fail))
+        }
     }
-
-    /*id, password -> 회원가입 화면에서 가져온 아이디 비번*/
-    private fun isLoginPossible(id: String, password: String): Boolean {
-        val isIdCorrect = _uiState.value.id == id && id.isNotBlank()
-        val isPasswordCorrect = _uiState.value.password == password && password.isNotBlank()
-
-        return isIdCorrect && isPasswordCorrect
-    }
-
-
 }

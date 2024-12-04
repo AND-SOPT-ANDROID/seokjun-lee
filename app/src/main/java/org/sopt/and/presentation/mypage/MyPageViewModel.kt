@@ -13,15 +13,17 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.sopt.and.core.data.repository.StarredProgramRepository
 import org.sopt.and.core.model.Program
+import org.sopt.and.domain.repository.MyHobbyRepository
+import org.sopt.and.domain.repository.StarredProgramRepository
 import org.sopt.and.presentation.mypage.state.MyPageInteractionState
 import org.sopt.and.presentation.mypage.state.MyPageUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val starredProgramRepository: StarredProgramRepository
+    private val starredProgramRepository: StarredProgramRepository,
+    private val myHobbyRepository: MyHobbyRepository
 ) : ViewModel() {
     private var interactionState = MutableStateFlow(MyPageInteractionState())
     private val starredState: StateFlow<List<Program>> =
@@ -37,6 +39,7 @@ class MyPageViewModel @Inject constructor(
         interactionState, starredState
     ) { uiState, starredState ->
         MyPageUiState().copy(
+            hobby = uiState.hobby,
             searchDialogVisibility = uiState.searchDialogVisibility,
             deleteDialogVisibility = uiState.deleteDialogVisibility,
             pressedProgram = uiState.pressedProgram,
@@ -50,6 +53,15 @@ class MyPageViewModel @Inject constructor(
 
     private var _sideEffect = MutableSharedFlow<MyPageSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
+
+    fun getMyHobby(token: String) = viewModelScope.launch {
+        myHobbyRepository.getMyHobby(token)
+            .onSuccess { hobby ->
+                interactionState.update { currentState ->
+                    currentState.copy(hobby = hobby.hobby)
+                }
+            }
+    }
 
     fun onLogoutButtonClick() = viewModelScope.launch {
         _sideEffect.emit(MyPageSideEffect.OnLogout)

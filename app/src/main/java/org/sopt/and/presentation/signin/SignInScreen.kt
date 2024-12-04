@@ -44,10 +44,8 @@ import org.sopt.and.presentation.signin.state.SignInUiState
 
 @Composable
 fun SignInRoute(
-    signUpId: String,
-    signUpPassword: String,
     navigateToSignUp: () -> Unit,
-    navigateToMyPage: () -> Unit,
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
@@ -72,12 +70,11 @@ fun SignInRoute(
                         messageId = sideEffect.message
                     )
 
-                    SignInSideEffect.NavigateToMyPage -> {
+                    is SignInSideEffect.NavigateToHome -> {
                         with(preference) {
-                            id = uiState.id
-                            password = uiState.password
+                            token = sideEffect.token
                         }
-                        navigateToMyPage()
+                        navigateToHome()
                     }
 
                     SignInSideEffect.NavigateToSignUp -> {
@@ -93,7 +90,7 @@ fun SignInRoute(
         snackBarHost = snackBarHost,
         onIdChange = viewModel::updateId,
         onPasswordChange = viewModel::updatePassword,
-        onLoginClick = { viewModel.onLoginButtonClick(signUpId, signUpPassword) },
+        onLoginClick = viewModel::onSignInButtonClick,
         onSignUpClick = viewModel::onSignUpButtonClick,
         modifier = modifier
     )
