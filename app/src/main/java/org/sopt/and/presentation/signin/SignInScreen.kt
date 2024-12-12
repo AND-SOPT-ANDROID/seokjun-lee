@@ -40,7 +40,7 @@ import org.sopt.and.core.extension.showWavveSnackBar
 import org.sopt.and.core.extension.toast
 import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
 import org.sopt.and.presentation.signin.component.SignInExtraServiceGroup
-import org.sopt.and.presentation.signin.contract.SignInEvent
+import org.sopt.and.presentation.signin.contract.SignInUiEvent
 import org.sopt.and.presentation.signin.contract.SignInSideEffect
 import org.sopt.and.presentation.signin.contract.SignInUiState
 
@@ -93,16 +93,16 @@ fun SignInRoute(
         uiState = uiState,
         snackBarHost = snackBarHost,
         onIdChange = { newValue ->
-            viewModel.setEvent(SignInEvent.OnIdTextFieldChanged(newValue))
+            viewModel.setEvent(SignInUiEvent.OnIdTextFieldChanged(newValue))
         },
         onPasswordChange = { newValue ->
-            viewModel.setEvent(SignInEvent.OnPasswordTextFieldChanged(newValue))
+            viewModel.setEvent(SignInUiEvent.OnPasswordTextFieldChanged(newValue))
         },
         onLoginClick = {
-            viewModel.setEvent(SignInEvent.OnSignInButtonClicked)
+            viewModel.setEvent(SignInUiEvent.OnSignInButtonClicked)
         },
         onSignUpClick = {
-            viewModel.setEvent(SignInEvent.OnSignUpButtonClicked)
+            viewModel.setEvent(SignInUiEvent.OnSignUpButtonClicked)
         },
         modifier = modifier
     )

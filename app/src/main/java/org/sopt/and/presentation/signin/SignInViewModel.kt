@@ -6,7 +6,7 @@ import kotlinx.coroutines.launch
 import org.sopt.and.core.viewmodel.BaseViewModel
 import org.sopt.and.domain.entity.User
 import org.sopt.and.domain.usecase.SignInUseCase
-import org.sopt.and.presentation.signin.contract.SignInEvent
+import org.sopt.and.presentation.signin.contract.SignInUiEvent
 import org.sopt.and.presentation.signin.contract.SignInSideEffect
 import org.sopt.and.presentation.signin.contract.SignInUiState
 import javax.inject.Inject
@@ -14,25 +14,25 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase
-) : BaseViewModel<SignInUiState, SignInSideEffect, SignInEvent>() {
+) : BaseViewModel<SignInUiState, SignInSideEffect, SignInUiEvent>() {
 
     override fun createInitialState(): SignInUiState = SignInUiState()
 
-    override suspend fun handleEvent(event: SignInEvent) {
+    override suspend fun handleEvent(event: SignInUiEvent) {
         when (event) {
-            is SignInEvent.OnIdTextFieldChanged -> {
+            is SignInUiEvent.OnIdTextFieldChanged -> {
                 setState { copy(id = event.id) }
             }
 
-            is SignInEvent.OnPasswordTextFieldChanged -> {
+            is SignInUiEvent.OnPasswordTextFieldChanged -> {
                 setState { copy(password = event.password) }
             }
 
-            SignInEvent.OnSignInButtonClicked -> {
+            SignInUiEvent.OnSignInButtonClicked -> {
                 postSignIn()
             }
 
-            SignInEvent.OnSignUpButtonClicked -> {
+            SignInUiEvent.OnSignUpButtonClicked -> {
                 navigateToSignUp()
             }
         }
