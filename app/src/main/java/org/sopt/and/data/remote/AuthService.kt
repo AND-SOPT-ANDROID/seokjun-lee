@@ -5,18 +5,18 @@ import org.sopt.and.data.dto.request.SignInRequestDto
 import org.sopt.and.data.dto.request.SignUpRequestDto
 import org.sopt.and.data.dto.response.SignInResponseDto
 import org.sopt.and.data.dto.response.SignUpResponseDto
-import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface AuthService {
+
     @POST("/user")
-    fun signUp(
+    suspend fun signUp(
         @Body request: SignUpRequestDto
-    ): Call<BaseResponse<SignUpResponseDto>>
+    ): BaseResponse<SignUpResponseDto>
 
     @POST("/login")
-    fun signIn(
+    suspend fun signIn(
         @Body request: SignInRequestDto
-    ): Call<BaseResponse<SignInResponseDto>>
+    ): BaseResponse<SignInResponseDto>
 }

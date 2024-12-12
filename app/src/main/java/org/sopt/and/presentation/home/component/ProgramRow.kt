@@ -32,7 +32,7 @@ import org.sopt.and.R
 import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
-import org.sopt.and.core.model.Program
+import org.sopt.and.domain.entity.Program
 
 @Composable
 fun ProgramRow(

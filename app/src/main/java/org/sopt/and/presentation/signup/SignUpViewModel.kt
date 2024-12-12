@@ -9,15 +9,14 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.sopt.and.R
 import org.sopt.and.domain.entity.User
-import org.sopt.and.domain.repository.SignUpRepository
+import org.sopt.and.domain.usecase.SignUpUseCase
 import org.sopt.and.presentation.signup.state.SignUpUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val signUpRepository: SignUpRepository
+    private val registerUserUseCase: SignUpUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SignUpUiState())
     val uiState = _uiState.asStateFlow()
@@ -57,14 +56,14 @@ class SignUpViewModel @Inject constructor(
     fun registerUser() = viewModelScope.launch {
         with(_uiState.value) {
             if (isButtonEnabled) {
-                signUpRepository.registerUser(User(id, password, hobby))
+                registerUserUseCase.invoke(User(id, password, hobby))
                     .onSuccess { response ->
                         _sideEffect.emit(SignUpSideEffect.Toast(response.message))
                         if (response.id != null) {
                             _sideEffect.emit(SignUpSideEffect.NavigateUp)
                         }
-                    }.onFailure {
-                        _sideEffect.emit(SignUpSideEffect.Toast(R.string.signup_toast_failure_unknown))
+                    }.onFailure { throwable ->
+                        _sideEffect.emit(SignUpSideEffect.Toast(throwable.message.orEmpty()))
                     }
             }
         }

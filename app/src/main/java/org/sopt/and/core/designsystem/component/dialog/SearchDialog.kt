@@ -16,7 +16,7 @@ import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.BasicPreview
 import org.sopt.and.core.designsystem.theme.Grey500
 import org.sopt.and.core.extension.noRippleClickable
-import org.sopt.and.core.model.Program
+import org.sopt.and.domain.entity.Program
 import org.sopt.and.data.repositoryimpl.DummyPopularProgramRepositoryImpl
 import org.sopt.and.presentation.search.component.SearchItem
 

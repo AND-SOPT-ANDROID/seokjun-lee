@@ -1,7 +1,7 @@
 package org.sopt.and.data.repositoryimpl
 
 import kotlinx.coroutines.flow.Flow
-import org.sopt.and.core.model.Program
+import org.sopt.and.domain.entity.Program
 import org.sopt.and.data.local.database.StarredProgramDatabase
 import org.sopt.and.data.local.entity.StarredProgramEntity
 import org.sopt.and.data.mapper.toStarredProgramEntity

@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.sopt.and.core.model.Program
+import org.sopt.and.domain.entity.Program
 import org.sopt.and.domain.repository.MyHobbyRepository
 import org.sopt.and.domain.repository.StarredProgramRepository
 import org.sopt.and.presentation.mypage.state.MyPageInteractionState

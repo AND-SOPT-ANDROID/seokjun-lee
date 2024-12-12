@@ -1,5 +1,6 @@
 package org.sopt.and.presentation.home.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,20 +23,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
-import org.sopt.and.core.model.Program
+import org.sopt.and.domain.entity.Program
 
 @Composable
 fun RankedProgramRow(
@@ -46,7 +45,6 @@ fun RankedProgramRow(
     onMoreClick: () -> Unit = {},
     onItemClick: (Int) -> Unit = {}
 ) {
-    val context = LocalContext.current
     Column(
         modifier = modifier
     ) {
@@ -80,10 +78,8 @@ fun RankedProgramRow(
         ) {
             itemsIndexed(programList) { index, program ->
                 Box {
-                    AsyncImage(
-                        model = ImageRequest.Builder(context)
-                            .data(program.imgUrl)
-                            .build(),
+                    Image(
+                        painter = painterResource(program.imgFile),
                         contentDescription = program.title,
                         modifier = Modifier
                             .width(130.dp)

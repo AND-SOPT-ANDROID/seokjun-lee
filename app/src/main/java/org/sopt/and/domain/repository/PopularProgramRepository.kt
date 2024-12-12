@@ -1,6 +1,6 @@
 package org.sopt.and.domain.repository
 
-import org.sopt.and.core.model.Program
+import org.sopt.and.domain.entity.Program
 
 interface PopularProgramRepository {
     fun getPopularSeries(): List<Program>

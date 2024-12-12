@@ -42,7 +42,7 @@ import org.sopt.and.core.designsystem.theme.Grey200
 import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
-import org.sopt.and.core.model.Program
+import org.sopt.and.domain.entity.Program
 import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
 import org.sopt.and.presentation.mypage.component.ProfileLogGroup
 import org.sopt.and.presentation.mypage.component.ProfilePurchaseGroup

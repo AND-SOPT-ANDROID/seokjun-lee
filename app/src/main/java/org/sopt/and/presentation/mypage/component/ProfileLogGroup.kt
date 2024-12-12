@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.core.designsystem.component.image.PressableProgramImage
-import org.sopt.and.core.model.Program
+import org.sopt.and.domain.entity.Program
 
 @Composable
 fun ProfileLogGroup(
