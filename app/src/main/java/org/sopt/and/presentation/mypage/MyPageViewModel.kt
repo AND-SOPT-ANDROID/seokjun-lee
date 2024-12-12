@@ -1,32 +1,27 @@
 package org.sopt.and.presentation.mypage
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import org.sopt.and.core.viewmodel.BaseViewModel
 import org.sopt.and.domain.entity.Program
 import org.sopt.and.domain.repository.MyHobbyRepository
 import org.sopt.and.domain.repository.StarredProgramRepository
-import org.sopt.and.presentation.mypage.state.MyPageInteractionState
-import org.sopt.and.presentation.mypage.state.MyPageUiState
+import org.sopt.and.presentation.mypage.contract.MyPageSideEffect
+import org.sopt.and.presentation.mypage.contract.MyPageUiEvent
+import org.sopt.and.presentation.mypage.contract.MyPageUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val starredProgramRepository: StarredProgramRepository,
     private val myHobbyRepository: MyHobbyRepository
-) : ViewModel() {
-    private var interactionState = MutableStateFlow(MyPageInteractionState())
-    private val starredState: StateFlow<List<Program>> =
+) : BaseViewModel<MyPageUiState, MyPageSideEffect, MyPageUiEvent>() {
+
+    val starredState: StateFlow<List<Program>> =
         starredProgramRepository.getStarredPrograms()
             .map { it.map { entity -> Program(title = entity.programName, imgFile = entity.programImage) } }
             .stateIn(
@@ -34,66 +29,66 @@ class MyPageViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(1000),
                 initialValue = emptyList()
             )
+    private val currentStarredState: List<Program>
+        get() = starredState.value
 
-    val uiState: StateFlow<MyPageUiState> = combine(
-        interactionState, starredState
-    ) { uiState, starredState ->
-        MyPageUiState().copy(
-            hobby = uiState.hobby,
-            searchDialogVisibility = uiState.searchDialogVisibility,
-            deleteDialogVisibility = uiState.deleteDialogVisibility,
-            pressedProgram = uiState.pressedProgram,
-            starredProgram = starredState
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Lazily,
-        initialValue = MyPageUiState(),
-    )
+    override fun createInitialState(): MyPageUiState = MyPageUiState()
 
-    private var _sideEffect = MutableSharedFlow<MyPageSideEffect>()
-    val sideEffect = _sideEffect.asSharedFlow()
+    override suspend fun handleEvent(event: MyPageUiEvent) {
+        when (event) {
+            is MyPageUiEvent.OnLogoutButtonClick -> {
+                setSideEffect(MyPageSideEffect.OnLogout)
+            }
 
-    fun getMyHobby(token: String) = viewModelScope.launch {
+            is MyPageUiEvent.OnFAButtonClick -> {
+                setState { copy(searchDialogVisibility = true) }
+            }
+
+            is MyPageUiEvent.OnSearchDialogDismissed -> {
+                setState { copy(searchDialogVisibility = false) }
+            }
+
+            is MyPageUiEvent.OnSearchProgramSelected -> {
+                insertProgramToLocal(program = event.program)
+            }
+
+            is MyPageUiEvent.OnStarredProgramPressed -> {
+                setState {
+                    copy(
+                        pressedProgram = event.program,
+                        deleteDialogVisibility = true
+                    )
+                }
+            }
+
+            is MyPageUiEvent.OnDeleteDialogDismissed -> {
+                setState { copy(deleteDialogVisibility = false) }
+            }
+
+            is MyPageUiEvent.OnDeleteProgramConfirmed -> {
+                deleteProgramFromLocal()
+                setState { copy(deleteDialogVisibility = false) }
+            }
+
+        }
+    }
+
+    suspend fun getMyHobby(token: String) {
         myHobbyRepository.getMyHobby(token)
             .onSuccess { hobby ->
-                interactionState.update { currentState ->
-                    currentState.copy(hobby = hobby.hobby)
-                }
+                setState { copy(hobby = hobby.hobby) }
             }
     }
 
-    fun onLogoutButtonClick() = viewModelScope.launch {
-        _sideEffect.emit(MyPageSideEffect.OnLogout)
-    }
-
-    fun onConfirmDelete() = viewModelScope.launch {
-        interactionState.value.pressedProgram?.run {
+    private suspend fun deleteProgramFromLocal() {
+        currentState.pressedProgram?.run {
             starredProgramRepository.deletedStarredProgram(this)
         }
-        updateDeleteDialogVisibility(false)
     }
 
-    fun updateSearchDialogVisibility(visibility: Boolean) =
-        interactionState.update { currentState ->
-            currentState.copy(searchDialogVisibility = visibility)
-        }
-
-    fun updateDeleteDialogVisibility(visibility: Boolean) =
-        interactionState.update { currentState ->
-            currentState.copy(
-                deleteDialogVisibility = visibility
-            )
-        }
-
-    fun updatePressedProgram(program: Program) {
-        interactionState.update { currentState ->
-            currentState.copy(pressedProgram = program)
-        }
-    }
-
-    fun onInsertProgram(program: Program) = viewModelScope.launch {
-        if (uiState.value.starredProgram.contains(program)) return@launch
+    private suspend fun insertProgramToLocal(program: Program) {
+        if (currentStarredState.contains(program))
+            return
 
         starredProgramRepository.postStarredProgram(program)
     }

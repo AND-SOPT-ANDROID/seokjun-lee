@@ -42,12 +42,14 @@ import org.sopt.and.core.designsystem.theme.Grey200
 import org.sopt.and.core.designsystem.theme.WavveBackground
 import org.sopt.and.core.designsystem.theme.White
 import org.sopt.and.core.extension.noRippleClickable
-import org.sopt.and.domain.entity.Program
 import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
+import org.sopt.and.domain.entity.Program
 import org.sopt.and.presentation.mypage.component.ProfileLogGroup
 import org.sopt.and.presentation.mypage.component.ProfilePurchaseGroup
 import org.sopt.and.presentation.mypage.component.ProfileTopBar
-import org.sopt.and.presentation.mypage.state.MyPageUiState
+import org.sopt.and.presentation.mypage.contract.MyPageSideEffect
+import org.sopt.and.presentation.mypage.contract.MyPageUiEvent
+import org.sopt.and.presentation.mypage.contract.MyPageUiState
 
 @Composable
 fun MyPageRoute(
@@ -56,6 +58,7 @@ fun MyPageRoute(
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val starredProgram by viewModel.starredState.collectAsStateWithLifecycle()
 
     val snackBarHost = remember { SnackbarHostState() }
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -83,22 +86,24 @@ fun MyPageRoute(
         MyPageScreen(
             hobby = uiState.hobby,
             snackBarHost = snackBarHost,
-            onLogoutButtonClick = viewModel::onLogoutButtonClick,
-            onProgramPress = { program ->
-                with(viewModel) {
-                    updatePressedProgram(program)
-                    updateDeleteDialogVisibility(visibility = true)
-                }
+            onLogoutButtonClick = {
+                viewModel.setEvent(MyPageUiEvent.OnLogoutButtonClick)
             },
-            uiState = uiState
+            onProgramPress = { program ->
+                viewModel.setEvent(MyPageUiEvent.OnStarredProgramPressed(program))
+            },
+            uiState = uiState,
+            starredPrograms = starredProgram
         )
 
 
         FloatingActionButton(
-            onClick = { viewModel.updateSearchDialogVisibility(true) },
             shape = CircleShape,
             containerColor = Color.Blue,
             contentColor = White,
+            onClick = {
+                viewModel.setEvent(MyPageUiEvent.OnFAButtonClick)
+            },
             modifier = Modifier
                 .wrapContentSize()
                 .align(Alignment.BottomEnd)
@@ -115,8 +120,12 @@ fun MyPageRoute(
 
     if (uiState.searchDialogVisibility) {
         SearchDialog(
-            onDismissRequest = { viewModel.updateSearchDialogVisibility(false) },
-            onItemSelect = viewModel::onInsertProgram,
+            onDismissRequest = {
+                viewModel.setEvent(MyPageUiEvent.OnSearchDialogDismissed)
+            },
+            onItemSelect = { program ->
+                viewModel.setEvent(MyPageUiEvent.OnSearchProgramSelected(program))
+            },
         )
     }
     if (uiState.deleteDialogVisibility) {
@@ -126,8 +135,12 @@ fun MyPageRoute(
                 R.string.dialog_delete_content,
                 uiState.pressedProgram?.title.orEmpty()
             ),
-            onDismissRequest = { viewModel.updateDeleteDialogVisibility(visibility = false) },
-            onConfirm = viewModel::onConfirmDelete
+            onDismissRequest = {
+                viewModel.setEvent(MyPageUiEvent.OnDeleteDialogDismissed)
+            },
+            onConfirm = {
+                viewModel.setEvent(MyPageUiEvent.OnDeleteProgramConfirmed)
+            }
         )
     }
 
@@ -137,6 +150,7 @@ fun MyPageRoute(
 private fun MyPageScreen(
     hobby: String,
     uiState: MyPageUiState,
+    starredPrograms: List<Program>,
     snackBarHost: SnackbarHostState,
     onLogoutButtonClick: () -> Unit,
     onProgramPress: (Program) -> Unit,
@@ -179,7 +193,7 @@ private fun MyPageScreen(
             title = stringResource(R.string.mypage_content_title2),
             subTitle = stringResource(R.string.mypage_content_empty2),
             onItemPress = onProgramPress,
-            list = uiState.starredProgram,
+            list = starredPrograms,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 10.dp)
