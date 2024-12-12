@@ -1,55 +1,57 @@
 package org.sopt.and.presentation.signin
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.sopt.and.core.viewmodel.BaseViewModel
 import org.sopt.and.domain.entity.User
 import org.sopt.and.domain.usecase.SignInUseCase
-import org.sopt.and.presentation.signin.state.SignInUiState
+import org.sopt.and.presentation.signin.contract.SignInEvent
+import org.sopt.and.presentation.signin.contract.SignInSideEffect
+import org.sopt.and.presentation.signin.contract.SignInUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase
-) : ViewModel() {
-    private var _uiState = MutableStateFlow(SignInUiState())
-    val uiState = _uiState.asStateFlow()
+) : BaseViewModel<SignInUiState, SignInSideEffect, SignInEvent>() {
 
-    private var _sideEffect = MutableSharedFlow<SignInSideEffect>()
-    val sideEffect = _sideEffect.asSharedFlow()
+    override fun createInitialState(): SignInUiState = SignInUiState()
 
-    fun updateId(id: String) = _uiState.update { currentState ->
-        currentState.copy(
-            id = id
-        )
-    }
+    override suspend fun handleEvent(event: SignInEvent) {
+        when (event) {
+            is SignInEvent.OnIdTextFieldChanged -> {
+                setState { copy(id = event.id) }
+            }
 
-    fun updatePassword(password: String) = _uiState.update { currentState ->
-        currentState.copy(
-            password = password
-        )
-    }
+            is SignInEvent.OnPasswordTextFieldChanged -> {
+                setState { copy(password = event.password) }
+            }
 
-    fun onSignUpButtonClick() {
-        viewModelScope.launch {
-            _sideEffect.emit(SignInSideEffect.NavigateToSignUp)
+            SignInEvent.OnSignInButtonClicked -> {
+                postSignIn()
+            }
+
+            SignInEvent.OnSignUpButtonClicked -> {
+                navigateToSignUp()
+            }
         }
     }
 
-    fun onSignInButtonClick() = viewModelScope.launch {
-        val user = with(_uiState.value) { User(id, password, "") }
+    private fun navigateToSignUp() {
+        viewModelScope.launch {
+            setSideEffect(SignInSideEffect.NavigateToSignUp)
+        }
+    }
+
+    private fun postSignIn() = viewModelScope.launch {
+        val user = with(currentState) { User(id, password, "") }
         signInUseCase.invoke(user).onSuccess { response ->
             response.token?.run {
-                _sideEffect.emit(SignInSideEffect.NavigateToHome(this))
+                setSideEffect(SignInSideEffect.NavigateToHome(this))
             }
         }.onFailure { throwable ->
-            _sideEffect.emit(SignInSideEffect.SnackBar(throwable.message.orEmpty()))
+            setSideEffect(SignInSideEffect.ShowSnackBar(throwable.message.orEmpty()))
         }
     }
 }
