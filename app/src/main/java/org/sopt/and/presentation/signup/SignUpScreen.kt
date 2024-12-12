@@ -29,7 +29,9 @@ import org.sopt.and.core.designsystem.component.topbar.CancelTopBar
 import org.sopt.and.core.extension.toast
 import org.sopt.and.presentation.signup.component.SignUpButton
 import org.sopt.and.presentation.signup.component.SignUpTitle
-import org.sopt.and.presentation.signup.state.SignUpUiState
+import org.sopt.and.presentation.signup.contract.SignUpSideEffect
+import org.sopt.and.presentation.signup.contract.SignUpUiEvent
+import org.sopt.and.presentation.signup.contract.SignUpUiState
 
 @Composable
 fun SignUpRoute(
@@ -45,7 +47,7 @@ fun SignUpRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is SignUpSideEffect.Toast -> context.toast(sideEffect.message)
+                    is SignUpSideEffect.ShowToast -> context.toast(sideEffect.message)
                     is SignUpSideEffect.NavigateUp -> navigateUp(uiState.id, uiState.password)
                 }
             }
@@ -54,11 +56,21 @@ fun SignUpRoute(
     SignUpScreen(
         modifier = modifier,
         uiState = uiState,
-        onIdChange = viewModel::updateId,
-        onPasswordChange = viewModel::updatePassword,
-        onHobbyChange = viewModel::updateHobby,
-        onSignUpButtonPress = viewModel::registerUser,
-        onCloseClick = {}
+        onIdChange = { newValue ->
+            viewModel.setEvent(SignUpUiEvent.OnIdTextFieldChanged(newValue))
+        },
+        onPasswordChange = { newValue ->
+            viewModel.setEvent(SignUpUiEvent.OnPasswordTextFieldChanged(newValue))
+        },
+        onHobbyChange = { newValue ->
+            viewModel.setEvent(SignUpUiEvent.OnHobbyTextFieldChanged(newValue))
+        },
+        onSignUpButtonPress = {
+            viewModel.setEvent(SignUpUiEvent.OnSignUpButtonClicked)
+        },
+        onCloseClick = {
+            viewModel.setEvent(SignUpUiEvent.OnCloseButtonClicked)
+        }
     )
 }
 
