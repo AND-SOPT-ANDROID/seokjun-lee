@@ -49,7 +49,6 @@ import org.sopt.and.presentation.mypage.component.ProfilePurchaseGroup
 import org.sopt.and.presentation.mypage.component.ProfileTopBar
 import org.sopt.and.presentation.mypage.contract.MyPageSideEffect
 import org.sopt.and.presentation.mypage.contract.MyPageUiEvent
-import org.sopt.and.presentation.mypage.contract.MyPageUiState
 
 @Composable
 fun MyPageRoute(
@@ -92,7 +91,6 @@ fun MyPageRoute(
             onProgramPress = { program ->
                 viewModel.setEvent(MyPageUiEvent.OnStarredProgramPressed(program))
             },
-            uiState = uiState,
             starredPrograms = starredProgram
         )
 
@@ -149,7 +147,6 @@ fun MyPageRoute(
 @Composable
 private fun MyPageScreen(
     hobby: String,
-    uiState: MyPageUiState,
     starredPrograms: List<Program>,
     snackBarHost: SnackbarHostState,
     onLogoutButtonClick: () -> Unit,
