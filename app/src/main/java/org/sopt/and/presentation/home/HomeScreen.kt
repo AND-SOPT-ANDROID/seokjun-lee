@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -18,7 +19,8 @@ import org.sopt.and.presentation.home.component.HomeTopBar
 import org.sopt.and.presentation.home.component.HorizontalBannerPager
 import org.sopt.and.presentation.home.component.ProgramRow
 import org.sopt.and.presentation.home.component.RankedProgramRow
-import org.sopt.and.presentation.home.state.HomeUiState
+import org.sopt.and.presentation.home.contract.HomeUiEvent
+import org.sopt.and.presentation.home.contract.HomeUiState
 
 @Composable
 fun HomeRoute(
@@ -27,10 +29,16 @@ fun HomeRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(true){
+        viewModel.initializeHomeState()
+    }
+
     HomeScreen(
         uiState = uiState,
         modifier = modifier,
-        onTabClick = viewModel::updateSelectedTabIndex
+        onTabClick = { index ->
+            viewModel.setEvent(HomeUiEvent.OnTabSelected(index))
+        }
     )
 }
 
@@ -56,10 +64,12 @@ private fun HomeScreen(
         }
 
         item {
-            HorizontalBannerPager(
-                imageList = uiState.bannerImgList,
-                modifier = Modifier.wrapContentHeight()
-            )
+            if(uiState.bannerImgList.isNotEmpty()) {
+                HorizontalBannerPager(
+                    imageList = uiState.bannerImgList,
+                    modifier = Modifier.wrapContentHeight()
+                )
+            }
 
             RankedProgramRow(
                 title = uiState.rankedSeries?.title.orEmpty(),

@@ -13,20 +13,27 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import org.sopt.and.R
 import org.sopt.and.core.designsystem.component.textfield.SearchTextField
 import org.sopt.and.core.designsystem.theme.Grey500
+import org.sopt.and.core.extension.toast
 import org.sopt.and.domain.entity.Program
 import org.sopt.and.presentation.search.component.CategoryButton
 import org.sopt.and.presentation.search.component.SearchItem
 import org.sopt.and.presentation.search.component.SearchTabRow
-import org.sopt.and.presentation.search.state.SearchUiState
+import org.sopt.and.presentation.search.contract.SearchSideEffect
+import org.sopt.and.presentation.search.contract.SearchUiEvent
+import org.sopt.and.presentation.search.contract.SearchUiState
 
 @Composable
 fun SearchRoute(
@@ -34,12 +41,33 @@ fun SearchRoute(
     viewModel: SearchViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycleOwner.lifecycle)
+            .collect{ sideEffect ->
+                when(sideEffect) {
+                    is SearchSideEffect.ShowToast -> {
+                        context.toast(sideEffect.message)
+                    }
+                }
+            }
+    }
+
+    LaunchedEffect(true) {
+        viewModel.getPopularList()
+    }
 
     SearchScreen(
         uiState = uiState,
-        onTabClick = viewModel::onTabClick,
         programList = viewModel.getTabList(),
-        onTextFieldValueChange = viewModel::onSearchValueChange,
+        onTabClick = { index ->
+            viewModel.setEvent(SearchUiEvent.OnTabClicked(index))
+        },
+        onTextFieldValueChange = { value ->
+            viewModel.setEvent(SearchUiEvent.OnSearchTextFieldChanged(value))
+        },
         modifier = modifier
     )
 }

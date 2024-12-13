@@ -1,34 +1,33 @@
 package org.sopt.and.presentation.home
 
-import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import org.sopt.and.core.viewmodel.BaseViewModel
 import org.sopt.and.domain.repository.RecommendationRepository
-import org.sopt.and.presentation.home.state.HomeUiState
+import org.sopt.and.presentation.home.contract.HomeUiEvent
+import org.sopt.and.presentation.home.contract.HomeUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val recommendationRepository: RecommendationRepository
-) : ViewModel() {
-    private var _uiState = MutableStateFlow(HomeUiState())
-    val uiState = _uiState.asStateFlow()
+) : BaseViewModel<HomeUiState, Nothing, HomeUiEvent>() {
+    override fun createInitialState(): HomeUiState = HomeUiState()
 
-    init {
-        initializeHomeState()
+    override suspend fun handleEvent(event: HomeUiEvent) {
+        when(event) {
+            is HomeUiEvent.OnTabSelected -> {
+                setState { copy(selectedTabIndex = event.index) }
+            }
+        }
     }
 
-    private fun initializeHomeState() = _uiState.update { currentState ->
-        currentState.copy(
-            bannerImgList = recommendationRepository.getBannerImages(),
-            recommendations = recommendationRepository.getRecommendations(),
-            rankedSeries = recommendationRepository.getMostPopularSeries()
-        )
-    }
-
-    fun updateSelectedTabIndex(index: Int) = _uiState.update { currentState ->
-        currentState.copy(selectedTabIndex = index)
+    fun initializeHomeState() {
+        setState {
+            copy(
+                bannerImgList = recommendationRepository.getBannerImages(),
+                recommendations = recommendationRepository.getRecommendations(),
+                rankedSeries = recommendationRepository.getMostPopularSeries()
+            )
+        }
     }
 }

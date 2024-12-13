@@ -1,46 +1,50 @@
 package org.sopt.and.presentation.search
 
-import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import org.sopt.and.core.viewmodel.BaseViewModel
 import org.sopt.and.domain.entity.Program
 import org.sopt.and.domain.repository.PopularProgramRepository
-import org.sopt.and.presentation.search.state.SearchUiState
+import org.sopt.and.presentation.search.contract.SearchSideEffect
+import org.sopt.and.presentation.search.contract.SearchUiEvent
+import org.sopt.and.presentation.search.contract.SearchUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val popularProgramRepository: PopularProgramRepository
-) : ViewModel() {
-    private var _uiState = MutableStateFlow(SearchUiState())
-    val uiState = _uiState.asStateFlow()
+) : BaseViewModel<SearchUiState, SearchSideEffect, SearchUiEvent>() {
+    override fun createInitialState(): SearchUiState = SearchUiState()
 
-    init {
-        getPopularList()
+    override suspend fun handleEvent(event: SearchUiEvent) {
+        when (event) {
+            is SearchUiEvent.OnTabClicked -> {
+                setState { copy(selectedTabIndex = event.index) }
+            }
+
+            is SearchUiEvent.OnSearchTextFieldChanged -> {
+                setState { copy(searchText = event.value) }
+            }
+        }
     }
 
-    private fun getPopularList() = _uiState.update { currentState ->
-        currentState.copy(
-            popularSeries = popularProgramRepository.getPopularSeries(),
-            popularMovies = popularProgramRepository.getPopularMovies()
-        )
+    fun getPopularList() {
+        setState {
+            copy(
+                popularSeries = popularProgramRepository.getPopularSeries(),
+                popularMovies = popularProgramRepository.getPopularMovies()
+            )
+        }
     }
 
-    fun getTabList(): List<Program> =
-        if (uiState.value.selectedTabIndex == 0) _uiState.value.popularSeries
-        else _uiState.value.popularMovies
+    fun getTabList(): List<Program> {
+        val (tabList, toastMessage) =
+            if (uiState.value.selectedTabIndex == 0) {
+                Pair(currentState.popularSeries, "인기시리즈")
+            } else {
+                Pair(currentState.popularMovies, "인기 영화")
+            }
 
-    fun onTabClick(index: Int) = _uiState.update { currentState ->
-        currentState.copy(
-            selectedTabIndex = index
-        )
-    }
-
-    fun onSearchValueChange(value: String) = _uiState.update { currentState ->
-        currentState.copy(
-            searchText = value
-        )
+        setSideEffect(SearchSideEffect.ShowToast(toastMessage))
+        return tabList
     }
 }

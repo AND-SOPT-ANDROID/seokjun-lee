@@ -1,69 +1,61 @@
 package org.sopt.and.presentation.signup
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.sopt.and.core.viewmodel.BaseViewModel
 import org.sopt.and.domain.entity.User
 import org.sopt.and.domain.usecase.SignUpUseCase
-import org.sopt.and.presentation.signup.state.SignUpUiState
+import org.sopt.and.presentation.signup.contract.SignUpSideEffect
+import org.sopt.and.presentation.signup.contract.SignUpUiEvent
+import org.sopt.and.presentation.signup.contract.SignUpUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val registerUserUseCase: SignUpUseCase
-) : ViewModel() {
-    private val _uiState = MutableStateFlow(SignUpUiState())
-    val uiState = _uiState.asStateFlow()
+) : BaseViewModel<SignUpUiState, SignUpSideEffect, SignUpUiEvent>() {
 
-    private val _sideEffect = MutableSharedFlow<SignUpSideEffect>()
-    val sideEffect = _sideEffect.asSharedFlow()
+    override fun createInitialState(): SignUpUiState = SignUpUiState()
 
-    fun updateId(id: String) {
-        _uiState.update { currentState ->
-            currentState.copy(id = id)
+    override suspend fun handleEvent(event: SignUpUiEvent) {
+        when(event) {
+            is SignUpUiEvent.OnIdTextFieldChanged -> {
+                val isButtonEnabled = checkSignUpPossible()
+                setState { copy(id = event.id, isButtonEnabled = isButtonEnabled) }
+            }
+            is SignUpUiEvent.OnPasswordTextFieldChanged -> {
+                val isButtonEnabled = checkSignUpPossible()
+                setState { copy(password = event.password, isButtonEnabled = isButtonEnabled) }
+            }
+            is SignUpUiEvent.OnHobbyTextFieldChanged -> {
+                val isButtonEnabled = checkSignUpPossible()
+                setState { copy(hobby = event.hobby, isButtonEnabled = isButtonEnabled) }
+            }
+            is SignUpUiEvent.OnCloseButtonClicked -> {
+                setSideEffect(sideEffect = SignUpSideEffect.NavigateUp)
+            }
+            is SignUpUiEvent.OnSignUpButtonClicked -> {
+                registerUser()
+            }
         }
-        updateButtonEnabled()
     }
 
-    fun updatePassword(password: String) {
-        _uiState.update { currentState ->
-            currentState.copy(password = password)
-        }
-        updateButtonEnabled()
+    private fun checkSignUpPossible():Boolean = with(currentState) {
+        id.isNotBlank() && password.isNotBlank() && hobby.isNotBlank()
     }
 
-    fun updateHobby(hobby: String) {
-        _uiState.update { currentState ->
-            currentState.copy(hobby = hobby)
-        }
-        updateButtonEnabled()
-    }
-
-    private fun updateButtonEnabled() = _uiState.update { currentState ->
-        currentState.copy(
-            isButtonEnabled = _uiState.value.id.isNotBlank()
-                    && _uiState.value.password.isNotBlank()
-                    && _uiState.value.hobby.isNotBlank()
-        )
-    }
-
-    fun registerUser() = viewModelScope.launch {
-        with(_uiState.value) {
+    private fun registerUser() = viewModelScope.launch {
+        with(currentState) {
             if (isButtonEnabled) {
                 registerUserUseCase.invoke(User(id, password, hobby))
                     .onSuccess { response ->
-                        _sideEffect.emit(SignUpSideEffect.Toast(response.message))
+                        setSideEffect(SignUpSideEffect.ShowToast(response.message))
                         if (response.id != null) {
-                            _sideEffect.emit(SignUpSideEffect.NavigateUp)
+                            setSideEffect(SignUpSideEffect.NavigateUp)
                         }
                     }.onFailure { throwable ->
-                        _sideEffect.emit(SignUpSideEffect.Toast(throwable.message.orEmpty()))
+                        setSideEffect(SignUpSideEffect.ShowToast(throwable.message.orEmpty()))
                     }
             }
         }

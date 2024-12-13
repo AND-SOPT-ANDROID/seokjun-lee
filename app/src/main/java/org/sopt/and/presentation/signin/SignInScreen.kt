@@ -40,7 +40,9 @@ import org.sopt.and.core.extension.showWavveSnackBar
 import org.sopt.and.core.extension.toast
 import org.sopt.and.core.preference.PreferenceUtil.Companion.LocalPreference
 import org.sopt.and.presentation.signin.component.SignInExtraServiceGroup
-import org.sopt.and.presentation.signin.state.SignInUiState
+import org.sopt.and.presentation.signin.contract.SignInUiEvent
+import org.sopt.and.presentation.signin.contract.SignInSideEffect
+import org.sopt.and.presentation.signin.contract.SignInUiState
 
 @Composable
 fun SignInRoute(
@@ -61,14 +63,16 @@ fun SignInRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is SignInSideEffect.Toast -> context.toast(
-                        context.getString(sideEffect.message)
-                    )
+                    is SignInSideEffect.ShowToast -> {
+                        context.toast(sideEffect.message)
+                    }
 
-                    is SignInSideEffect.SnackBar -> snackBarHost.showWavveSnackBar(
-                        context = context,
-                        message = sideEffect.message
-                    )
+                    is SignInSideEffect.ShowSnackBar -> {
+                        snackBarHost.showWavveSnackBar(
+                            context = context,
+                            message = sideEffect.message
+                        )
+                    }
 
                     is SignInSideEffect.NavigateToHome -> {
                         with(preference) {
@@ -88,10 +92,18 @@ fun SignInRoute(
     SignInScreen(
         uiState = uiState,
         snackBarHost = snackBarHost,
-        onIdChange = viewModel::updateId,
-        onPasswordChange = viewModel::updatePassword,
-        onLoginClick = viewModel::onSignInButtonClick,
-        onSignUpClick = viewModel::onSignUpButtonClick,
+        onIdChange = { newValue ->
+            viewModel.setEvent(SignInUiEvent.OnIdTextFieldChanged(newValue))
+        },
+        onPasswordChange = { newValue ->
+            viewModel.setEvent(SignInUiEvent.OnPasswordTextFieldChanged(newValue))
+        },
+        onLoginClick = {
+            viewModel.setEvent(SignInUiEvent.OnSignInButtonClicked)
+        },
+        onSignUpClick = {
+            viewModel.setEvent(SignInUiEvent.OnSignUpButtonClicked)
+        },
         modifier = modifier
     )
 }
